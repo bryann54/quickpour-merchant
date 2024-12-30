@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/features/analytics/presentation/pages/analytics_screen.dart';
 import 'package:quickpourmerchant/features/auth/presentation/pages/login_screen.dart';
-import 'package:quickpourmerchant/features/products/presentation/pages/home_screen.dart';
+import 'package:quickpourmerchant/features/product/presentation/pages/home_screen.dart';
 import 'package:quickpourmerchant/features/notifications/presentation/pages/notifications_screen.dart';
 import 'package:quickpourmerchant/features/orders/presentation/pages/orders_screen.dart';
-import 'package:quickpourmerchant/features/products/presentation/pages/product_screen.dart';
+import 'package:quickpourmerchant/features/product/presentation/pages/product_screen.dart';
 import 'package:quickpourmerchant/features/profile/presentation/pages/profile_screen.dart';
 
 class RouteGenerator {

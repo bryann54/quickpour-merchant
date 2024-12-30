@@ -8,7 +8,7 @@ import 'package:quickpourmerchant/features/categories/data/repositories/category
 import 'package:quickpourmerchant/features/categories/domain/usecases/fetch_categories.dart';
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_bloc.dart';
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_event.dart';
-import 'package:quickpourmerchant/features/products/presentation/pages/home_screen.dart';
+import 'package:quickpourmerchant/features/product/presentation/pages/home_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class ProductModel {
   final String id;
   final String productName;
@@ -56,20 +54,22 @@ class ProductModel {
   // Create ProductModel from Map
   factory ProductModel.fromMap(Map<String, dynamic> map) {
     return ProductModel(
-      id: map['id'],
-      productName: map['productName'],
-      imageUrls: List<String>.from(map['imageUrls']),
-      price: map['price'],
-      brand: map['brand'],
-      description: map['description'],
-      category: map['category'],
-      stockQuantity: map['stockQuantity'],
-      isAvailable: map['isAvailable'],
-      discountPrice: map['discountPrice'],
-      sku: map['sku'],
-      tags: List<String>.from(map['tags']),
-      createdAt: DateTime.parse(map['createdAt']),
-      updatedAt: DateTime.parse(map['updatedAt']),
+      id: map['id'] ?? '',
+      productName: map['productName'] ?? '',
+      imageUrls: List<String>.from(map['imageUrls'] ?? []),
+      price: (map['price'] ?? 0).toDouble(),
+      brand: map['brand'] ?? '',
+      description: map['description'] ?? '',
+      category: map['category'] ?? '',
+      stockQuantity: (map['stockQuantity'] ?? 0).toInt(),
+      isAvailable: map['isAvailable'] ?? true,
+      discountPrice: (map['discountPrice'] ?? 0).toDouble(),
+      sku: map['sku'] ?? '',
+      tags: List<String>.from(map['tags'] ?? []),
+      createdAt:
+          DateTime.parse(map['createdAt'] ?? DateTime.now().toIso8601String()),
+      updatedAt:
+          DateTime.parse(map['updatedAt'] ?? DateTime.now().toIso8601String()),
     );
   }
 }

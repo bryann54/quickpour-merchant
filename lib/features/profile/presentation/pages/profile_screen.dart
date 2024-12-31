@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quickpourmerchant/core/theme/theme_toggle_switch.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/features/auth/data/models/user_model.dart';
 import 'package:quickpourmerchant/features/auth/domain/usecases/auth_usecases.dart';
@@ -234,6 +235,11 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
               // TODO: Implement help & support navigation
             },
           ),
+           ListTile(
+            leading: FaIcon(FontAwesomeIcons.moon),
+            title: Text('dark mode'),
+            trailing: ThemeToggle(),
+           )
         ],
       ),
     );

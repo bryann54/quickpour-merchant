@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 import 'package:intl/intl.dart';
 
@@ -14,6 +15,7 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   bool _isEditing = false;
   late TextEditingController _nameController;
   late TextEditingController _descriptionController;
@@ -58,6 +60,82 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     super.dispose();
   }
 
+  Future<void> _updateProduct() async {
+    if (!_validateInputs()) return;
+
+    try {
+      // Show loading indicator
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(child: CircularProgressIndicator()),
+      );
+
+      // Create updated product map
+      final updatedProduct = {
+        'productName': _nameController.text.trim(),
+        'description': _descriptionController.text.trim(),
+        'price': double.parse(_priceController.text),
+        'discountPrice': double.tryParse(_discountPriceController.text) ?? 0.0,
+        'stockQuantity': int.parse(_stockController.text),
+        'brand': _brandController.text.trim(),
+        'category': _categoryController.text.trim(),
+        'sku': _skuController.text.trim(),
+        'updatedAt': FieldValue.serverTimestamp(),
+      };
+
+      // Update document in Firebase
+      await _firestore
+          .collection('products')
+          .doc(widget.product.id)
+          .update(updatedProduct);
+
+      // Close loading dialog
+      Navigator.pop(context);
+
+      setState(() => _isEditing = false);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Product updated successfully'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } catch (error) {
+      // Close loading dialog
+      Navigator.pop(context);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error updating product: ${error.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  bool _validateInputs() {
+    if (_nameController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Product name cannot be empty')),
+      );
+      return false;
+    }
+
+    try {
+      double.parse(_priceController.text);
+      int.parse(_stockController.text);
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Please enter valid price and stock values')),
+      );
+      return false;
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,12 +147,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             onPressed: () {
               setState(() {
                 if (_isEditing) {
-                  // TODO: Implement save functionality
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Changes saved successfully')),
-                  );
+                  _updateProduct();
+                } else {
+                  _isEditing = true;
                 }
-                _isEditing = !_isEditing;
               });
             },
           ),
@@ -84,7 +160,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Image Carousel
             SizedBox(
               height: 300,
               child: PageView.builder(
@@ -93,9 +168,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     : widget.product.imageUrls.length,
                 itemBuilder: (context, index) {
                   if (widget.product.imageUrls.isEmpty) {
-                    return  Center(
-                      child: Column(mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
                           FaIcon(FontAwesomeIcons.accusoft, size: 100),
                           Text('no image available')
                         ],
@@ -119,7 +195,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Product Name
                   _buildTextField(
                     label: 'Product Name',
                     controller: _nameController,
@@ -128,8 +203,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         fontSize: 24, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 16),
-
-                  // Price and Discount Section
                   Row(
                     children: [
                       Expanded(
@@ -152,8 +225,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ],
                   ),
                   const SizedBox(height: 16),
-
-                  // Stock and SKU Section
                   Row(
                     children: [
                       Expanded(
@@ -175,8 +246,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ],
                   ),
                   const SizedBox(height: 16),
-
-                  // Brand and Category Section
                   Row(
                     children: [
                       Expanded(
@@ -197,8 +266,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ],
                   ),
                   const SizedBox(height: 16),
-
-                  // Description
                   _buildTextField(
                     label: 'Description',
                     controller: _descriptionController,
@@ -206,8 +273,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     maxLines: 4,
                   ),
                   const SizedBox(height: 16),
-
-                  // Tags
                   Card(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -236,8 +301,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                   ),
                   const SizedBox(height: 16),
-
-                  // Metadata
                   Card(
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),

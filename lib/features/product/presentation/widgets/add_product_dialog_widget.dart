@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickpourmerchant/features/categories/domain/entities/category.dart';
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_bloc.dart';
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_state.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
+import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
 
 class AddProductDialog extends StatefulWidget {
   @override
@@ -111,25 +113,42 @@ class _AddProductDialogState extends State<AddProductDialog> {
                     value!.isEmpty ? 'Enter description' : null,
               ),
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: () {
+             ElevatedButton(
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    // Create a product model
-                    final newProduct = ProductModel(
-                      id: '', // Generate or leave it empty for now
-                      productName: _productName!,
-                      imageUrls: [], // You can add image selection later
-                      price: _price!,
-                      brand: '', // You can add brand info if required
-                      description: _description!,
-                      category: _selectedCategory!,
-                      stockQuantity: _stockQuantity!,
-                      sku: _sku!,
-                      createdAt: DateTime.now(),
-                      updatedAt: DateTime.now(),
-                    );
-                    // Trigger the creation of the product
-                    // You can dispatch an event to a BLoC for saving this product
+                    try {
+                      final String productId = FirebaseFirestore.instance
+                          .collection('products')
+                          .doc()
+                          .id;
+
+                      final newProduct = ProductModel(
+                        id: productId,
+                        productName: _productName!,
+                        imageUrls: [],
+                        price: _price!,
+                        brand: '',
+                        description: _description!,
+                        category: _selectedCategory!,
+                        stockQuantity: _stockQuantity!,
+                        discountPrice: _discountPrice ?? 0.0,
+                        sku: _sku!,
+                        createdAt: DateTime.now(),
+                        updatedAt: DateTime.now(),
+                      );
+
+                      context.read<ProductsBloc>().add(AddProduct(newProduct));
+                      Navigator.pop(context);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                            content: Text('Product added successfully')),
+                      );
+                    } catch (e) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Error adding product: $e')),
+                      );
+                    }
                   }
                 },
                 child: const Text('Add Product'),

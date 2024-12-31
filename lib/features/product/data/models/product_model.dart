@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class ProductModel {
   final String id;
   final String productName;
@@ -6,14 +8,13 @@ class ProductModel {
   final String brand;
   final String description;
   final String category;
-  final int stockQuantity; // Track available inventory
-  final bool isAvailable; // Product availability status
-  final double discountPrice; // Sale or discounted price
-  final String sku; // Stock keeping unit
-  final List<String> tags; // Search tags/keywords
-  final DateTime createdAt; // When product was first added
-  final DateTime updatedAt; // Last modification date
- 
+  final int stockQuantity;
+  final bool isAvailable;
+  final double discountPrice;
+  final String sku;
+  final List<String> tags;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   ProductModel({
     required this.id,
@@ -24,23 +25,51 @@ class ProductModel {
     required this.description,
     required this.category,
     required this.stockQuantity,
-  
     this.isAvailable = true,
     this.discountPrice = 0.0,
     required this.sku,
     this.tags = const [],
     required this.createdAt,
     required this.updatedAt,
-
   });
 
-  // Optional: Add a method to check if product is on sale
-  bool get isOnSale => discountPrice > 0 && discountPrice < price;
+  // Convert ProductModel to Map
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'productName': productName,
+      'imageUrls': imageUrls,
+      'price': price,
+      'brand': brand,
+      'description': description,
+      'category': category,
+      'stockQuantity': stockQuantity,
+      'isAvailable': isAvailable,
+      'discountPrice': discountPrice,
+      'sku': sku,
+      'tags': tags,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+    };
+  }
 
-  // Optional: Add a method to get current selling price
-  double get sellingPrice => discountPrice > 0 ? discountPrice : price;
-
-  // Optional: Add a method to check if product is in stock
-  bool get inStock => stockQuantity > 0;
-
+  // Create ProductModel from Map
+  factory ProductModel.fromMap(Map<String, dynamic> map) {
+    return ProductModel(
+      id: map['id'],
+      productName: map['productName'],
+      imageUrls: List<String>.from(map['imageUrls']),
+      price: map['price'],
+      brand: map['brand'],
+      description: map['description'],
+      category: map['category'],
+      stockQuantity: map['stockQuantity'],
+      isAvailable: map['isAvailable'],
+      discountPrice: map['discountPrice'],
+      sku: map['sku'],
+      tags: List<String>.from(map['tags']),
+      createdAt: DateTime.parse(map['createdAt']),
+      updatedAt: DateTime.parse(map['updatedAt']),
+    );
+  }
 }

@@ -51,33 +51,161 @@ class _AddProductDialogState extends State<AddProductDialog> {
     }
   }
 
-  Future<List<String>> _uploadImages() async {
+Future<List<String>> _uploadImages() async {
     List<String> imageUrls = [];
 
-    for (var i = 0; i < _selectedImages.length; i++) {
-      File imageFile = _selectedImages[i];
-      String fileName =
-          'product_${DateTime.now().millisecondsSinceEpoch}_${i}_${path.basename(imageFile.path)}';
+    try {
+      print('Starting image upload process...');
 
-      try {
-        Reference storageRef =
-            FirebaseStorage.instance.ref().child('products').child(fileName);
+      // Create storage reference
+      final storageInstance = FirebaseStorage.instance;
 
-        // Upload file
-        await storageRef.putFile(
+      for (var i = 0; i < _selectedImages.length; i++) {
+        File imageFile = _selectedImages[i];
+
+        // Create a more specific path and sanitize the filename
+        String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+       String cleanFileName =
+            path.basename(imageFile.path).replaceAll(RegExp(r'[^\w\.-]'), '_');
+
+        String fileName = 'product_${timestamp}_$i\_$cleanFileName';
+
+        print('Preparing to upload image $i: $fileName');
+
+        // Create the full storage reference path
+        Reference storageRef = storageInstance
+            .ref()
+            .child('products') // Main folder
+            .child(DateTime.now().year.toString()) // Year folder
+            .child(DateTime.now().month.toString()) // Month folder
+            .child(fileName); // Actual file
+
+        print('Storage path: ${storageRef.fullPath}');
+
+        // Ensure the file exists before upload
+        if (!await imageFile.exists()) {
+          throw Exception('Image file does not exist: ${imageFile.path}');
+        }
+
+        // Upload file with explicit content type
+        final uploadTask = await storageRef.putFile(
           imageFile,
-          SettableMetadata(contentType: 'image/jpeg'),
+          SettableMetadata(
+            contentType: 'image/jpeg',
+            customMetadata: {
+              'uploaded_at': DateTime.now().toIso8601String(),
+              'original_name': path.basename(imageFile.path),
+            },
+          ),
         );
 
-        // Get download URL
-        String downloadUrl = await storageRef.getDownloadURL();
-        imageUrls.add(downloadUrl);
-      } catch (e) {
-        throw Exception('Failed to upload image: $e');
+        if (uploadTask.state == TaskState.success) {
+          // Get download URL
+          String downloadUrl = await storageRef.getDownloadURL();
+          print('Successfully uploaded image $i. URL: $downloadUrl');
+          imageUrls.add(downloadUrl);
+        } else {
+          throw Exception('Upload task failed with state: ${uploadTask.state}');
+        }
       }
+
+      print(
+          'All images uploaded successfully. Total images: ${imageUrls.length}');
+      return imageUrls;
+    } catch (e, stackTrace) {
+      print('Error during image upload: $e');
+      print('Stack trace: $stackTrace');
+      throw Exception('Failed to upload image: $e');
+    }
+  }
+
+// Add this check before starting the upload
+  Future<bool> _checkStorageConnection() async {
+    try {
+      // Try to list a single item to verify connection
+      await FirebaseStorage.instance
+          .ref()
+          .child('products')
+          .list(const ListOptions(maxResults: 1));
+      return true;
+    } catch (e) {
+      print('Storage connection check failed: $e');
+      return false;
+    }
+  }
+
+// Modify your upload button handler
+  void _handleProductCreation() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    if (_selectedImages.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select at least one image')),
+      );
+      return;
     }
 
-    return imageUrls;
+    // Check storage connection first
+    if (!await _checkStorageConnection()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              'Unable to connect to storage. Please check your connection and try again.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    setState(() {
+      _isUploading = true;
+    });
+
+    try {
+      _uploadedImageUrls = await _uploadImages();
+
+      // Continue with product creation only if images were uploaded successfully
+      if (_uploadedImageUrls.isNotEmpty) {
+        final String productId =
+            FirebaseFirestore.instance.collection('products').doc().id;
+
+        final newProduct = ProductModel(
+          id: productId,
+          productName: _productName!,
+          imageUrls: _uploadedImageUrls,
+          price: _price!,
+          brand: '',
+          description: _description!,
+          category: _selectedCategory!,
+          stockQuantity: _stockQuantity!,
+          discountPrice: _discountPrice ?? 0.0,
+          sku: _sku!,
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        );
+
+        context.read<ProductsBloc>().add(AddProduct(newProduct));
+        Navigator.pop(context);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Product added successfully'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      setState(() {
+        _isUploading = false;
+      });
+    }
   }
 
   @override

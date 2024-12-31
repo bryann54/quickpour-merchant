@@ -4,7 +4,7 @@ import 'package:quickpourmerchant/features/auth/presentation/pages/login_screen.
 import 'package:quickpourmerchant/features/product/presentation/pages/home_screen.dart';
 import 'package:quickpourmerchant/features/notifications/presentation/pages/notifications_screen.dart';
 import 'package:quickpourmerchant/features/orders/presentation/pages/orders_screen.dart';
-import 'package:quickpourmerchant/features/product/presentation/pages/product_screen.dart';
+import 'package:quickpourmerchant/features/product/presentation/pages/product_details_screen.dart';
 import 'package:quickpourmerchant/features/profile/presentation/pages/profile_screen.dart';
 
 class RouteGenerator {
@@ -21,7 +21,7 @@ class RouteGenerator {
       case home:
         return MaterialPageRoute(builder: (_) => HomeScreen());
       case products:
-        return MaterialPageRoute(builder: (_) => ProductsScreen());
+        return MaterialPageRoute(builder: (_) => HomeScreen());
       case orders:
         return MaterialPageRoute(builder: (_) => OrdersScreen());
       case analytics:

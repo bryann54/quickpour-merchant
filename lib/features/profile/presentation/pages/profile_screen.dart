@@ -27,7 +27,17 @@ class ProfileScreen extends StatelessWidget {
     final isDarkMode = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(title:   Center(
+                    child: Text(
+                      'Profile',
+                      style: GoogleFonts.montaga(
+                                    textStyle: theme.textTheme.displayLarge?.copyWith(
+                        color: isDarkMode
+                            ? AppColors.cardColor
+                            : AppColors.accentColorDark,
+                      ),)
+                    ),
+                  ),),
       body: FutureBuilder<User?>(
         future: authUseCases.authRepository.getCurrentUserDetails(),
         builder: (context, snapshot) {
@@ -63,17 +73,7 @@ class ProfileScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Profile Header
-                  Center(
-                    child: Text(
-                      'Profile',
-                      style: GoogleFonts.montaga(
-                                    textStyle: theme.textTheme.displayLarge?.copyWith(
-                        color: isDarkMode
-                            ? AppColors.cardColor
-                            : AppColors.accentColorDark,
-                      ),)
-                    ),
-                  ),
+                
                   const SizedBox(height: 20),
 
                   // User Profile Section
@@ -121,28 +121,68 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
           ),
         ),
         const SizedBox(width: 16),
-        Expanded(
+    Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                '${user.firstName}  ${user.lastName}',
-                style: GoogleFonts.acme(
-                                    textStyle: Theme.of(context).textTheme.headlineSmall,
-              
-               ) ),
-              const SizedBox(height: 8),
-              Text(
-                user.email,
-                style: GoogleFonts.montaga(
-                                    textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey,
+              Row(
+                children: [
+                  const Text('Owner: ',
+                      style: TextStyle(fontWeight: FontWeight.w500)),
+                  const SizedBox(
+                      width: 8), // Add spacing between label and value
+                  Expanded(
+                    // Wrap in Expanded to handle overflow
+                    child: Text(
+                      user.firstName,
+                      style: GoogleFonts.acme(
+                        textStyle: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      overflow: TextOverflow.ellipsis, // Handle text overflow
                     ),
-               )
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12), // Increased vertical spacing
+              Row(
+                children: [
+                  const Text('Store: ',
+                      style: TextStyle(fontWeight: FontWeight.w500)),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      user.lastName,
+                      style: GoogleFonts.acme(
+                        textStyle: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Row(
+                children: [
+                  const Text('Email: ',
+                      style: TextStyle(fontWeight: FontWeight.w500)),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      user.email,
+                      style: GoogleFonts.montaga(
+                        textStyle:
+                            Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: Colors.grey,
+                                ),
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ),
+        )
       ],
     );
   }

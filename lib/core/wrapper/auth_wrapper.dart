@@ -101,7 +101,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
     }
 
     return Scaffold(
-      appBar: AppBar(),
+    
       body: isLogin ? const LoginScreen() : const SignupScreen(),
       bottomNavigationBar: BottomAppBar(
         child: Padding(

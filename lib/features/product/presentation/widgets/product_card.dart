@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 import 'package:quickpourmerchant/features/product/presentation/pages/product_details_screen.dart';
 
@@ -75,7 +76,15 @@ class ProductCard extends StatelessWidget {
             else
               const SizedBox(
                 height: 150,
-                child: Center(child: Text("No Image Available")),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      FaIcon(FontAwesomeIcons.accusoft, size: 50,color: Colors.grey,),
+                      Text('no image available')
+                    ],
+                  ),
+                ),
               ),
             // Product Details
             Expanded(

@@ -108,7 +108,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       TextFormField(
                         controller: _firstNameController,
                         decoration: InputDecoration(
-                          labelText: 'First Name',
+                          labelText: 'Owner\'s Name',
                           prefixIcon: const Icon(Icons.person_outline),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -116,7 +116,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
-                            return 'Please enter your first name';
+                            return 'Please enter Owner\'s name';
                           }
                           return null;
                         },
@@ -126,7 +126,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       TextFormField(
                         controller: _lastNameController,
                         decoration: InputDecoration(
-                          labelText: 'Last Name',
+                          labelText: 'Store\'s Name',
                           prefixIcon: const Icon(Icons.person_outline),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -134,7 +134,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
-                            return 'Please enter your last name';
+                            return 'Please enter store\'s name';
                           }
                           return null;
                         },

@@ -6,8 +6,12 @@ class AnalyticsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-       appBar:
-          AppBar(title: Text('analytics Screen'), backgroundColor: Colors.blue),
+    
+          appBar:  AppBar(
+              title: Text(
+                    'Analytics',
+                    style: Theme.of(context).textTheme.displayLarge,
+      )),
     );
   }
 }

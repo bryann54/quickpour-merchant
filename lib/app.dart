@@ -12,9 +12,11 @@ import 'package:quickpourmerchant/features/categories/data/repositories/category
 import 'package:quickpourmerchant/features/categories/domain/usecases/fetch_categories.dart';
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_bloc.dart';
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_event.dart';
+import 'package:quickpourmerchant/features/notifications/data/repositories/notifications_repository.dart';
+import 'package:quickpourmerchant/features/notifications/presentation/bloc/notifications_bloc.dart';
+import 'package:quickpourmerchant/features/orders/presentation/bloc/orders_bloc.dart';
 import 'package:quickpourmerchant/features/product/data/repositories/product_repository.dart';
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
-import 'package:quickpourmerchant/features/product/presentation/pages/home_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -34,6 +36,19 @@ class MyApp extends StatelessWidget {
               authRepository: AuthRepository(),
             ),
           ),
+        ),
+         Provider<NotificationsRepository>(
+          create: (_) => NotificationsRepository(),
+        ),
+            BlocProvider(
+          create: (context) => NotificationsBloc(
+            context.read<NotificationsRepository>(),
+          ),
+        ),
+         BlocProvider(
+          create: (context) =>
+              OrdersBloc()
+                ..add(LoadOrdersFromCheckout()),
         ),
         BlocProvider(
         create: (context) => ProductsBloc(productRepository: ProductRepository())),

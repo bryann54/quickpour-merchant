@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 import 'package:intl/intl.dart';
 
@@ -92,8 +93,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     : widget.product.imageUrls.length,
                 itemBuilder: (context, index) {
                   if (widget.product.imageUrls.isEmpty) {
-                    return const Center(
-                      child: Icon(Icons.image_not_supported, size: 100),
+                    return  Center(
+                      child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          FaIcon(FontAwesomeIcons.accusoft, size: 100),
+                          Text('no image available')
+                        ],
+                      ),
                     );
                   }
                   return Hero(

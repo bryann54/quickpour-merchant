@@ -81,14 +81,17 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                 opacity: _backgroundFadeAnimation.value,
                 child: Container(
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                    colors: [
-                      AppColors.primaryColorDark,
-                      AppColors.secondaryColorDark.withOpacity(0.7),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  )
+          gradient: LinearGradient(
+                      colors: [
+                        const Color(0xFF001F3F), // Dark navy blue
+                        const Color(0xFF003366)
+                            .withOpacity(0.8), // Lighter navy blue with opacity
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+
+
                   ),
                 ),
               ),
@@ -124,7 +127,7 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                             ],
                           ),
                           child: Image.asset(
-                            'assets/splash.png',
+                            'assets/q1.png',
                             fit: BoxFit.contain,
                           ),
                         ),
@@ -135,7 +138,7 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                 Opacity(
                       opacity: _fadeAnimation.value,
                       child: Text(
-                        'QuickPour',
+                        'Merchants',
                         style: GoogleFonts.chewy(
                           textStyle: const TextStyle(
                             color: Colors.white,

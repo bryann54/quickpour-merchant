@@ -12,7 +12,11 @@ class CategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  AppBar(),
+      appBar:  AppBar(
+              title: Text(
+                    'Categories',
+                    style: Theme.of(context).textTheme.displayLarge,
+      )),
       body: BlocBuilder<CategoriesBloc, CategoriesState>(
         builder: (context, state) {
           if (state is CategoriesLoading) {
@@ -23,13 +27,13 @@ class CategoriesScreen extends StatelessWidget {
           } else if (state is CategoriesLoaded) {
             return Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Categories',
-                    style: Theme.of(context).textTheme.displayLarge,
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.all(8.0),
+                //   child: Text(
+                //     'Categories',
+                //     style: Theme.of(context).textTheme.displayLarge,
+                //   ),
+                // ),
                 Expanded(
                   child: GridView.builder(
                     gridDelegate:

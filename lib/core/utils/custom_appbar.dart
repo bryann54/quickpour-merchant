@@ -36,7 +36,7 @@ class CustomDrawer extends StatelessWidget {
 
   const CustomDrawer({
     super.key,
-    this.merchantName = 'QuickPour Merchant',
+    this.merchantName = 'QuickPour Merchants',
     this.merchantImage,
     this.onLogout,
   });
@@ -112,7 +112,9 @@ class CustomDrawer extends StatelessWidget {
             onTap: () => Navigator.pushNamed(context, '/profile'),
           ),
        
-          const Divider(),
+         SizedBox(
+        height: 200,
+         ),
          LogOutButton()
         ],
       ),

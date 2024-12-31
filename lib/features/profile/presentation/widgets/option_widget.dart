@@ -22,8 +22,15 @@ class ProfileStatisticsSection extends StatelessWidget {
           children: [
             _buildStatisticWithDivider(
               const ProfileStatisticItem(
-                icon: FontAwesomeIcons.salesforce,
+                icon: FontAwesomeIcons.dollarSign,
                 label: "sales",
+                count: "0",
+              ),
+            ),
+            _buildStatisticWithDivider(
+              const ProfileStatisticItem(
+                icon: FontAwesomeIcons.solidThumbsUp,
+                label: "Likes",
                 count: "0",
               ),
             ),
@@ -38,6 +45,7 @@ class ProfileStatisticsSection extends StatelessWidget {
             //     },
             //   ),
             // ),
+            
             const ProfileStatisticItem(
               icon: Icons.star_rounded,
               label: "Reviews",

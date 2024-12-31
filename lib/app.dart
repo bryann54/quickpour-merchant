@@ -4,6 +4,10 @@ import 'package:provider/provider.dart';
 import 'package:quickpourmerchant/core/theme/app_theme.dart';
 import 'package:quickpourmerchant/core/theme/theme_controller.dart';
 import 'package:quickpourmerchant/core/utils/routes.dart';
+import 'package:quickpourmerchant/features/auth/data/repositories/auth_repository.dart';
+import 'package:quickpourmerchant/features/auth/domain/usecases/auth_usecases.dart';
+import 'package:quickpourmerchant/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:quickpourmerchant/features/auth/presentation/pages/entry_splash.dart';
 import 'package:quickpourmerchant/features/categories/data/repositories/category_repository.dart';
 import 'package:quickpourmerchant/features/categories/domain/usecases/fetch_categories.dart';
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_bloc.dart';
@@ -24,6 +28,13 @@ class MyApp extends StatelessWidget {
               CategoriesBloc(FetchCategories(CategoryRepository()))
                 ..add(LoadCategories()),
         ),
+            BlocProvider(
+          create: (context) => AuthBloc(
+            authUseCases: AuthUseCases(
+              authRepository: AuthRepository(),
+            ),
+          ),
+        ),
         BlocProvider(
         create: (context) => ProductsBloc(productRepository: ProductRepository())),
       ],
@@ -36,7 +47,7 @@ class MyApp extends StatelessWidget {
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
               themeMode: themeController.themeMode,
-              home:  HomeScreen(),
+              home:  EntrySplashScreen(),
               initialRoute: RouteGenerator.home,
               onGenerateRoute: RouteGenerator.generateRoute,
             );

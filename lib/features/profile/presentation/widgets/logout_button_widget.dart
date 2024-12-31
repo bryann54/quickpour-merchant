@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/features/profile/presentation/widgets/logout_dialog.dart';
 
@@ -56,23 +55,15 @@ class _LogOutButtonState extends State<LogOutButton> {
               borderRadius: BorderRadius.circular(10),
             ),
             child: Center(
-              child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FaIcon(FontAwesomeIcons.rightFromBracket,
-                    color: AppColors.textPrimaryDark,
-                  ),
-                  const SizedBox(width: 18),
-                  Text(
-                    'logout',
-                    style: TextStyle(
-                      color: 
-                        
-                           AppColors.textPrimaryDark,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
-                    ),
-                  ),
-                ],
+              child: Text(
+                'logout',
+                style: TextStyle(
+                  color: 
+                    
+                       AppColors.textPrimaryDark,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 17,
+                ),
               ),
             ),
           ),

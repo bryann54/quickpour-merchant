@@ -1,170 +1,235 @@
+
+
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+
 import 'package:google_fonts/google_fonts.dart';
-import 'package:quickpourmerchant/core/theme/theme_toggle_switch.dart';
+import 'package:quickpourmerchant/core/utils/colors.dart';
+import 'package:quickpourmerchant/features/auth/data/models/user_model.dart';
+import 'package:quickpourmerchant/features/auth/domain/usecases/auth_usecases.dart';
+import 'package:quickpourmerchant/features/profile/presentation/widgets/logout_button_widget.dart';
+import 'package:quickpourmerchant/features/profile/presentation/widgets/option_widget.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+ 
+  final AuthUseCases authUseCases;
+
+  const ProfileScreen({
+    super.key,
+  
+    required this.authUseCases,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      appBar: AppBar(
-        title: ShaderMask(
-          shaderCallback: (bounds) => const LinearGradient(
-            colors: [
-              Color(0xFFE74C3C),
-              Color(0xFFF39C12),
-            ],
-          ).createShader(bounds),
-          child: Text(
-            'Profile',
-            style: GoogleFonts.acme(
-              fontSize: 25,
-              fontWeight: FontWeight.w800,
-              color: Colors.white,
+      appBar: AppBar(),
+      body: FutureBuilder<User?>(
+        future: authUseCases.authRepository.getCurrentUserDetails(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Text(
+                'Error: ${snapshot.error}',
+                style: theme.textTheme.bodyLarge?.copyWith(color: Colors.red),
+              ),
+            );
+          }
+
+          final user = snapshot.data;
+
+          if (user == null) {
+            return Center(
+              child: Text(
+                'User data not found!',
+                style: theme.textTheme.bodyLarge,
+              ),
+            );
+          }
+
+          return SingleChildScrollView(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Profile Header
+                  Center(
+                    child: Text(
+                      'Profile',
+                      style: GoogleFonts.montaga(
+                                    textStyle: theme.textTheme.displayLarge?.copyWith(
+                        color: isDarkMode
+                            ? AppColors.cardColor
+                            : AppColors.accentColorDark,
+                      ),)
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // User Profile Section
+                  _buildUserProfileHeader(context, user),
+
+                  const SizedBox(height: 24),
+
+                  // User Activity Section
+                  _buildSectionTitle(context, 'Your Activity'),
+                  const SizedBox(height: 12),
+                  const ProfileStatisticsSection(),
+
+                  const SizedBox(height: 24),
+
+                  // Profile Options
+                  _buildSectionTitle(context, 'Account'),
+                  const SizedBox(height: 12),
+                  _buildProfileOptions(context),
+
+                  const SizedBox(height: 24),
+
+                  // Logout Button
+                  const LogOutButton(),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+Widget _buildUserProfileHeader(BuildContext context, User user) {
+    return Row(
+      children: [
+        Hero(
+          tag: 'profile_avatar',
+        child: CircleAvatar(
+            radius: 50,
+            backgroundColor: AppColors.accentColor.withOpacity(0.2),
+            child:const FaIcon(
+              FontAwesomeIcons.userLarge,
+              color: Color.fromARGB(61, 60, 62, 65),
+              size: 50,
             ),
           ),
         ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Profile Header
-            Center(
-              child: Column(
-                children: [
-                  const CircleAvatar(
-                    radius: 50,
-                    backgroundColor: Color(0xFFE74C3C),
-                    child: Icon(
-                      Icons.store,
-                      size: 50,
-                      color: Colors.white,
+        const SizedBox(width: 16),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${user.firstName}  ${user.lastName}',
+                style: GoogleFonts.acme(
+                                    textStyle: Theme.of(context).textTheme.headlineSmall,
+              
+               ) ),
+              const SizedBox(height: 8),
+              Text(
+                user.email,
+                style: GoogleFonts.montaga(
+                                    textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: Colors.grey,
                     ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'Wine & Spirits Store',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'License #: ABC123456',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                ],
+               )
               ),
-            ),
-            const SizedBox(height: 32),
-
-            // Business Information
-            const Text(
-              'Business Information',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            _buildInfoTile(
-              icon: Icons.location_on,
-              title: 'Address',
-              subtitle: '123 Main Street, City, State, ZIP',
-            ),
-            _buildInfoTile(
-              icon: Icons.phone,
-              title: 'Contact',
-              subtitle: '+1 (555) 123-4567',
-            ),
-            _buildInfoTile(
-              icon: Icons.access_time,
-              title: 'Business Hours',
-              subtitle: 'Mon-Sat: 10:00 AM - 9:00 PM\nSun: 12:00 PM - 6:00 PM',
-            ),
-            _buildInfoTile(
-              icon: Icons.email,
-              title: 'Email',
-              subtitle: 'store@quickpour.com',
-            ),
-
-            const SizedBox(height: 32),
-
-            // Settings Section
-            const Text(
-              'Settings',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Card(
-              child: Column(
-                children: [
-                  ListTile(
-                    leading: const Icon(Icons.notifications),
-                    title: const Text('Push Notifications'),
-                    trailing: Switch(
-                      value: true,
-                      onChanged: (value) {},
-                    ),
-                  ),
-                  const Divider(),
-                  ListTile(
-                    leading: const Icon(Icons.dark_mode),
-                    title: const Text('Dark Mode'),
-                    trailing: const ThemeToggle(),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 32),
-
-            // Action Buttons
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Handle edit profile
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.all(16),
-                  backgroundColor: const Color(0xFFE74C3C),
-                ),
-                child: const Text(
-                  'Edit Profile',
-                  style: TextStyle(fontSize: 16),
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
+      ],
+    );
+  }
+
+  Widget _buildSectionTitle(BuildContext context, String title) {
+    return Text(
+      title,
+      style: GoogleFonts.montaga(
+                                    textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),)
+    );
+  }
+
+  Widget _buildProfileOptions(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.backgroundDark.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppColors.accentColor.withOpacity(0.2),
+        ),
+      ),
+      child: Column(
+        children: [
+          _buildProfileOptionItem(
+            context,
+            icon: Icons.edit,
+            title: 'Edit Profile',
+            onTap: () {
+              // TODO: Implement edit profile navigation
+            },
+          ),
+          _buildDivider(),
+          _buildProfileOptionItem(
+            context,
+            icon: Icons.settings,
+            title: 'Account Settings',
+            onTap: () {
+              context.push('/settings');
+            },
+          ),
+          _buildDivider(),
+          _buildProfileOptionItem(
+            context,
+            icon: Icons.help_outline,
+            title: 'Help & Support',
+            onTap: () {
+              // TODO: Implement help & support navigation
+            },
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildInfoTile({
+  Widget _buildProfileOptionItem(
+    BuildContext context, {
     required IconData icon,
     required String title,
-    required String subtitle,
+    required VoidCallback onTap,
   }) {
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: ListTile(
-        leading: Icon(icon),
-        title: Text(
-          title,
-          style: const TextStyle(
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        subtitle: Text(subtitle),
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: AppColors.accentColor,
+      ),
+      title: Text(
+        title,
+        style:  GoogleFonts.acme(fontSize: 16,fontWeight: FontWeight.normal),
+      ),
+      trailing: const Icon(
+        Icons.chevron_right,
+        size: 20,
+      ),
+      onTap: onTap,
+    );
+  }
+
+  Widget _buildDivider() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Divider(
+        height: 1,
+        color: AppColors.dividerColorDark.withOpacity(0.3),
       ),
     );
   }
 }
+

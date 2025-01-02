@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/features/categories/domain/entities/category.dart';
 import 'package:quickpourmerchant/features/categories/presentation/widgets/category_card.dart';
-
 class HorizontalCategoriesListWidget extends StatelessWidget {
   final List<Category> categories;
 
@@ -16,7 +15,6 @@ class HorizontalCategoriesListWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 12),
         Container(
           decoration: BoxDecoration(
             color: isDarkMode
@@ -25,25 +23,27 @@ class HorizontalCategoriesListWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(8.0),
             child: categories.isEmpty
-                ? Center(
-                    child: Text(
-                      'No categories available',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        fontStyle: FontStyle.italic,
-                        color: Colors.grey,
+                ? SizedBox(
+                    height: 50, // Minimal height for the empty state
+                    child: Center(
+                      child: Text(
+                        'No categories available',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          fontStyle: FontStyle.italic,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
                   )
                 : GridView.count(
-                    shrinkWrap: true, // Prevents the grid from scrolling
-                    physics:
-                        const NeverScrollableScrollPhysics(), // Disables scrolling
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
                     crossAxisCount: 3,
-                    crossAxisSpacing: 28,
-                    mainAxisSpacing: 1, 
-                    childAspectRatio: 1,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                    childAspectRatio: 1.2, // Adjusted for compact layout
                     children: List.generate(
                       categories.length > 6 ? 6 : categories.length,
                       (index) => CategoryCard(

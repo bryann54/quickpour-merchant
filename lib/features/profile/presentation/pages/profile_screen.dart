@@ -201,7 +201,7 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
   Widget _buildProfileOptions(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.backgroundDark.withOpacity(0.1),
+        color: AppColors.primaryColor.withOpacity(0.1),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.accentColor.withOpacity(0.2),
@@ -235,7 +235,8 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
               // TODO: Implement help & support navigation
             },
           ),
-           ListTile(
+          _buildDivider(),
+        const   ListTile(
             leading: FaIcon(FontAwesomeIcons.moon),
             title: Text('dark mode'),
             trailing: ThemeToggle(),
@@ -278,4 +279,5 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
     );
   }
 }
+
 

@@ -30,19 +30,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class CustomDrawer extends StatelessWidget {
-  final String merchantName;
+ final String? lastName;
   final String? merchantImage;
   final VoidCallback? onLogout;
 
   const CustomDrawer({
     super.key,
-    this.merchantName = 'QuickPour Merchants',
+    this.lastName ,
     this.merchantImage,
     this.onLogout,
   });
 
   @override
   Widget build(BuildContext context) {
+     final displayName = lastName ?? 'QuickPour Merchants';
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -75,7 +76,7 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  merchantName,
+                  displayName,
                   style: GoogleFonts.acme(
                     color: Colors.white,
                     fontSize: 20,
@@ -158,7 +159,7 @@ class DrawerTile extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.pop(context); // Close drawer
+            Navigator.pop(context); 
             onTap();
           },
         ),

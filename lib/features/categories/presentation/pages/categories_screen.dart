@@ -27,13 +27,7 @@ class CategoriesScreen extends StatelessWidget {
           } else if (state is CategoriesLoaded) {
             return Column(
               children: [
-                // Padding(
-                //   padding: const EdgeInsets.all(8.0),
-                //   child: Text(
-                //     'Categories',
-                //     style: Theme.of(context).textTheme.displayLarge,
-                //   ),
-                // ),
+            
                 Expanded(
                   child: GridView.builder(
                     gridDelegate:

@@ -39,12 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
-      appBar: CustomAppBar(
-        scaffoldKey: _scaffoldKey,
-        title: const GradientText(text: 'QuickPour Merchant'),
-      ),
       drawer: CustomDrawer(
-        merchantName: 'QuickPour Merchant',
+      
         onLogout: () => Navigator.pushReplacementNamed(context, '/login'),
       ),
       body: RefreshIndicator(
@@ -52,34 +48,50 @@ class _HomeScreenState extends State<HomeScreen> {
           context.read<ProductsBloc>().add(FetchProducts());
           context.read<CategoriesBloc>().add(LoadCategories());
         },
-        child: SingleChildScrollView(
+        child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildCategoriesSection(context, theme, isDarkMode),
-                const SizedBox(height: 16),
-                _buildProductsSection(theme),
-              ],
+          slivers: [
+            SliverAppBar(
+              floating: true,
+              pinned: true,
+              expandedHeight: 150.0,
+              leading: IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+              ),
+              flexibleSpace: FlexibleSpaceBar(
+                title: const GradientText(text: 'QuickPour Merchant'),
+              background: Container(
+                  color: AppColors.primaryColor,
+                ),
+              ),
             ),
-          ),
+            SliverPadding(
+              padding: const EdgeInsets.all(5.0),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  _buildCategoriesSection(context, theme, isDarkMode),
+                  const SizedBox(height: 16),
+                ]),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              sliver: _buildProductsSection(theme),
+            ),
+          ],
         ),
       ),
-      floatingActionButton: CustomFAB(
-        
-      ),
+      floatingActionButton: CustomFAB(),
     );
   }
-
-  Widget _buildCategoriesSection(
+Widget _buildCategoriesSection(
       BuildContext context, ThemeData theme, bool isDarkMode) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 3, top: 2, bottom: 2),
+          padding: const EdgeInsets.only(left: 3, right: 3, bottom: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -91,10 +103,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: () => Navigator.push(
+              TextButton(
+                onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => const CategoriesScreen()),
+                ),
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  minimumSize: Size.zero,
                 ),
                 child: Text(
                   'See All',
@@ -114,47 +130,53 @@ class _HomeScreenState extends State<HomeScreen> {
               return HorizontalCategoriesListWidget(
                   categories: state.categories);
             }
-            return const Center(child: LoadingHorizontalList());
+            return const SizedBox(
+              height: 100,
+              child: Center(child: LoadingHorizontalList()),
+            );
           },
         ),
       ],
     );
   }
 
+
   Widget _buildProductsSection(ThemeData theme) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 3),
-          child: Text(
-            'Products',
-            style: GoogleFonts.montaga(
-              textStyle: theme.textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
+    return SliverToBoxAdapter(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 3),
+            child: Text(
+              'Products',
+              style: GoogleFonts.montaga(
+                textStyle: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
-        ),
-        BlocBuilder<ProductsBloc, ProductsState>(
-          builder: (context, state) {
-            if (state is ProductsLoading) {
-              return _buildLoadingGrid();
-            }
-            if (state is ProductsError) {
-              return Center(child: Text(state.message));
-            }
-            if (state is ProductsLoaded) {
-              return state.products.isEmpty
-                  ? const Center(
-                      child: Text('No products available'),
-                    )
-                  : _buildProductsGrid(state.products);
-            }
-            return const SizedBox.shrink();
-          },
-        ),
-      ],
+          BlocBuilder<ProductsBloc, ProductsState>(
+            builder: (context, state) {
+              if (state is ProductsLoading) {
+                return _buildLoadingGrid();
+              }
+              if (state is ProductsError) {
+                return Center(child: Text(state.message));
+              }
+              if (state is ProductsLoaded) {
+                return state.products.isEmpty
+                    ? const Center(
+                        child: Text('No products available'),
+                      )
+                    : _buildProductsGrid(state.products);
+              }
+              return const SizedBox.shrink();
+            },
+          ),
+        ],
+      ),
     );
   }
 

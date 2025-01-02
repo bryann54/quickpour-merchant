@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quickpourmerchant/core/utils/colors.dart';
+import 'package:quickpourmerchant/core/utils/strings.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 import 'package:intl/intl.dart';
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
@@ -95,7 +97,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Product updated successfully'),
+          content: Text(product_update),
           backgroundColor: Colors.green,
         ),
       );
@@ -114,18 +116,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     final bool confirm = await showDialog(
           context: context,
           builder: (context) => AlertDialog.adaptive(
-            title: const Text('Delete Product'),
+            title: const Text(delete_product),
             content: const Text(
-                'Are you sure you want to delete this product? This action cannot be undone.'),
+                delete_product_txt),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text('Cancel'),
+                child: const Text(cancel),
               ),
               TextButton(
                 style: TextButton.styleFrom(foregroundColor: Colors.red),
                 onPressed: () => Navigator.pop(context, true),
-                child: const Text('Delete'),
+                child: const Text(delete),
               ),
             ],
           ),
@@ -148,7 +150,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Product deleted successfully'),
+          content: Text(product_update_fail),
           backgroundColor: Colors.green,
         ),
       );
@@ -177,7 +179,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('Please enter valid price and stock values')),
+            content: Text(valid_stock_txt)),
       );
       return false;
     }
@@ -201,7 +203,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(_isEditing ? 'Edit Product' : 'Product Details',
+          title: Text(_isEditing ? edit : product_details,
               style: Theme.of(context).textTheme.displayLarge,
           ),
           actions: [
@@ -230,7 +232,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Stack(
-                children:[ SizedBox(
+                children:[ 
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: AppColors.accentColor.withOpacity(.2)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   height: 300,
                   child: PageView.builder(
                     itemCount: widget.product.imageUrls.isEmpty
@@ -243,7 +250,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children:  [
                               FaIcon(FontAwesomeIcons.accusoft,color: Colors.grey[300], size: 100),
-                              Text('no image available')
+                              Text(no_image)
                             ],
                           ),
                         );

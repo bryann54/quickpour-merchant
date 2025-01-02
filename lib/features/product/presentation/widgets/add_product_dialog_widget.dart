@@ -48,7 +48,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                       value: _selectedCategory,
                       items: state.categories
                           .map((Category category) => DropdownMenuItem<String>(
-                                value: category.name,
+                                value: category.id,
                                 child: Text(category.name),
                               ))
                           .toList(),
@@ -66,7 +66,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                   } else if (state is CategoriesError) {
                     return Text(
                       state.message,
-                      style: TextStyle(color: Colors.red),
+                      style: const TextStyle(color: Colors.red),
                     );
                   }
                   return const SizedBox.shrink();

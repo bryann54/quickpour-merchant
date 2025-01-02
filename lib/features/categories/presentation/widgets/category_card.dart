@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/features/categories/domain/entities/category.dart';
+import 'package:quickpourmerchant/features/categories/presentation/pages/category_details_screen.dart';
 
 class CategoryCard extends StatelessWidget {
   final double? width;
@@ -17,12 +18,12 @@ class CategoryCard extends StatelessWidget {
 
     return GestureDetector(
    onTap: () {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => CategoryDetailsScreen(category: category),
-        //   ),
-        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CategoryDetailsScreen(category: category),
+          ),
+        );
       },
 
       child: Column(

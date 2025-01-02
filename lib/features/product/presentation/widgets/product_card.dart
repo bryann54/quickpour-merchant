@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 import 'package:quickpourmerchant/features/product/presentation/pages/product_details_screen.dart';
 
@@ -10,6 +11,8 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+       final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -20,6 +23,7 @@ class ProductCard extends StatelessWidget {
         );
       },
       child: Card(
+        
         elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
@@ -74,18 +78,24 @@ class ProductCard extends StatelessWidget {
                 ),
               )
             else
-              const SizedBox(
-                height: 150,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      FaIcon(FontAwesomeIcons.accusoft, size: 50,color: Colors.grey,),
-                      Text('no image available')
-                    ],
-                  ),
+               Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: isDarkMode?AppColors.accentColor.withOpacity(.5):AppColors.accentColorDark.withOpacity(.3)),
+                  borderRadius: BorderRadius.only(topLeft: Radius.circular(12),topRight: Radius.circular(12)),
                 ),
-              ),
+                 child: SizedBox(
+                  height: 150,
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        FaIcon(FontAwesomeIcons.accusoft, size: 50,color: Colors.grey[300],),
+                        Text('no image available')
+                      ],
+                    ),
+                  ),
+                               ),
+               ),
             // Product Details
             Expanded(
               flex: 2,

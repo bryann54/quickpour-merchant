@@ -25,7 +25,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
             .listen((snapshot) {
           final products = snapshot.docs
               .map((doc) =>
-                  ProductModel.fromMap(doc.data() as Map<String, dynamic>))
+                  ProductModel.fromMap(doc.data()))
               .toList();
           add(UpdateProductsList(products));
         });
@@ -58,7 +58,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
       try {
         await productRepository.deleteProduct(event.productId);
       } catch (e) {
-        emit(ProductsError('Failed to delete product: ${e.toString()}'));
+        emit(ProductsError('Failed to delete product:  ${e.toString()}'));
       }
     });
   }

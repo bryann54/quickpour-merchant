@@ -8,6 +8,8 @@ import 'package:quickpourmerchant/features/product/data/models/product_model.dar
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
 
 class AddProductDialog extends StatefulWidget {
+  const AddProductDialog({super.key});
+
   @override
   State<AddProductDialog> createState() => _AddProductDialogState();
 }
@@ -46,7 +48,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                       value: _selectedCategory,
                       items: state.categories
                           .map((Category category) => DropdownMenuItem<String>(
-                                value: category.id,
+                                value: category.name,
                                 child: Text(category.name),
                               ))
                           .toList(),

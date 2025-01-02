@@ -57,7 +57,7 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
     // Navigate to home screen after animation completes
     Future.delayed(const Duration(seconds: 4), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) =>  Wrapper()),
+        MaterialPageRoute(builder: (_) =>const  Wrapper()),
       );
     });
   }
@@ -80,12 +80,12 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
               Opacity(
                 opacity: _backgroundFadeAnimation.value,
                 child: Container(
-                  decoration: BoxDecoration(
+                  decoration:const BoxDecoration(
           gradient: LinearGradient(
                       colors: [
-                        const Color(0xFF001F3F), // Dark navy blue
-                        const Color(0xFF003366)
-                            .withOpacity(0.8), // Lighter navy blue with opacity
+                     AppColors.primaryColor, // Dark navy blue
+                       AppColors.primaryColor
+                           , // Lighter navy blue with opacity
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
@@ -127,7 +127,7 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                             ],
                           ),
                           child: Image.asset(
-                            'assets/q1.png',
+                            'assets/splash.png',
                             fit: BoxFit.contain,
                           ),
                         ),
@@ -161,7 +161,7 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                     Opacity(
                       opacity: _fadeAnimation.value,
                       child: Text(
-                        'Drink yako Pap!!',
+                        'Boost Your Biz, Rahisi Sana – Piga Hustle, Rahisi Sana.',
                         style: GoogleFonts.tangerine(
                           color: AppColors.background,
                           fontSize: 35,

@@ -11,8 +11,9 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-       final theme = Theme.of(context);
+    final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -23,7 +24,6 @@ class ProductCard extends StatelessWidget {
         );
       },
       child: Card(
-        
         elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
@@ -31,71 +31,78 @@ class ProductCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Product Image with Hero
-            if (product.imageUrls.isNotEmpty)
-              Expanded(
-                flex: 3,
-                child: ClipRRect(
-                  borderRadius:
-                      const BorderRadius.vertical(top: Radius.circular(12)),
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
+            // Product Image or Placeholder
+            Expanded(
+              flex: 3,
+              child: ClipRRect(
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(12)),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    if (product.imageUrls.isNotEmpty)
                       Hero(
                         tag: 'productImage_${product.id}',
                         child: Image.network(
                           product.imageUrls.first,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) =>
-                              const Center(
-                            child: Icon(Icons.error_outline),
+                              const Center(child: Icon(Icons.error_outline)),
+                        ),
+                      )
+                    else
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: isDarkMode
+                                  ? AppColors.accentColor.withOpacity(.5)
+                                  : AppColors.accentColorDark.withOpacity(.3)),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12)),
+                        ),
+                        child: SizedBox(
+                          height: 150,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                FaIcon(
+                                  Icons.error_outline,
+                                
+                                ),
+                                Text('no image available')
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                      if (product.discountPrice > 0)
-                        Positioned(
-                          top: 8,
-                          left: 8,
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(
-                              '${(100 - ((product.discountPrice / product.price) * 100)).round()}% OFF',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              ),
+                    // Discount Percentage Tag (Only appears if there's a discount)
+                    if (product.discountPrice > 0)
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            '${(100 - ((product.discountPrice / product.price) * 100)).round()}% OFF',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                    ],
-                  ),
+                      ),
+                  ],
                 ),
-              )
-            else
-               Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: isDarkMode?AppColors.accentColor.withOpacity(.5):AppColors.accentColorDark.withOpacity(.3)),
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(12),topRight: Radius.circular(12)),
-                ),
-                 child: SizedBox(
-                  height: 150,
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        FaIcon(FontAwesomeIcons.accusoft, size: 50,color: Colors.grey[300],),
-                        Text('no image available')
-                      ],
-                    ),
-                  ),
-                               ),
-               ),
+              ),
+            ),
             // Product Details
             Expanded(
               flex: 2,
@@ -107,7 +114,9 @@ class ProductCard extends StatelessWidget {
                     Text(
                       product.productName,
                       style: const TextStyle(
-                          fontSize: 14, fontWeight: FontWeight.bold),
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -120,7 +129,7 @@ class ProductCard extends StatelessWidget {
                     ),
                     if (product.discountPrice > 0)
                       Text(
-                        '\ksh ${product.price.toStringAsFixed(2)}',
+                        '\Ksh ${product.price.toStringAsFixed(2)}',
                         style: const TextStyle(
                           fontSize: 12,
                           decoration: TextDecoration.lineThrough,

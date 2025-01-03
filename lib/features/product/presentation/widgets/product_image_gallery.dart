@@ -31,7 +31,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
       children: [
         // Main Image Display
         SizedBox(
-          height: 300,
+          height: 450,
           child: PageView.builder(
             controller: _pageController,
             onPageChanged: (index) {
@@ -312,11 +312,11 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(
-            Icons.local_offer,
-            color: Colors.white,
-            size: 14,
-          ),
+          // const Icon(
+          //   Icons.local_offer,
+          //   color: Colors.white,
+          //   size: 14,
+          // ),
           const SizedBox(width: 4),
           Text(
             '${(100 - ((widget.product.discountPrice / widget.product.price) * 100)).round()}% OFF',

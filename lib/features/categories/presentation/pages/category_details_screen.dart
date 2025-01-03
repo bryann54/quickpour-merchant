@@ -76,6 +76,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                     ],
                   ),
                 ),
+                centerTitle: true,
                 background: Hero(
                   tag: 'category_image_${widget.category.id}',
                   child: Stack(

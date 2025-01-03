@@ -8,7 +8,7 @@ class ProductRepository {
 
   // Get current merchant ID
   String get currentMerchantId => _auth.currentUser?.uid ?? '';
-    Stream<List<ProductModel>> streamMerchantProducts() {
+  Stream<List<ProductModel>> streamMerchantProducts() {
     if (currentMerchantId.isEmpty) {
       throw Exception('No authenticated merchant found');
     }

@@ -22,7 +22,7 @@ class ProductAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      expandedHeight: 250.0,
+      expandedHeight: 400.0,
       floating: false,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
@@ -31,7 +31,7 @@ class ProductAppBar extends StatelessWidget {
           style: Theme.of(context).textTheme.displayLarge,
         ),
         background: ProductImageGallery(product: product),
-      ),
+      ), 
       actions: [
         IconButton(
           icon: Icon(isEditing ? Icons.save : Icons.edit),

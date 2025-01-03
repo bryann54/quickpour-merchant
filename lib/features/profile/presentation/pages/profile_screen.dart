@@ -11,6 +11,7 @@ import 'package:quickpourmerchant/features/auth/data/models/user_model.dart';
 import 'package:quickpourmerchant/features/auth/domain/usecases/auth_usecases.dart';
 import 'package:quickpourmerchant/features/profile/presentation/widgets/logout_button_widget.dart';
 import 'package:quickpourmerchant/features/profile/presentation/widgets/option_widget.dart';
+import 'package:quickpourmerchant/features/profile/presentation/widgets/profile_shimmer.dart';
 
 class ProfileScreen extends StatelessWidget {
  
@@ -28,22 +29,21 @@ class ProfileScreen extends StatelessWidget {
     final isDarkMode = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: AppBar(title:   Center(
-                    child: Text(
-                      'Profile',
-                      style: GoogleFonts.montaga(
-                                    textStyle: theme.textTheme.displayLarge?.copyWith(
-                        color: isDarkMode
-                            ? AppColors.cardColor
-                            : AppColors.accentColorDark,
-                      ),)
-                    ),
-                  ),),
+      appBar: AppBar(title:   Text(
+        'Profile',
+        style: GoogleFonts.montaga(
+                      textStyle: theme.textTheme.displayLarge?.copyWith(
+          color: isDarkMode
+              ? AppColors.cardColor
+              : AppColors.accentColorDark,
+        ),)
+      ),
+      centerTitle: true,),
       body: FutureBuilder<User?>(
         future: authUseCases.authRepository.getCurrentUserDetails(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+      if (snapshot.connectionState == ConnectionState.waiting) {
+            return const ProfileScreenShimmer();
           }
 
           if (snapshot.hasError) {
@@ -121,7 +121,7 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
             ),
           ),
         ),
-        const SizedBox(width: 16),
+        const SizedBox(width: 30),
     Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -184,7 +184,8 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
             ],
           ),
         )
-      ],
+      ]
+      ,
     );
   }
 

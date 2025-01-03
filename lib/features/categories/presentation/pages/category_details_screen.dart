@@ -6,6 +6,7 @@ import 'package:quickpourmerchant/features/categories/presentation/bloc/categori
 import 'package:quickpourmerchant/features/categories/presentation/widgets/search_bar.dart';
 import 'package:quickpourmerchant/features/product/data/repositories/product_repository.dart';
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
+import 'package:quickpourmerchant/features/product/presentation/widgets/custom_fab_widget.dart';
 import 'package:quickpourmerchant/features/product/presentation/widgets/product_card.dart';
 
 class CategoryDetailsScreen extends StatefulWidget {
@@ -193,6 +194,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
             ),
           ],
         ),
+            floatingActionButton: CustomFAB(),
       ),
     );
   }

@@ -157,13 +157,17 @@ Widget _buildCategoriesSection(
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 3),
-            child: Text(
-              'Products',
-              style: GoogleFonts.montaga(
-                textStyle: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.bold,
+            child: Row(mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Products',
+                  style: GoogleFonts.montaga(
+                    textStyle: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
           BlocBuilder<ProductsBloc, ProductsState>(
@@ -176,8 +180,20 @@ Widget _buildCategoriesSection(
               }
               if (state is ProductsLoaded) {
                 return state.products.isEmpty
-                    ? const Center(
-                        child: Text('No products available'),
+                    ? Center(
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 50,),
+                            Text('You have no products yet...',
+                              style: GoogleFonts.montaga(
+                                textStyle: theme.textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       )
                     : _buildProductsGrid(state.products);
               }

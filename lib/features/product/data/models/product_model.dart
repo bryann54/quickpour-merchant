@@ -1,5 +1,6 @@
 class ProductModel {
   final String id;
+  final String merchantId; // Add merchantId field
   final String productName;
   final List<String> imageUrls;
   final double price;
@@ -16,6 +17,7 @@ class ProductModel {
 
   ProductModel({
     required this.id,
+    required this.merchantId, // Add to constructor
     required this.productName,
     required this.imageUrls,
     required this.price,
@@ -31,10 +33,11 @@ class ProductModel {
     required this.updatedAt,
   });
 
-  // Convert ProductModel to Map
+  // Update toMap method
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'merchantId': merchantId, // Add to map
       'productName': productName,
       'imageUrls': imageUrls,
       'price': price,
@@ -51,10 +54,11 @@ class ProductModel {
     };
   }
 
-  // Create ProductModel from Map
+  // Update fromMap factory
   factory ProductModel.fromMap(Map<String, dynamic> map) {
     return ProductModel(
       id: map['id'] ?? '',
+      merchantId: map['merchantId'] ?? '', // Add to factory
       productName: map['productName'] ?? '',
       imageUrls: List<String>.from(map['imageUrls'] ?? []),
       price: (map['price'] ?? 0).toDouble(),

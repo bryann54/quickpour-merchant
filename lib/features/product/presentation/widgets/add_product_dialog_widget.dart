@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickpourmerchant/features/categories/domain/entities/category.dart';
@@ -16,6 +17,7 @@ class AddProductDialog extends StatefulWidget {
 
 class _AddProductDialogState extends State<AddProductDialog> {
   final _formKey = GlobalKey<FormState>();
+   final _auth = FirebaseAuth.instance; 
   String? _selectedCategory;
   String? _productName;
   double? _price;
@@ -115,10 +117,22 @@ class _AddProductDialogState extends State<AddProductDialog> {
                     value!.isEmpty ? 'Enter description' : null,
               ),
               const SizedBox(height: 16),
-             ElevatedButton(
+        ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     try {
+                      final User? user = _auth.currentUser;
+
+                      if (user == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please log in to add products'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                        return;
+                      }
+
                       final String productId = FirebaseFirestore.instance
                           .collection('products')
                           .doc()
@@ -126,6 +140,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
 
                       final newProduct = ProductModel(
                         id: productId,
+                        merchantId: user.uid,
                         productName: _productName!,
                         imageUrls: [],
                         price: _price!,
@@ -144,18 +159,22 @@ class _AddProductDialogState extends State<AddProductDialog> {
 
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text('Product added successfully')),
+                          content: Text('Product added successfully'),
+                          backgroundColor: Colors.green,
+                        ),
                       );
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Error adding product: $e')),
+                        SnackBar(
+                          content: Text('Error adding product: $e'),
+                          backgroundColor: Colors.red,
+                        ),
                       );
                     }
                   }
                 },
                 child: const Text('Add Product'),
-              ),
-            ],
+              ), ],
           ),
         ),
       ),

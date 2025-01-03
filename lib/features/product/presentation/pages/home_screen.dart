@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,11 +25,19 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  @override
+   @override
   void initState() {
     super.initState();
-    context.read<ProductsBloc>().add(FetchProducts());
+    _initializeData();
+  }
+
+  void _initializeData() {
+    final String? merchantId = _auth.currentUser?.uid;
+    if (merchantId != null) {
+      context.read<ProductsBloc>().add(FetchProducts());
+    }
     context.read<CategoriesBloc>().add(LoadCategories());
   }
 

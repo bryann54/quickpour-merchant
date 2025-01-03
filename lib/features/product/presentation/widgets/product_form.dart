@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickpourmerchant/core/utils/strings.dart';
@@ -27,6 +28,7 @@ class ProductForm extends StatefulWidget {
 }
 
 class _ProductFormState extends State<ProductForm> {
+   final _auth = FirebaseAuth.instance; 
   late final TextEditingController _nameController;
   late final TextEditingController _descriptionController;
   late final TextEditingController _priceController;
@@ -41,6 +43,7 @@ class _ProductFormState extends State<ProductForm> {
     super.initState();
     _initializeControllers();
   }
+  
 
   void _initializeControllers() {
     _nameController = TextEditingController(text: widget.product.productName);
@@ -73,7 +76,20 @@ class _ProductFormState extends State<ProductForm> {
     if (!_validateInputs()) return;
 
     try {
+      // Get current user
+      final User? user = _auth.currentUser;
+
+      if (user == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please log in to update products'),
+            backgroundColor: Colors.red,
+          ),
+        );
+        return;
+      }
       final updatedProduct = ProductModel(
+         merchantId: user.uid,
         id: widget.product.id,
         productName: _nameController.text.trim(),
         description: _descriptionController.text.trim(),
@@ -88,6 +104,10 @@ class _ProductFormState extends State<ProductForm> {
         createdAt: widget.product.createdAt,
         updatedAt: DateTime.now(),
       );
+
+   if (widget.product.merchantId != user.uid) {
+        throw Exception('Unauthorized to update this product');
+      }
 
       context.read<ProductsBloc>().add(UpdateProduct(updatedProduct));
       widget.onUpdateComplete();
@@ -107,6 +127,7 @@ class _ProductFormState extends State<ProductForm> {
       );
     }
   }
+
 
   bool _validateInputs() {
     if (_nameController.text.trim().isEmpty) {

@@ -6,6 +6,14 @@ abstract class ProductsEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+class ProductErrorEvent extends ProductsEvent {
+  final String error;
+
+  const ProductErrorEvent(this.error);
+
+  @override
+  List<Object> get props => [error];
+}
 
 class FetchProducts extends ProductsEvent {}
 
@@ -43,4 +51,13 @@ class DeleteProduct extends ProductsEvent {
 
   @override
   List<Object> get props => [productId];
+}
+//  new event to fetch merchant specific products
+class FetchMerchantProducts extends ProductsEvent {
+  final String merchantId;
+
+  const FetchMerchantProducts(this.merchantId);
+
+  @override
+  List<Object> get props => [merchantId];
 }

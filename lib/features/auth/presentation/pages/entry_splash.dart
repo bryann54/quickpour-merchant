@@ -115,8 +115,8 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                       child: Opacity(
                         opacity: _fadeAnimation.value,
                         child: Container(
-                          width: 200,
-                          height: 300,
+                          width: 300,
+                          height: 200,
                           decoration: const BoxDecoration(
                             boxShadow: [
                               BoxShadow(
@@ -142,7 +142,7 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                         style: GoogleFonts.chewy(
                           textStyle: const TextStyle(
                             color: Colors.white,
-                            fontSize: 32,
+                            fontSize: 35,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 4,
                             shadows: [
@@ -156,18 +156,29 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                         ),
                       ),
                     ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 70),
                     // Tagline with fade animation
                     Opacity(
                       opacity: _fadeAnimation.value,
                       child: Text(
-                        'Boost Your Biz, Rahisi Sana – Piga Hustle, Rahisi Sana.',
-                        style: GoogleFonts.tangerine(
+                        'Boost Your Biz, Rahisi Sana,',
+                        style: GoogleFonts.montaga(
                           color: AppColors.background,
-                          fontSize: 35,
+                          fontSize: 27,
                           fontWeight: FontWeight.bold
                         )
                       ),
+                    ),
+                       const SizedBox(height: 10),
+                    // Tagline with fade animation
+                    Opacity(
+                      opacity: _fadeAnimation.value,
+                      child: Text(
+                          ' Piga Hustle, Rahisi Sana.',
+                          style: GoogleFonts.montaga(
+                              color: AppColors.background,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold)),
                     ),
                   ],
                 ),

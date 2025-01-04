@@ -30,20 +30,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class CustomDrawer extends StatelessWidget {
- final String? lastName;
+  final String? storeName;
   final String? merchantImage;
   final VoidCallback? onLogout;
 
   const CustomDrawer({
     super.key,
-    this.lastName ,
+    this.storeName,
     this.merchantImage,
     this.onLogout,
   });
 
   @override
   Widget build(BuildContext context) {
-     final displayName = lastName ?? 'QuickPour Merchants';
+    final displayName = storeName ?? 'QuickPour Merchants';
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,

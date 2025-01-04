@@ -44,7 +44,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
               BlocBuilder<CategoriesBloc, CategoriesState>(
                 builder: (context, state) {
                   if (state is CategoriesLoading) {
-                    return const CircularProgressIndicator();
+                    return const CircularProgressIndicator.adaptive();
                   } else if (state is CategoriesLoaded) {
                     return DropdownButtonFormField<String>(
                       value: _selectedCategory,

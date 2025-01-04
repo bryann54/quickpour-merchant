@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 
 import 'package:quickpourmerchant/features/product/presentation/pages/home_screen.dart';
@@ -67,6 +68,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
     // Show loading screen while checking authentication
   if (_isChecking) {
       return Scaffold(
+        backgroundColor: AppColors.primaryColor,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -81,18 +83,18 @@ class _AuthWrapperState extends State<AuthWrapper> {
                   );
                 },
                 child: CircularProgressIndicator(
-                  color: AppColors.primaryColor,
-                  strokeWidth: 3,
+                  color: AppColors.background,
+                  strokeWidth: 10,
+                  
                 ),
               ),
               const SizedBox(height: 20),
               Text(
-                'Loading...',
-                style: TextStyle(
-                  color: AppColors.primaryColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
+                'Loading next screen...',
+               style: GoogleFonts.montaga(
+                      color: AppColors.background,
+                      fontSize: 27,
+                      fontWeight: FontWeight.bold)
               ),
             ],
           ),

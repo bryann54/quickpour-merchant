@@ -135,7 +135,7 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
                   Expanded(
                     // Wrap in Expanded to handle overflow
                     child: Text(
-                      user.firstName,
+                      user.fullName,
                       style: GoogleFonts.acme(
                         textStyle: Theme.of(context).textTheme.headlineSmall,
                       ),
@@ -152,7 +152,7 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      user.lastName,
+                      user.storeName,
                       style: GoogleFonts.acme(
                         textStyle: Theme.of(context).textTheme.headlineSmall,
                       ),

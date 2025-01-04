@@ -24,9 +24,9 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  final TextEditingController _firstNameController =
+  final TextEditingController _fullNameController =
       TextEditingController(); // Added
-  final TextEditingController _lastNameController =
+  final TextEditingController _storeNameController =
       TextEditingController(); // Added
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
@@ -36,8 +36,8 @@ class _SignupScreenState extends State<SignupScreen> {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
-    _firstNameController.dispose(); // Added
-    _lastNameController.dispose(); // Added
+    _fullNameController.dispose(); // Added
+    _storeNameController.dispose(); // Added
     super.dispose();
   }
 
@@ -106,7 +106,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       const SizedBox(height: 20),
                       // First Name Field
                       TextFormField(
-                        controller: _firstNameController,
+                          controller: _fullNameController,
                         decoration: InputDecoration(
                           labelText: 'Owner\'s Name',
                           prefixIcon: const Icon(Icons.person_outline),
@@ -124,7 +124,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       const SizedBox(height: 16),
                       // Last Name Field
                       TextFormField(
-                        controller: _lastNameController,
+                          controller: _storeNameController,
                         decoration: InputDecoration(
                           labelText: 'Store\'s Name',
                           prefixIcon: const Icon(Icons.person_outline),
@@ -236,9 +236,9 @@ class _SignupScreenState extends State<SignupScreen> {
                                           email: _emailController.text.trim(),
                                           password:
                                               _passwordController.text.trim(),
-                                          firstName: _firstNameController.text
+                                            fullName: _fullNameController.text
                                               .trim(), // Added
-                                          lastName: _lastNameController.text
+                                            storeName: _storeNameController.text
                                               .trim(), // Added
                                         ),
                                       );

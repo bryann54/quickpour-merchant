@@ -71,12 +71,13 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                     shadows: [
                       Shadow(
                         offset: const Offset(1, 1),
-                        blurRadius: 3.0,
-                        color: Colors.black.withOpacity(0.5),
+                        blurRadius: 5.0,
+                        color: Colors.black.withOpacity(0.9),
                       ),
                     ],
                   ),
                 ),
+                
                 centerTitle: true,
                 background: Hero(
                   tag: 'category_image_${widget.category.id}',

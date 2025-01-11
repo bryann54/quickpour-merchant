@@ -68,12 +68,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: const Icon(Icons.menu),
                 onPressed: () => _scaffoldKey.currentState?.openDrawer(),
               ),
-              flexibleSpace: FlexibleSpaceBar(
-                title: const GradientText(text: 'QuickPour Merchant'),
-              background: Container(
+            flexibleSpace: FlexibleSpaceBar(
+                background: Container(
                   color: AppColors.primaryColor,
+                  child: Center(
+                    child: Image.asset(
+                      'assets/111.png',
+                      fit: BoxFit.contain, 
+                      width: double
+                          .infinity,
+                      height: 240
+                    ),
+                  ),
                 ),
               ),
+
             ),
             SliverPadding(
               padding: const EdgeInsets.all(5.0),

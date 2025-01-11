@@ -43,7 +43,7 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final displayName = storeName ?? 'QuickPour Merchants';
+    final displayName = storeName ?? 'AlkoHut Merchants';
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,

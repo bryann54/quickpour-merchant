@@ -1,27 +1,43 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
-
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quickpourmerchant/core/theme/theme_toggle_switch.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/features/auth/data/models/user_model.dart';
 import 'package:quickpourmerchant/features/auth/domain/usecases/auth_usecases.dart';
+import 'package:quickpourmerchant/features/profile/presentation/widgets/change_password.dart';
+import 'package:quickpourmerchant/features/profile/presentation/widgets/edit_profile_dialog.dart';
 import 'package:quickpourmerchant/features/profile/presentation/widgets/logout_button_widget.dart';
 import 'package:quickpourmerchant/features/profile/presentation/widgets/option_widget.dart';
 import 'package:quickpourmerchant/features/profile/presentation/widgets/profile_shimmer.dart';
+import 'package:quickpourmerchant/features/profile/presentation/widgets/settings_dialog.dart';
 
-class ProfileScreen extends StatelessWidget {
- 
+class ProfileScreen extends StatefulWidget {
   final AuthUseCases authUseCases;
 
   const ProfileScreen({
     super.key,
-  
     required this.authUseCases,
   });
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  Future<User?>? _userFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserData();
+  }
+
+  Future<void> _loadUserData() async {
+    setState(() {
+      _userFuture = widget.authUseCases.authRepository.getCurrentUserDetails();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,20 +45,23 @@ class ProfileScreen extends StatelessWidget {
     final isDarkMode = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      appBar: AppBar(title:   Text(
-        'Profile',
-        style: GoogleFonts.montaga(
-                      textStyle: theme.textTheme.displayLarge?.copyWith(
-          color: isDarkMode
-              ? AppColors.cardColor
-              : AppColors.accentColorDark,
-        ),)
+      appBar: AppBar(
+        title: Text(
+          'Profile',
+          style: GoogleFonts.montaga(
+            textStyle: theme.textTheme.displayLarge?.copyWith(
+              color:
+                  isDarkMode ? AppColors.cardColor : AppColors.accentColorDark,
+            ),
+          ),
+        ),
+        centerTitle: true,
       ),
-      centerTitle: true,),
       body: FutureBuilder<User?>(
-        future: authUseCases.authRepository.getCurrentUserDetails(),
+        future:
+            _userFuture, // Use the stored future instead of creating a new one
         builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const ProfileScreenShimmer();
           }
 
@@ -66,39 +85,48 @@ class ProfileScreen extends StatelessWidget {
             );
           }
 
-          return SingleChildScrollView(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Profile Header
-                
-                  const SizedBox(height: 20),
-
-                  // User Profile Section
-                  _buildUserProfileHeader(context, user),
-
-                  const SizedBox(height: 24),
-
-                  // User Activity Section
-                  _buildSectionTitle(context, 'Your Activity'),
-                  const SizedBox(height: 12),
-                  const ProfileStatisticsSection(),
-
-                  const SizedBox(height: 24),
-
-                  // Profile Options
-                  _buildSectionTitle(context, 'Account'),
-                  const SizedBox(height: 12),
-                  _buildProfileOptions(context),
-
-                  const SizedBox(height: 24),
-
-                  // Logout Button
-                  const LogOutButton(),
-                ],
+          return RefreshIndicator(
+            onRefresh: _loadUserData,
+            child: SingleChildScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                    _buildUserProfileHeader(context, user),
+                    const SizedBox(height: 24),
+                    _buildSectionTitle(context, 'Your Activity'),
+                    const SizedBox(height: 12),
+                    const ProfileStatisticsSection(),
+                    const SizedBox(height: 24),
+                    _buildSectionTitle(context, 'Account'),
+                    const SizedBox(height: 12),
+                    _buildProfileOptions(context, user),
+                    const SizedBox(height: 24),
+                   _buildSectionTitle(context, 'App Appearance'),
+                   const SizedBox(height: 12),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.backgroundDark.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: AppColors.accentColor.withOpacity(0.2),
+                        ),
+                      ),
+                      child: _buildSettingsItem(
+                        context,
+                        icon: Icons.dark_mode_outlined,
+                        title: 'Dark Mode',
+                        trailing: const ThemeToggle(),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    const LogOutButton(),
+                  ],
+                ),
               ),
             ),
           );
@@ -106,15 +134,43 @@ class ProfileScreen extends StatelessWidget {
       ),
     );
   }
-Widget _buildUserProfileHeader(BuildContext context, User user) {
+
+
+  Widget _buildSettingsItem(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    VoidCallback? onTap,
+    Widget? trailing,
+    Color? color,
+  }) {
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: color ?? AppColors.accentColor,
+      ),
+      title: Text(
+        title,
+        style: GoogleFonts.acme(
+          fontSize: 16,
+          color: color,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      trailing: trailing ?? const Icon(Icons.chevron_right),
+      onTap: onTap,
+    );
+  }
+
+  Widget _buildUserProfileHeader(BuildContext context, User user) {
     return Row(
       children: [
         Hero(
           tag: 'profile_avatar',
-        child: CircleAvatar(
+          child: CircleAvatar(
             radius: 50,
             backgroundColor: AppColors.accentColor.withOpacity(0.2),
-            child:const FaIcon(
+            child: const FaIcon(
               FontAwesomeIcons.userLarge,
               color: Color.fromARGB(61, 60, 62, 65),
               size: 50,
@@ -122,7 +178,7 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
           ),
         ),
         const SizedBox(width: 30),
-    Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -130,21 +186,19 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
                 children: [
                   const Text('Owner: ',
                       style: TextStyle(fontWeight: FontWeight.w500)),
-                  const SizedBox(
-                      width: 8), // Add spacing between label and value
+                  const SizedBox(width: 8),
                   Expanded(
-                    // Wrap in Expanded to handle overflow
                     child: Text(
                       user.fullName,
                       style: GoogleFonts.acme(
                         textStyle: Theme.of(context).textTheme.headlineSmall,
                       ),
-                      overflow: TextOverflow.ellipsis, // Handle text overflow
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 12), // Increased vertical spacing
+              const SizedBox(height: 12),
               Row(
                 children: [
                   const Text('Store: ',
@@ -183,9 +237,8 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
               ),
             ],
           ),
-        )
-      ]
-      ,
+        ),
+      ],
     );
   }
 
@@ -193,16 +246,17 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
     return Text(
       title,
       style: GoogleFonts.montaga(
-                                    textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),)
+        textStyle: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+      ),
     );
   }
 
-  Widget _buildProfileOptions(BuildContext context) {
+  Widget _buildProfileOptions(BuildContext context, User user) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.primaryColor.withOpacity(0.1),
+        color: AppColors.backgroundDark.withOpacity(0.1),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.accentColor.withOpacity(0.2),
@@ -210,12 +264,38 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
       ),
       child: Column(
         children: [
-          _buildProfileOptionItem(
+          _buildProfileOptionItem(  
             context,
             icon: Icons.edit,
             title: 'Edit Profile',
+            onTap: () async {
+              final result = await showDialog<bool>(
+                context: context,
+                builder: (context) => EditProfileDialog(
+                  currentFirstName: user.fullName,
+                  currentLastName: user.storeName,
+                ),
+              );
+
+              if (result == true) {
+                _loadUserData();
+              }
+            },
+          ),
+          _buildDivider(),
+           _buildProfileOptionItem(
+            context,
+            icon: Icons.lock,
+            title: 'change Password',
             onTap: () {
-              // TODO: Implement edit profile navigation
+              showDialog(
+                context: context,
+                builder: (context) => const ChangePassword(),
+              ).then((success) {
+                if (success == true) {
+                  // Handle successful password change
+                }
+              });
             },
           ),
           _buildDivider(),
@@ -224,24 +304,20 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
             icon: Icons.settings,
             title: 'Account Settings',
             onTap: () {
-              context.push('/settings');
+             showDialog(
+                context: context,
+                builder: (context) => const SettingsDialog(),);
             },
           ),
-          _buildDivider(),
-          _buildProfileOptionItem(
-            context,
-            icon: Icons.help_outline,
-            title: 'Help & Support',
-            onTap: () {
-              // TODO: Implement help & support navigation
-            },
-          ),
-          _buildDivider(),
-        const   ListTile(
-            leading: FaIcon(FontAwesomeIcons.moon),
-            title: Text('dark mode'),
-            trailing: ThemeToggle(),
-           )
+          // _buildDivider(),
+          // _buildProfileOptionItem(
+          //   context,
+          //   icon: Icons.help_outline,
+          //   title: 'Help & Support',
+          //   onTap: () {
+          //     // TODO: Implement help & support navigation
+          //   },
+          // ),
         ],
       ),
     );
@@ -260,7 +336,7 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
       ),
       title: Text(
         title,
-        style:  GoogleFonts.acme(fontSize: 16,fontWeight: FontWeight.normal),
+        style: GoogleFonts.acme(fontSize: 16, fontWeight: FontWeight.normal),
       ),
       trailing: const Icon(
         Icons.chevron_right,
@@ -269,6 +345,7 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
       onTap: onTap,
     );
   }
+
 
   Widget _buildDivider() {
     return Padding(
@@ -280,5 +357,3 @@ Widget _buildUserProfileHeader(BuildContext context, User user) {
     );
   }
 }
-
-

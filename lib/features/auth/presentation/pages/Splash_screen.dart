@@ -85,8 +85,8 @@ class _SplashScreenState extends State<SplashScreen>
             decoration: BoxDecoration(
               gradient: LinearGradient(
               colors: [
-                AppColors.primaryColorDark,
-                AppColors.secondaryColorDark.withOpacity(0.7),
+                const Color.fromARGB(255, 57, 23, 27),
+               const Color.fromARGB(255, 57, 23, 27),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -120,7 +120,7 @@ class _SplashScreenState extends State<SplashScreen>
                           ],
                         ),
                         child: Image.asset(
-                          'assets/splash.png',
+                          'assets/111.png',
                           fit: BoxFit.contain,
                         ),
                       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/features/profile/presentation/widgets/logout_button_widget.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -49,11 +50,11 @@ class CustomDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: const BoxDecoration(
+            decoration:  const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
                   Color(0xFFE74C3C),
-                  Color(0xFFF39C12),
+                  AppColors.primaryColor,
                 ],
               ),
             ),
@@ -87,32 +88,33 @@ class CustomDrawer extends StatelessWidget {
             ),
           ),
        
-          DrawerTile(
-            icon: FontAwesomeIcons.boxesStacked,
+ DrawerTile(
+            icon: FontAwesomeIcons.boxOpen, // or FontAwesomeIcons.cubes
             title: 'Products',
             onTap: () => Navigator.pushNamed(context, '/products'),
           ),
           DrawerTile(
-            icon: FontAwesomeIcons.clipboardList,
+            icon: FontAwesomeIcons
+                .basketShopping, // or FontAwesomeIcons.cartShopping
             title: 'Orders',
             onTap: () => Navigator.pushNamed(context, '/orders'),
           ),
           DrawerTile(
-            icon: FontAwesomeIcons.chartLine,
+            icon: FontAwesomeIcons.chartPie, // or FontAwesomeIcons.chartColumn
             title: 'Analytics',
             onTap: () => Navigator.pushNamed(context, '/analytics'),
           ),
           DrawerTile(
-            icon: FontAwesomeIcons.bell,
+            icon:
+                FontAwesomeIcons.solidBell, // or FontAwesomeIcons.bellConcierge
             title: 'Notifications',
             onTap: () => Navigator.pushNamed(context, '/notifications'),
           ),
-             DrawerTile(
-            icon: FontAwesomeIcons.circleUser,
+          DrawerTile(
+            icon: FontAwesomeIcons.circleUser, // or FontAwesomeIcons.userShield
             title: 'Profile',
             onTap: () => Navigator.pushNamed(context, '/profile'),
           ),
-       
          SizedBox(
         height: 200,
          ),

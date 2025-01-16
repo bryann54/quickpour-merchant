@@ -56,19 +56,20 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAIOC8r214F6zolW07RsEKbz66D6BxvxEU',
-    appId: '1:64268472646:android:300b92b02ddefbad72d547',
-    messagingSenderId: '64268472646',
-    projectId: 'quickpour-merchants',
-    storageBucket: 'quickpour-merchants.firebasestorage.app',
+    apiKey: 'AIzaSyB-Rwdo1aZoU05bssybSHZKT5_truWe4D4',
+    appId: '1:100273481671:android:58dc868233636ad1839be2',
+    messagingSenderId: '100273481671',
+    projectId: 'alkohut-5bf97',
+    storageBucket: 'alkohut-5bf97.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBgrKUajkXwe7vxcQjeOaOyzbvki9jVYJI',
-    appId: '1:64268472646:ios:c75479b26d08579672d547',
-    messagingSenderId: '64268472646',
-    projectId: 'quickpour-merchants',
-    storageBucket: 'quickpour-merchants.firebasestorage.app',
+    apiKey: 'AIzaSyCoX8O2atc0OLxdnx3ILQdLheoC2nM6ONI',
+    appId: '1:100273481671:ios:5afcef36db0a66a5839be2',
+    messagingSenderId: '100273481671',
+    projectId: 'alkohut-5bf97',
+    storageBucket: 'alkohut-5bf97.firebasestorage.app',
     iosBundleId: 'com.example.quickpourmerchant',
   );
+
 }

@@ -1,13 +1,32 @@
 {
   "project_info": {
-    "project_number": "64268472646",
-    "project_id": "quickpour-merchants",
-    "storage_bucket": "quickpour-merchants.firebasestorage.app"
+    "project_number": "100273481671",
+    "project_id": "alkohut-5bf97",
+    "storage_bucket": "alkohut-5bf97.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:64268472646:android:300b92b02ddefbad72d547",
+        "mobilesdk_app_id": "1:100273481671:android:1247eaf290e41939839be2",
+        "android_client_info": {
+          "package_name": "com.example.chupachap"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-Rwdo1aZoU05bssybSHZKT5_truWe4D4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:100273481671:android:58dc868233636ad1839be2",
         "android_client_info": {
           "package_name": "com.example.quickpourmerchant"
         }
@@ -15,7 +34,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAIOC8r214F6zolW07RsEKbz66D6BxvxEU"
+          "current_key": "AIzaSyB-Rwdo1aZoU05bssybSHZKT5_truWe4D4"
         }
       ],
       "services": {

@@ -15,13 +15,13 @@ class AuthUseCases {
   Future<String> register(
       {required String email,
       required String password,
-      required String firstName,
-      required String lastName}) async {
+      required String fullName,
+      required String storeName}) async {
     return await authRepository.register(
         email: email,
         password: password,
-        firstName: firstName,
-        lastName: lastName);
+        fullName: fullName,
+        storeName: storeName);
   }
 
   Future<void> logout() async {

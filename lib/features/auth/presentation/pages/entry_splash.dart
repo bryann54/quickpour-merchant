@@ -83,9 +83,8 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                   decoration:const BoxDecoration(
           gradient: LinearGradient(
                       colors: [
-                     AppColors.primaryColor, // Dark navy blue
-                       AppColors.primaryColor
-                           , // Lighter navy blue with opacity
+                       Color.fromARGB(255, 57, 23, 27), 
+                         Color.fromARGB(255, 57, 23, 27),
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
@@ -116,7 +115,7 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                         opacity: _fadeAnimation.value,
                         child: Container(
                           width: 300,
-                          height: 200,
+                          height: 250,
                           decoration: const BoxDecoration(
                             boxShadow: [
                               BoxShadow(
@@ -127,7 +126,7 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                             ],
                           ),
                           child: Image.asset(
-                            'assets/splash.png',
+                            'assets/111.png',
                             fit: BoxFit.contain,
                           ),
                         ),

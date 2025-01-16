@@ -63,17 +63,26 @@ class _HomeScreenState extends State<HomeScreen> {
             SliverAppBar(
               floating: true,
               pinned: true,
-              expandedHeight: 150.0,
+              expandedHeight: 200.0,
               leading: IconButton(
                 icon: const Icon(Icons.menu),
                 onPressed: () => _scaffoldKey.currentState?.openDrawer(),
               ),
-              flexibleSpace: FlexibleSpaceBar(
-                title: const GradientText(text: 'QuickPour Merchant'),
-              background: Container(
+            flexibleSpace: FlexibleSpaceBar(
+                background: Container(
                   color: AppColors.primaryColor,
+                  child: Center(
+                    child: Image.asset(
+                      'assets/111.png',
+                      fit: BoxFit.contain, 
+                      width: double
+                          .infinity,
+                      height: 240
+                    ),
+                  ),
                 ),
               ),
+
             ),
             SliverPadding(
               padding: const EdgeInsets.all(5.0),
@@ -105,7 +114,7 @@ Widget _buildCategoriesSection(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Categories',
+                'Popular Categories',
                 style: GoogleFonts.montaga(
                   textStyle: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
@@ -125,7 +134,7 @@ Widget _buildCategoriesSection(
                   'See All',
                   style: GoogleFonts.montaga(
                     textStyle: theme.textTheme.bodyLarge?.copyWith(
-                      color: isDarkMode ? Colors.teal : AppColors.accentColor,
+                      color: isDarkMode ? Colors.white : AppColors.accentColor,
                     ),
                   ),
                 ),
@@ -157,10 +166,10 @@ Widget _buildCategoriesSection(
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 3),
-            child: Row(mainAxisAlignment: MainAxisAlignment.center,
+            child: Row(mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
-                  'Products',
+                  'Popular Products',
                   style: GoogleFonts.montaga(
                     textStyle: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,

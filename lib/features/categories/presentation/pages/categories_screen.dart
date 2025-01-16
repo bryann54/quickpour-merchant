@@ -14,7 +14,7 @@ class CategoriesScreen extends StatelessWidget {
     return Scaffold(
       appBar:  AppBar(
               title: Text(
-                    'Categories',
+                    ' Available Categories',
                     style: Theme.of(context).textTheme.displayLarge,
       )),
       body: BlocBuilder<CategoriesBloc, CategoriesState>(

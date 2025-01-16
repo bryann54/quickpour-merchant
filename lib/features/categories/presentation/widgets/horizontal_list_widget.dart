@@ -25,25 +25,27 @@ class HorizontalCategoriesListWidget extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: categories.isEmpty
-                ? SizedBox(
-                    height: 50, // Minimal height for the empty state
-                    child: Center(
-                      child: Text(
-                        'No categories available',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          fontStyle: FontStyle.italic,
-                          color: Colors.grey,
+                ? Expanded(
+                  child: SizedBox(
+                      height: 50, // Minimal height for the empty state
+                      child: Center(
+                        child: Text(
+                          'No categories available',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            fontStyle: FontStyle.italic,
+                            color: Colors.grey,
+                          ),
                         ),
                       ),
                     ),
-                  )
+                )
                 : GridView.count(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     crossAxisCount: 3,
-                    crossAxisSpacing: 8,
+                    crossAxisSpacing: 10,
                     mainAxisSpacing: 8,
-                    childAspectRatio: 1.2, // Adjusted for compact layout
+                    childAspectRatio: 1,
                     children: List.generate(
                       categories.length > 6 ? 6 : categories.length,
                       (index) => CategoryCard(

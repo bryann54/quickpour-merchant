@@ -12,8 +12,8 @@ class AuthRepository {
   Future<String> register({
     required String email,
     required String password,
-    required String firstName,
-    required String lastName,
+    required String fullName,
+    required String storeName,
   }) async {
     try {
       // Create a new user with the given email and password
@@ -29,8 +29,8 @@ class AuthRepository {
       // Store the user's first name and last name in Firestore
       await _firestore.collection('users').doc(uid).set({
         'email': email,
-        'firstName': firstName,
-        'lastName': lastName,
+        'fullName': fullName,
+        'storeName': storeName,
         'createdAt': FieldValue.serverTimestamp(),
       });
 
@@ -97,8 +97,8 @@ class AuthRepository {
         if (userDoc.exists) {
           return User(
               email: userDoc['email'],
-              firstName: userDoc['firstName'],
-              lastName: userDoc['lastName']);
+              fullName: userDoc['fullName'],
+              storeName: userDoc['storeName']);
         }
       }
       return null;

@@ -1,9 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:quickpourmerchant/features/profile/presentation/widgets/stattic_item_widget.dart';
-
 
 class ProfileStatisticsSection extends StatelessWidget {
   const ProfileStatisticsSection({super.key});
@@ -45,7 +43,7 @@ class ProfileStatisticsSection extends StatelessWidget {
             //     },
             //   ),
             // ),
-            
+
             const ProfileStatisticItem(
               icon: Icons.star_rounded,
               label: "Reviews",

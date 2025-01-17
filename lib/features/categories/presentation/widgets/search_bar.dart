@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 
@@ -66,7 +65,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                   GestureDetector(
                     onTap: () {
                       widget.controller.clear();
-                      widget.onSearch(''); 
+                      widget.onSearch('');
                     },
                     child: Icon(
                       Icons.close,

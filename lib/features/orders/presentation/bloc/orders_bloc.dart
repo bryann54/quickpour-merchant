@@ -8,17 +8,10 @@ part 'orders_event.dart';
 part 'orders_state.dart';
 
 class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
-
-
   OrdersBloc() : super(OrdersInitial()) {
     on<LoadOrdersFromCheckout>(_onLoadOrdersFromCheckout);
   }
 
   void _onLoadOrdersFromCheckout(
-      LoadOrdersFromCheckout event, Emitter<OrdersState> emit) {
-  
-
-  }
-
- 
+      LoadOrdersFromCheckout event, Emitter<OrdersState> emit) {}
 }

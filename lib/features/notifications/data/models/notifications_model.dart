@@ -1,7 +1,7 @@
 // notification_model.dart
 import 'package:equatable/equatable.dart';
 
-enum NotificationType { order, promotion, delivery, system ,alert, feedback }
+enum NotificationType { order, promotion, delivery, system, alert, feedback }
 
 class NotificationModel extends Equatable {
   final String id;

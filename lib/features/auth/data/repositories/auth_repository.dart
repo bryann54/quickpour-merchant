@@ -1,6 +1,6 @@
-
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:quickpourmerchant/core/utils/time_range_utils.dart';
 import 'package:quickpourmerchant/features/auth/data/models/user_model.dart';
 
 class AuthRepository {
@@ -8,52 +8,54 @@ class AuthRepository {
       firebase_auth.FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Register a new user with email, password, first name, and last name
   Future<String> register({
     required String email,
     required String password,
     required String fullName,
     required String storeName,
+    required String location,
+    required Map<String, dynamic> storeHours,
+    String imageUrl = '',
   }) async {
     try {
-      // Create a new user with the given email and password
       firebase_auth.UserCredential userCredential =
           await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-      // Get the user's UID
       final String uid = userCredential.user?.uid ?? '';
 
-      // Store the user's first name and last name in Firestore
-      await _firestore.collection('users').doc(uid).set({
+      // Create merchant data
+      final merchantData = {
+        'id': uid,
         'email': email,
-        'fullName': fullName,
+        'name': fullName,
         'storeName': storeName,
+        'location': location,
+        'products': [],
+        'experience': 0,
+        'imageUrl': imageUrl,
+        'rating': 0.0,
+        'isVerified': false,
+        'isOpen': StoreHours.fromJson(storeHours).isCurrentlyOpen(),
+        'storeHours': storeHours,
         'createdAt': FieldValue.serverTimestamp(),
-      });
+      };
 
-      // Return the email of the newly created user
+      // Store in merchants collection instead of users
+      await _firestore.collection('merchants').doc(uid).set(merchantData);
+
       return userCredential.user?.email ?? '';
     } on firebase_auth.FirebaseAuthException catch (e) {
-      // Specific error handling
-      switch (e.code) {
-        case 'email-already-in-use':
-          throw Exception('The email address is already in use.');
-        case 'weak-password':
-          throw Exception('The password is too weak.');
-        case 'invalid-email':
-          throw Exception('The email address is invalid.');
-        default:
-          throw Exception('Authentication error: ${e.message}');
-      }
+      // Your existing error handling
+      throw Exception('Authentication error: ${e.message}');
     } catch (e) {
       throw Exception('An unexpected error occurred during registration: $e');
     }
   }
 
-  // Login an existing user with email and password
+  //login
   Future<String> login({
     required String email,
     required String password,
@@ -64,6 +66,17 @@ class AuthRepository {
         email: email,
         password: password,
       );
+
+      // Verify that the user exists in the merchants collection
+      final uid = userCredential.user?.uid;
+      if (uid != null) {
+        final merchantDoc =
+            await _firestore.collection('merchants').doc(uid).get();
+        if (!merchantDoc.exists) {
+          throw Exception('No merchant account found for this email.');
+        }
+      }
+
       return userCredential.user?.email ?? '';
     } on firebase_auth.FirebaseAuthException catch (e) {
       switch (e.code) {
@@ -86,24 +99,22 @@ class AuthRepository {
     await _firebaseAuth.signOut();
   }
 
-  // Get current user details
+  // Update getCurrentUserDetails to fetch from merchants collection
   Future<User?> getCurrentUserDetails() async {
     try {
       final firebase_auth.User? currentUser = _firebaseAuth.currentUser;
       if (currentUser != null) {
-        DocumentSnapshot userDoc =
-            await _firestore.collection('users').doc(currentUser.uid).get();
+        DocumentSnapshot merchantDoc =
+            await _firestore.collection('merchants').doc(currentUser.uid).get();
 
-        if (userDoc.exists) {
-          return User(
-              email: userDoc['email'],
-              fullName: userDoc['fullName'],
-              storeName: userDoc['storeName']);
+        if (merchantDoc.exists) {
+          final data = merchantDoc.data() as Map<String, dynamic>;
+          return User.fromJson(data);
         }
       }
       return null;
     } catch (e) {
-      throw Exception('Error retrieving user details: $e');
+      throw Exception('Error retrieving merchant details: $e');
     }
   }
 
@@ -116,6 +127,4 @@ class AuthRepository {
   String? getCurrentUserId() {
     return _firebaseAuth.currentUser?.uid;
   }
-
-  
 }

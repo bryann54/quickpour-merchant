@@ -15,10 +15,10 @@ class CustomFAB extends StatelessWidget {
           context: context,
           builder: (context) => AddProductDialog(),
         );
-      }, 
-        icon: const Icon(Icons.add),
+      },
+      icon: const Icon(Icons.add),
       label: const Text('Update inventory'),
-    elevation: 15,
+      elevation: 15,
     );
   }
 }

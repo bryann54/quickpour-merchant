@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 
@@ -14,10 +13,12 @@ class CustomLogoutDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     final theme = Theme.of(context);
+    final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
     return AlertDialog.adaptive(
-      backgroundColor:isDarkMode?AppColors.cardColorDark: AppColors.cardColor, // Custom color for the dialog
+      backgroundColor: isDarkMode
+          ? AppColors.cardColorDark
+          : AppColors.cardColor, // Custom color for the dialog
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0), // Rounded corners
       ),
@@ -53,8 +54,8 @@ class CustomLogoutDialog extends StatelessWidget {
                 ),
               ),
             ),
-              Expanded(
-                child: GestureDetector(
+            Expanded(
+              child: GestureDetector(
                 onTap: onConfirm, // Confirm (logout) action
                 child: const Padding(
                   padding: EdgeInsets.all(8.0),
@@ -69,11 +70,10 @@ class CustomLogoutDialog extends StatelessWidget {
                     ),
                   ),
                 ),
-                            ),
               ),
+            ),
           ],
         ),
-     
       ],
     );
   }

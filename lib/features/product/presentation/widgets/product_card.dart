@@ -5,7 +5,7 @@ import 'package:quickpourmerchant/features/product/data/models/product_model.dar
 import 'package:quickpourmerchant/features/product/presentation/pages/product_details_screen.dart';
 
 class ProductCard extends StatelessWidget {
-  final ProductModel product;
+  final MerchantProductModel product;
 
   const ProductCard({Key? key, required this.product}) : super(key: key);
 
@@ -69,7 +69,6 @@ class ProductCard extends StatelessWidget {
                               children: [
                                 FaIcon(
                                   Icons.error_outline,
-                                
                                 ),
                                 Text('no image available')
                               ],

@@ -106,8 +106,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const SizedBox(height: 12),
                     _buildProfileOptions(context, user),
                     const SizedBox(height: 24),
-                   _buildSectionTitle(context, 'App Appearance'),
-                   const SizedBox(height: 12),
+                    _buildSectionTitle(context, 'App Appearance'),
+                    const SizedBox(height: 12),
                     Container(
                       decoration: BoxDecoration(
                         color: AppColors.backgroundDark.withOpacity(0.1),
@@ -134,7 +134,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-
 
   Widget _buildSettingsItem(
     BuildContext context, {
@@ -189,7 +188,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      user.fullName,
+                      user.name,
                       style: GoogleFonts.acme(
                         textStyle: Theme.of(context).textTheme.headlineSmall,
                       ),
@@ -264,7 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       child: Column(
         children: [
-          _buildProfileOptionItem(  
+          _buildProfileOptionItem(
             context,
             icon: Icons.edit,
             title: 'Edit Profile',
@@ -272,7 +271,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               final result = await showDialog<bool>(
                 context: context,
                 builder: (context) => EditProfileDialog(
-                  currentFirstName: user.fullName,
+                  currentFirstName: user.name,
                   currentLastName: user.storeName,
                 ),
               );
@@ -283,7 +282,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             },
           ),
           _buildDivider(),
-           _buildProfileOptionItem(
+          _buildProfileOptionItem(
             context,
             icon: Icons.lock,
             title: 'change Password',
@@ -304,9 +303,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             icon: Icons.settings,
             title: 'Account Settings',
             onTap: () {
-             showDialog(
+              showDialog(
                 context: context,
-                builder: (context) => const SettingsDialog(),);
+                builder: (context) => const SettingsDialog(),
+              );
             },
           ),
           // _buildDivider(),
@@ -345,7 +345,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       onTap: onTap,
     );
   }
-
 
   Widget _buildDivider() {
     return Padding(

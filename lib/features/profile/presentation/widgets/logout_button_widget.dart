@@ -1,6 +1,8 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
+import 'package:quickpourmerchant/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:quickpourmerchant/features/auth/presentation/bloc/auth_event.dart';
 import 'package:quickpourmerchant/features/profile/presentation/widgets/logout_dialog.dart';
 
 class LogOutButton extends StatefulWidget {
@@ -14,14 +16,15 @@ class _LogOutButtonState extends State<LogOutButton> {
   void _showLogoutConfirmationDialog() {
     showDialog(
       context: context,
+      barrierDismissible: true,
       builder: (BuildContext context) {
         return CustomLogoutDialog(
           onConfirm: () {
-            // Perform logout logic here
-            Navigator.of(context).pop(); // Close the dialog
+            Navigator.of(context).pop();
+            context.read<AuthBloc>().add(LogoutEvent());
           },
           onCancel: () {
-            Navigator.of(context).pop(); // Close the dialog
+            Navigator.of(context).pop();
           },
         );
       },
@@ -58,9 +61,7 @@ class _LogOutButtonState extends State<LogOutButton> {
               child: Text(
                 'logout',
                 style: TextStyle(
-                  color: 
-                    
-                       AppColors.textPrimaryDark,
+                  color: AppColors.textPrimaryDark,
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
                 ),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/core/utils/strings.dart';

@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-   @override
+  @override
   void initState() {
     super.initState();
     _initializeData();
@@ -49,7 +49,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: _scaffoldKey,
       drawer: CustomDrawer(
-      
         onLogout: () => Navigator.pushReplacementNamed(context, '/login'),
       ),
       body: RefreshIndicator(
@@ -68,21 +67,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: const Icon(Icons.menu),
                 onPressed: () => _scaffoldKey.currentState?.openDrawer(),
               ),
-            flexibleSpace: FlexibleSpaceBar(
+              flexibleSpace: FlexibleSpaceBar(
                 background: Container(
                   color: AppColors.primaryColor,
                   child: Center(
-                    child: Image.asset(
-                      'assets/111.png',
-                      fit: BoxFit.contain, 
-                      width: double
-                          .infinity,
-                      height: 240
-                    ),
+                    child: Image.asset('assets/111.png',
+                        fit: BoxFit.contain,
+                        width: double.infinity,
+                        height: 240),
                   ),
                 ),
               ),
-
             ),
             SliverPadding(
               padding: const EdgeInsets.all(5.0),
@@ -103,7 +98,8 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: CustomFAB(),
     );
   }
-Widget _buildCategoriesSection(
+
+  Widget _buildCategoriesSection(
       BuildContext context, ThemeData theme, bool isDarkMode) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,7 +154,6 @@ Widget _buildCategoriesSection(
     );
   }
 
-
   Widget _buildProductsSection(ThemeData theme) {
     return SliverToBoxAdapter(
       child: Column(
@@ -166,7 +161,8 @@ Widget _buildCategoriesSection(
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 3),
-            child: Row(mainAxisAlignment: MainAxisAlignment.start,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Text(
                   'Popular Products',
@@ -192,13 +188,16 @@ Widget _buildCategoriesSection(
                     ? Center(
                         child: Column(
                           children: [
-                            const SizedBox(height: 50,),
-                            Text('You have no products yet...',
+                            const SizedBox(
+                              height: 50,
+                            ),
+                            Text(
+                              'You have no products yet...',
                               style: GoogleFonts.montaga(
-                                textStyle: theme.textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey
-                                ),
+                                textStyle: theme.textTheme.titleMedium
+                                    ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey),
                               ),
                             ),
                           ],
@@ -230,7 +229,7 @@ Widget _buildCategoriesSection(
     );
   }
 
-  Widget _buildProductsGrid(List<ProductModel> products) {
+  Widget _buildProductsGrid(List<MerchantProductModel> products) {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),

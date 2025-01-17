@@ -131,12 +131,12 @@ class _NotificationTile extends StatelessWidget {
           backgroundColor: Colors.grey,
           child: Icon(Icons.settings, color: Colors.white),
         );
-         case NotificationType.alert:
+      case NotificationType.alert:
         return const CircleAvatar(
           backgroundColor: Colors.red,
           child: FaIcon(FontAwesomeIcons.circleInfo, color: Colors.white),
         );
-         case NotificationType.feedback:
+      case NotificationType.feedback:
         return const CircleAvatar(
           backgroundColor: Colors.orange,
           child: FaIcon(FontAwesomeIcons.faceSmileWink, color: Colors.white),

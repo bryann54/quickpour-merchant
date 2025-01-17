@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/features/categories/domain/entities/category.dart';
 import 'package:quickpourmerchant/features/categories/presentation/widgets/category_card.dart';
+
 class HorizontalCategoriesListWidget extends StatelessWidget {
   final List<Category> categories;
 
@@ -26,7 +27,7 @@ class HorizontalCategoriesListWidget extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: categories.isEmpty
                 ? Expanded(
-                  child: SizedBox(
+                    child: SizedBox(
                       height: 50, // Minimal height for the empty state
                       child: Center(
                         child: Text(
@@ -38,7 +39,7 @@ class HorizontalCategoriesListWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                )
+                  )
                 : GridView.count(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),

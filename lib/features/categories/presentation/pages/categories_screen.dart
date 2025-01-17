@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickpourmerchant/features/categories/presentation/widgets/shimmer_widget.dart';
@@ -12,10 +11,10 @@ class CategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  AppBar(
-              title: Text(
-                    ' Available Categories',
-                    style: Theme.of(context).textTheme.displayLarge,
+      appBar: AppBar(
+          title: Text(
+        ' Available Categories',
+        style: Theme.of(context).textTheme.displayLarge,
       )),
       body: BlocBuilder<CategoriesBloc, CategoriesState>(
         builder: (context, state) {
@@ -27,7 +26,6 @@ class CategoriesScreen extends StatelessWidget {
           } else if (state is CategoriesLoaded) {
             return Column(
               children: [
-            
                 Expanded(
                   child: GridView.builder(
                     gridDelegate:

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/features/analytics/presentation/pages/analytics_screen.dart';
 import 'package:quickpourmerchant/features/auth/data/repositories/auth_repository.dart';
@@ -38,7 +37,8 @@ class RouteGenerator {
       case profile:
         return MaterialPageRoute(
             builder: (_) => ProfileScreen(
-                authUseCases: authUseCases, ));
+                  authUseCases: authUseCases,
+                ));
       case login:
         return MaterialPageRoute(builder: (_) => LoginScreen());
       default:

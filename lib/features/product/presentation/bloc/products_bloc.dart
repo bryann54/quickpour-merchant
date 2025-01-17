@@ -9,6 +9,7 @@ import 'package:quickpourmerchant/features/product/data/repositories/product_rep
 
 part 'products_event.dart';
 part 'products_state.dart';
+
 class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   final ProductRepository productRepository;
   StreamSubscription<QuerySnapshot>? _productsSubscription;
@@ -35,7 +36,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
             .listen(
           (snapshot) {
             final products = snapshot.docs
-                .map((doc) => ProductModel.fromMap(doc.data()))
+                .map((doc) => MerchantProductModel.fromMap(doc.data()))
                 .toList();
             add(UpdateProductsList(products));
           },

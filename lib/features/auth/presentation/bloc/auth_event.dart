@@ -20,15 +20,21 @@ class SignupEvent extends AuthEvent {
   final String password;
   final String fullName;
   final String storeName;
+  final String location;
+  final String imageUrl;
+  final Map<String, dynamic> storeHours;
+  final bool is24Hours;
 
-  SignupEvent(
-      {required this.email,
-      required this.password,
-      required this.fullName,
-      required this.storeName});
-
-  @override
-  List<Object?> get props => [email, password, fullName, storeName];
+  SignupEvent({
+    required this.email,
+    required this.password,
+    required this.fullName,
+    required this.storeName,
+    required this.location,
+    required this.storeHours,
+    required this.is24Hours,
+    this.imageUrl = '',
+  });
 }
 
 class LogoutEvent extends AuthEvent {}

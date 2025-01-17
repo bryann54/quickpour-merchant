@@ -8,7 +8,7 @@ class ProductRepository {
 
   // Get current merchant ID
   String get currentMerchantId => _auth.currentUser?.uid ?? '';
-  Stream<List<ProductModel>> streamMerchantProducts() {
+  Stream<List<MerchantProductModel>> streamMerchantProducts() {
     if (currentMerchantId.isEmpty) {
       throw Exception('No authenticated merchant found');
     }
@@ -18,22 +18,22 @@ class ProductRepository {
         .where('merchantId', isEqualTo: currentMerchantId)
         .snapshots()
         .map((snapshot) => snapshot.docs
-            .map((doc) => ProductModel.fromMap(doc.data()))
+            .map((doc) => MerchantProductModel.fromMap(doc.data()))
             .toList());
   }
 
   // Add a product
-  Future<void> addProduct(ProductModel product) async {
+  Future<void> addProduct(MerchantProductModel product) async {
     // Ensure the product has the current merchant's ID
-    final productWithMerchantId = ProductModel(
+    final productWithMerchantId = MerchantProductModel(
       id: product.id,
       merchantId: currentMerchantId,
       productName: product.productName,
       imageUrls: product.imageUrls,
       price: product.price,
-      brand: product.brand,
+      brandName: product.brandName,
       description: product.description,
-      category: product.category,
+      categoryName: product.categoryName,
       stockQuantity: product.stockQuantity,
       isAvailable: product.isAvailable,
       discountPrice: product.discountPrice,
@@ -50,25 +50,25 @@ class ProductRepository {
   }
 
   // Fetch products for current merchant
-  Future<List<ProductModel>> fetchProducts() async {
+  Future<List<MerchantProductModel>> fetchProducts() async {
     final snapshot = await _firestore
         .collection('products')
         .where('merchantId', isEqualTo: currentMerchantId)
         .get();
 
     return snapshot.docs
-        .map((doc) => ProductModel.fromMap(doc.data()))
+        .map((doc) => MerchantProductModel.fromMap(doc.data()))
         .toList();
   }
 
   // Update a product
-  Future<void> updateProduct(ProductModel product) async {
+  Future<void> updateProduct(MerchantProductModel product) async {
     // Verify the product belongs to the current merchant
     final productDoc =
         await _firestore.collection('products').doc(product.id).get();
 
     if (productDoc.exists) {
-      final existingProduct = ProductModel.fromMap(productDoc.data()!);
+      final existingProduct = MerchantProductModel.fromMap(productDoc.data()!);
       if (existingProduct.merchantId != currentMerchantId) {
         throw Exception('Unauthorized to update this product');
       }
@@ -87,7 +87,7 @@ class ProductRepository {
         await _firestore.collection('products').doc(productId).get();
 
     if (productDoc.exists) {
-      final product = ProductModel.fromMap(productDoc.data()!);
+      final product = MerchantProductModel.fromMap(productDoc.data()!);
       if (product.merchantId != currentMerchantId) {
         throw Exception('Unauthorized to delete this product');
       }
@@ -97,12 +97,12 @@ class ProductRepository {
   }
 
   // Optional: Fetch a single product
-  Future<ProductModel?> fetchProduct(String productId) async {
+  Future<MerchantProductModel?> fetchProduct(String productId) async {
     final doc = await _firestore.collection('products').doc(productId).get();
 
     if (!doc.exists) return null;
 
-    final product = ProductModel.fromMap(doc.data()!);
+    final product = MerchantProductModel.fromMap(doc.data()!);
 
     // Verify the product belongs to the current merchant
     if (product.merchantId != currentMerchantId) {

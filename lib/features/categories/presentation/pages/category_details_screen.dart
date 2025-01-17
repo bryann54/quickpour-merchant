@@ -24,8 +24,7 @@ class CategoryDetailsScreen extends StatefulWidget {
 class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
   late TextEditingController _searchController;
   String _searchQuery = '';
-  final double expandedHeight =
-      300.0; 
+  final double expandedHeight = 300.0;
 
   @override
   void initState() {
@@ -77,7 +76,6 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                     ],
                   ),
                 ),
-                
                 centerTitle: true,
                 background: Hero(
                   tag: 'category_image_${widget.category.id}',
@@ -141,7 +139,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                 if (state is ProductsLoaded) {
                   final categoryProducts = state.products
                       .where((product) =>
-                          product.category.toString() == widget.category.id)
+                          product.categoryName.toString() == widget.category.id)
                       .toList();
 
                   if (categoryProducts.isEmpty) {
@@ -195,7 +193,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
             ),
           ],
         ),
-            floatingActionButton: CustomFAB(),
+        floatingActionButton: CustomFAB(),
       ),
     );
   }

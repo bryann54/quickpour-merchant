@@ -12,7 +12,7 @@ import 'package:quickpourmerchant/features/categories/presentation/bloc/categori
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_state.dart';
 
 class ProductForm extends StatefulWidget {
-  final ProductModel product;
+  final MerchantProductModel product;
   final bool isEditing;
   final VoidCallback onUpdateComplete;
 
@@ -28,7 +28,7 @@ class ProductForm extends StatefulWidget {
 }
 
 class _ProductFormState extends State<ProductForm> {
-   final _auth = FirebaseAuth.instance; 
+  final _auth = FirebaseAuth.instance;
   late final TextEditingController _nameController;
   late final TextEditingController _descriptionController;
   late final TextEditingController _priceController;
@@ -43,7 +43,6 @@ class _ProductFormState extends State<ProductForm> {
     super.initState();
     _initializeControllers();
   }
-  
 
   void _initializeControllers() {
     _nameController = TextEditingController(text: widget.product.productName);
@@ -51,13 +50,13 @@ class _ProductFormState extends State<ProductForm> {
         TextEditingController(text: widget.product.description);
     _priceController =
         TextEditingController(text: widget.product.price.toString());
-    _discountPriceController = TextEditingController(
-        text: widget.product.discountPrice.toString());
-    _stockController = TextEditingController(
-        text: widget.product.stockQuantity.toString());
-    _brandController = TextEditingController(text: widget.product.brand);
+    _discountPriceController =
+        TextEditingController(text: widget.product.discountPrice.toString());
+    _stockController =
+        TextEditingController(text: widget.product.stockQuantity.toString());
+    _brandController = TextEditingController(text: widget.product.brandName);
     _skuController = TextEditingController(text: widget.product.sku);
-    _selectedCategory = widget.product.category;
+    _selectedCategory = widget.product.categoryName;
   }
 
   @override
@@ -88,24 +87,24 @@ class _ProductFormState extends State<ProductForm> {
         );
         return;
       }
-      final updatedProduct = ProductModel(
-         merchantId: user.uid,
+      final updatedProduct = MerchantProductModel(
+        merchantId: user.uid,
         id: widget.product.id,
         productName: _nameController.text.trim(),
         description: _descriptionController.text.trim(),
         price: double.tryParse(_priceController.text) ?? 0.0,
         discountPrice: double.tryParse(_discountPriceController.text) ?? 0.0,
         stockQuantity: int.tryParse(_stockController.text) ?? 0,
-        brand: _brandController.text.trim(),
-        category: _selectedCategory ?? widget.product.category ,
+        brandName: _brandController.text.trim(),
+        categoryName: _selectedCategory ?? widget.product.categoryName,
         sku: _skuController.text.trim(),
-        imageUrls: widget.product.imageUrls ,
+        imageUrls: widget.product.imageUrls,
         tags: widget.product.tags,
         createdAt: widget.product.createdAt,
         updatedAt: DateTime.now(),
       );
 
-   if (widget.product.merchantId != user.uid) {
+      if (widget.product.merchantId != user.uid) {
         throw Exception('Unauthorized to update this product');
       }
 
@@ -127,7 +126,6 @@ class _ProductFormState extends State<ProductForm> {
       );
     }
   }
-
 
   bool _validateInputs() {
     if (_nameController.text.trim().isEmpty) {
@@ -203,6 +201,7 @@ class _ProductFormState extends State<ProductForm> {
       ),
     );
   }
+
   Widget _buildPriceAndStockFields() {
     return Row(
       children: [
@@ -215,7 +214,7 @@ class _ProductFormState extends State<ProductForm> {
           ),
         ),
         const SizedBox(width: 16),
-        const Spacer(), 
+        const Spacer(),
       ],
     );
   }
@@ -265,7 +264,7 @@ class _ProductFormState extends State<ProductForm> {
               return CustomTextField(
                 label: 'Category',
                 controller:
-                    TextEditingController(text: widget.product.category ),
+                    TextEditingController(text: widget.product.categoryName),
                 enabled: false,
               );
             },
@@ -274,6 +273,7 @@ class _ProductFormState extends State<ProductForm> {
       ],
     );
   }
+
   Widget _buildProductInfo() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -299,7 +299,9 @@ class _ProductFormState extends State<ProductForm> {
           ],
         ),
         const SizedBox(height: 8),
-    ProductInfo(product: widget.product,)
+        ProductInfo(
+          product: widget.product,
+        )
       ],
     );
   }

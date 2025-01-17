@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -66,7 +65,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
   @override
   Widget build(BuildContext context) {
     // Show loading screen while checking authentication
-  if (_isChecking) {
+    if (_isChecking) {
       return Scaffold(
         backgroundColor: AppColors.primaryColor,
         body: Center(
@@ -85,17 +84,14 @@ class _AuthWrapperState extends State<AuthWrapper> {
                 child: CircularProgressIndicator(
                   color: AppColors.background,
                   strokeWidth: 10,
-                  
                 ),
               ),
               const SizedBox(height: 20),
-              Text(
-                'Loading next screen...',
-               style: GoogleFonts.montaga(
+              Text('Loading next screen...',
+                  style: GoogleFonts.montaga(
                       color: AppColors.background,
                       fontSize: 27,
-                      fontWeight: FontWeight.bold)
-              ),
+                      fontWeight: FontWeight.bold)),
             ],
           ),
         ),
@@ -103,7 +99,6 @@ class _AuthWrapperState extends State<AuthWrapper> {
     }
 
     return Scaffold(
-    
       body: isLogin ? const LoginScreen() : const SignupScreen(),
       bottomNavigationBar: BottomAppBar(
         child: Padding(

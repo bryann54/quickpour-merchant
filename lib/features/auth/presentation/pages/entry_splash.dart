@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
@@ -57,7 +56,7 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
     // Navigate to home screen after animation completes
     Future.delayed(const Duration(seconds: 4), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) =>const  Wrapper()),
+        MaterialPageRoute(builder: (_) => const Wrapper()),
       );
     });
   }
@@ -80,17 +79,15 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
               Opacity(
                 opacity: _backgroundFadeAnimation.value,
                 child: Container(
-                  decoration:const BoxDecoration(
-          gradient: LinearGradient(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
                       colors: [
-                       Color.fromARGB(255, 57, 23, 27), 
-                         Color.fromARGB(255, 57, 23, 27),
+                        Color.fromARGB(255, 57, 23, 27),
+                        Color.fromARGB(255, 57, 23, 27),
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
-
-
                   ),
                 ),
               ),
@@ -132,9 +129,9 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                         ),
                       ),
                     ),
-               
+
                     // App name with fade animation
-                Opacity(
+                    Opacity(
                       opacity: _fadeAnimation.value,
                       child: Text(
                         'Merchants',
@@ -155,25 +152,21 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                         ),
                       ),
                     ),
-                      const SizedBox(height: 70),
+                    const SizedBox(height: 70),
                     // Tagline with fade animation
                     Opacity(
                       opacity: _fadeAnimation.value,
-                      child: Text(
-                        'Boost Your Biz, Rahisi Sana,',
-                        style: GoogleFonts.montaga(
-                          color: AppColors.background,
-                          fontSize: 27,
-                          fontWeight: FontWeight.bold
-                        )
-                      ),
+                      child: Text('Boost Your Biz, Rahisi Sana,',
+                          style: GoogleFonts.montaga(
+                              color: AppColors.background,
+                              fontSize: 27,
+                              fontWeight: FontWeight.bold)),
                     ),
-                       const SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     // Tagline with fade animation
                     Opacity(
                       opacity: _fadeAnimation.value,
-                      child: Text(
-                          ' Piga Hustle, Rahisi Sana.',
+                      child: Text(' Piga Hustle, Rahisi Sana.',
                           style: GoogleFonts.montaga(
                               color: AppColors.background,
                               fontSize: 20,

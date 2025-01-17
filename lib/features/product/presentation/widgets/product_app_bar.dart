@@ -8,7 +8,7 @@ import 'package:quickpourmerchant/features/product/presentation/bloc/products_bl
 import 'package:quickpourmerchant/features/product/presentation/widgets/product_image_gallery.dart';
 
 class ProductAppBar extends StatelessWidget {
-  final ProductModel product;
+  final MerchantProductModel product;
   final bool isEditing;
   final VoidCallback onEditPressed;
 
@@ -31,7 +31,7 @@ class ProductAppBar extends StatelessWidget {
           style: Theme.of(context).textTheme.displayLarge,
         ),
         background: ProductImageGallery(product: product),
-      ), 
+      ),
       actions: [
         IconButton(
           icon: Icon(isEditing ? Icons.save : Icons.edit),

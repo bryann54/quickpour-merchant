@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:quickpourmerchant/core/theme/theme_toggle_switch.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -69,31 +68,31 @@ class _SettingsDialogState extends State<SettingsDialog> {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
-            Text(
-              'App Appearance',
-              style: GoogleFonts.montaga(
-                textStyle: theme.textTheme.titleMedium?.copyWith(
-                  color: AppColors.accentColor,
-                ),
-              ),
-            ),
-            
-            Container(
-              decoration: BoxDecoration(
-                color: AppColors.backgroundDark.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: AppColors.accentColor.withOpacity(0.2),
-                ),
-              ),
-              child: _buildSettingsItem(
-                context,
-                icon: Icons.dark_mode_outlined,
-                title: 'Dark Mode',
-                trailing: const ThemeToggle(),
-              ),
-            ),
+            // const SizedBox(height: 24),
+            // Text(
+            //   'App Appearance',
+            //   style: GoogleFonts.montaga(
+            //     textStyle: theme.textTheme.titleMedium?.copyWith(
+            //       color: AppColors.accentColor,
+            //     ),
+            //   ),
+            // ),
+
+            // Container(
+            //   decoration: BoxDecoration(
+            //     color: AppColors.backgroundDark.withOpacity(0.1),
+            //     borderRadius: BorderRadius.circular(12),
+            //     border: Border.all(
+            //       color: AppColors.accentColor.withOpacity(0.2),
+            //     ),
+            //   ),
+            //   child: _buildSettingsItem(
+            //     context,
+            //     icon: Icons.dark_mode_outlined,
+            //     title: 'Dark Mode',
+            //     trailing: const ThemeToggle(),
+            //   ),
+            // ),
             const SizedBox(height: 10),
             Text(
               'Notifications',
@@ -103,7 +102,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                 ),
               ),
             ),
-            
+
             Container(
               decoration: BoxDecoration(
                 color: AppColors.backgroundDark.withOpacity(0.1),
@@ -123,7 +122,7 @@ class _SettingsDialogState extends State<SettingsDialog> {
                 ),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 14),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [

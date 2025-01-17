@@ -1,4 +1,3 @@
-
 import 'package:quickpourmerchant/features/categories/data/models/category_model.dart';
 
 class Category {

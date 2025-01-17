@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 
 class ProductInfo extends StatelessWidget {
-  final ProductModel product;
+  final MerchantProductModel product;
 
   const ProductInfo({
     Key? key,
@@ -15,32 +15,29 @@ class ProductInfo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-       
         const SizedBox(height: 8),
         _buildDatesRow(context),
       ],
     );
   }
 
-
-
   Widget _buildDatesRow(BuildContext context) {
-    return     Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Text(
-                'Created: ${product.createdAt.toString()}',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ),
-            Expanded(
-              child: Text(
-                'Updated: ${product.updatedAt.toString()}',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-            ),
-          ],
-        );
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Text(
+            'Created: ${product.createdAt.toString()}',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            'Updated: ${product.updatedAt.toString()}',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ),
+      ],
+    );
   }
 }

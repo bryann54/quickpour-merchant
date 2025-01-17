@@ -8,6 +8,8 @@ import 'package:quickpourmerchant/features/auth/data/repositories/auth_repositor
 import 'package:quickpourmerchant/features/auth/domain/usecases/auth_usecases.dart';
 import 'package:quickpourmerchant/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:quickpourmerchant/features/auth/presentation/pages/entry_splash.dart';
+import 'package:quickpourmerchant/features/brands/data/repositories/brand_repository.dart';
+import 'package:quickpourmerchant/features/brands/presentation/bloc/brands_bloc.dart';
 import 'package:quickpourmerchant/features/categories/data/repositories/category_repository.dart';
 import 'package:quickpourmerchant/features/categories/domain/usecases/fetch_categories.dart';
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_bloc.dart';
@@ -25,33 +27,37 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider<BrandsBloc>(
+          create: (context) => BrandsBloc(
+            brandRepository: BrandRepository(),
+          )..add(FetchBrandsEvent()), // Add this to load brands immediately
+        ),
         BlocProvider<CategoriesBloc>(
           create: (context) =>
               CategoriesBloc(FetchCategories(CategoryRepository()))
                 ..add(LoadCategories()),
         ),
-            BlocProvider(
+        BlocProvider(
           create: (context) => AuthBloc(
             authUseCases: AuthUseCases(
               authRepository: AuthRepository(),
             ),
           ),
         ),
-         Provider<NotificationsRepository>(
+        Provider<NotificationsRepository>(
           create: (_) => NotificationsRepository(),
         ),
-            BlocProvider(
+        BlocProvider(
           create: (context) => NotificationsBloc(
             context.read<NotificationsRepository>(),
           ),
         ),
-         BlocProvider(
-          create: (context) =>
-              OrdersBloc()
-                ..add(LoadOrdersFromCheckout()),
+        BlocProvider(
+          create: (context) => OrdersBloc()..add(LoadOrdersFromCheckout()),
         ),
         BlocProvider(
-        create: (context) => ProductsBloc(productRepository: ProductRepository())),
+            create: (context) =>
+                ProductsBloc(productRepository: ProductRepository())),
       ],
       child: ChangeNotifierProvider(
         create: (_) => ThemeController(),
@@ -62,7 +68,7 @@ class MyApp extends StatelessWidget {
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
               themeMode: themeController.themeMode,
-              home:  EntrySplashScreen(),
+              home: EntrySplashScreen(),
               initialRoute: RouteGenerator.home,
               onGenerateRoute: RouteGenerator.generateRoute,
             );

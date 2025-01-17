@@ -6,6 +6,7 @@ abstract class ProductsEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
 class ProductErrorEvent extends ProductsEvent {
   final String error;
 
@@ -18,7 +19,7 @@ class ProductErrorEvent extends ProductsEvent {
 class FetchProducts extends ProductsEvent {}
 
 class UpdateProductsList extends ProductsEvent {
-  final List<ProductModel> products;
+  final List<MerchantProductModel> products;
 
   const UpdateProductsList(this.products);
 
@@ -27,7 +28,7 @@ class UpdateProductsList extends ProductsEvent {
 }
 
 class AddProduct extends ProductsEvent {
-  final ProductModel product;
+  final MerchantProductModel product;
 
   const AddProduct(this.product);
 
@@ -36,7 +37,7 @@ class AddProduct extends ProductsEvent {
 }
 
 class UpdateProduct extends ProductsEvent {
-  final ProductModel product;
+  final MerchantProductModel product;
 
   const UpdateProduct(this.product);
 
@@ -52,6 +53,7 @@ class DeleteProduct extends ProductsEvent {
   @override
   List<Object> get props => [productId];
 }
+
 //  new event to fetch merchant specific products
 class FetchMerchantProducts extends ProductsEvent {
   final String merchantId;

@@ -50,7 +50,7 @@ class CustomDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration:  const BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
                   Color(0xFFE74C3C),
@@ -87,8 +87,7 @@ class CustomDrawer extends StatelessWidget {
               ],
             ),
           ),
-       
- DrawerTile(
+          DrawerTile(
             icon: FontAwesomeIcons.boxOpen, // or FontAwesomeIcons.cubes
             title: 'Products',
             onTap: () => Navigator.pushNamed(context, '/products'),
@@ -115,10 +114,10 @@ class CustomDrawer extends StatelessWidget {
             title: 'Profile',
             onTap: () => Navigator.pushNamed(context, '/profile'),
           ),
-         SizedBox(
-        height: 200,
-         ),
-         LogOutButton()
+          SizedBox(
+            height: 200,
+          ),
+          LogOutButton()
         ],
       ),
     );
@@ -161,7 +160,7 @@ class DrawerTile extends StatelessWidget {
             ),
           ),
           onTap: () {
-            Navigator.pop(context); 
+            Navigator.pop(context);
             onTap();
           },
         ),

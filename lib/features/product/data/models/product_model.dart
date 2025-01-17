@@ -1,12 +1,14 @@
-class ProductModel {
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class MerchantProductModel {
   final String id;
-  final String merchantId; // Add merchantId field
   final String productName;
   final List<String> imageUrls;
   final double price;
-  final String brand;
+  final String merchantId;
+  final String brandName;
   final String description;
-  final String category;
+  final String categoryName;
   final int stockQuantity;
   final bool isAvailable;
   final double discountPrice;
@@ -15,15 +17,15 @@ class ProductModel {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  ProductModel({
+  MerchantProductModel({
     required this.id,
-    required this.merchantId, // Add to constructor
     required this.productName,
     required this.imageUrls,
     required this.price,
-    required this.brand,
+    required this.merchantId,
+    required this.brandName,
     required this.description,
-    required this.category,
+    required this.categoryName,
     required this.stockQuantity,
     this.isAvailable = true,
     this.discountPrice = 0.0,
@@ -33,47 +35,43 @@ class ProductModel {
     required this.updatedAt,
   });
 
-  // Update toMap method
+  factory MerchantProductModel.fromMap(Map<String, dynamic> map) {
+    return MerchantProductModel(
+      id: map['id'] ?? '',
+      productName: map['productName'] ?? '',
+      imageUrls: List<String>.from(map['imageUrls'] ?? []),
+      price: (map['price'] ?? 0.0).toDouble(),
+      merchantId: map['merchantId'] ?? '',
+      brandName: map['brandName'] ?? '',
+      description: map['description'] ?? '',
+      categoryName: map['categoryName'] ?? '',
+      stockQuantity: map['stockQuantity'] ?? 0,
+      isAvailable: map['isAvailable'] ?? true,
+      discountPrice: (map['discountPrice'] ?? 0.0).toDouble(),
+      sku: map['sku'] ?? '',
+      tags: List<String>.from(map['tags'] ?? []),
+      createdAt: (map['createdAt'] as Timestamp).toDate(),
+      updatedAt: (map['updatedAt'] as Timestamp).toDate(),
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'merchantId': merchantId, // Add to map
       'productName': productName,
       'imageUrls': imageUrls,
       'price': price,
-      'brand': brand,
+      'merchantId': merchantId,
+      'brandName': brandName,
       'description': description,
-      'category': category,
+      'categoryName': categoryName,
       'stockQuantity': stockQuantity,
       'isAvailable': isAvailable,
       'discountPrice': discountPrice,
       'sku': sku,
       'tags': tags,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
     };
-  }
-
-  // Update fromMap factory
-  factory ProductModel.fromMap(Map<String, dynamic> map) {
-    return ProductModel(
-      id: map['id'] ?? '',
-      merchantId: map['merchantId'] ?? '', // Add to factory
-      productName: map['productName'] ?? '',
-      imageUrls: List<String>.from(map['imageUrls'] ?? []),
-      price: (map['price'] ?? 0).toDouble(),
-      brand: map['brand'] ?? '',
-      description: map['description'] ?? '',
-      category: map['category'] ?? '',
-      stockQuantity: (map['stockQuantity'] ?? 0).toInt(),
-      isAvailable: map['isAvailable'] ?? true,
-      discountPrice: (map['discountPrice'] ?? 0).toDouble(),
-      sku: map['sku'] ?? '',
-      tags: List<String>.from(map['tags'] ?? []),
-      createdAt:
-          DateTime.parse(map['createdAt'] ?? DateTime.now().toIso8601String()),
-      updatedAt:
-          DateTime.parse(map['updatedAt'] ?? DateTime.now().toIso8601String()),
-    );
   }
 }

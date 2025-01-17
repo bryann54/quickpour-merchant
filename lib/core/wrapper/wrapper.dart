@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickpourmerchant/core/utils/custom_snackbar_widget.dart';
@@ -54,7 +53,7 @@ class _WrapperState extends State<Wrapper> {
             return HomeScreen(); // Your home screen widget
           } else {
             // If not authenticated, show the login screen
-            return AuthWrapper(); 
+            return AuthWrapper();
           }
         },
       ),

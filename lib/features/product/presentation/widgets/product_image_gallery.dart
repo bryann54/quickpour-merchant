@@ -4,7 +4,7 @@ import 'package:quickpourmerchant/core/utils/strings.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 
 class ProductImageGallery extends StatefulWidget {
-  final ProductModel product;
+  final MerchantProductModel product;
 
   const ProductImageGallery({
     Key? key,

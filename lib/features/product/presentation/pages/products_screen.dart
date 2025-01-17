@@ -126,7 +126,7 @@ class ProductsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProductsGrid(List<ProductModel> products) {
+  Widget _buildProductsGrid(List<MerchantProductModel> products) {
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),

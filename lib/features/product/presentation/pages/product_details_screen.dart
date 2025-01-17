@@ -8,9 +8,10 @@ import 'package:quickpourmerchant/features/product/presentation/widgets/product_
 import 'package:quickpourmerchant/features/product/presentation/widgets/product_form.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  final ProductModel product;
+  final MerchantProductModel product;
 
-  const ProductDetailsScreen({Key? key, required this.product}) : super(key: key);
+  const ProductDetailsScreen({Key? key, required this.product})
+      : super(key: key);
 
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
@@ -54,4 +55,3 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 }
-

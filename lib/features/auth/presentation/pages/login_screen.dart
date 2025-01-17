@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -67,31 +66,32 @@ class _LoginScreenState extends State<LoginScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: 40),
-                      Text(
-                        'Welcome Back!',
-                        style: GoogleFonts.acme(textStyle: Theme.of(context)
-                            .textTheme
-                            .headlineMedium
-                            ?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: isDarkMode
-                                    ? AppColors.brandPrimary
-                                    : AppColors.brandPrimary),
-                      )),
+                      Text('Welcome Back!',
+                          style: GoogleFonts.acme(
+                            textStyle: Theme.of(context)
+                                .textTheme
+                                .headlineMedium
+                                ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: isDarkMode
+                                        ? AppColors.brandPrimary
+                                        : AppColors.brandPrimary),
+                          )),
                       const SizedBox(height: 8),
-                      Text(
-                        'Log in to continue',
-                        style: GoogleFonts.acme(textStyle: 
-                          Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      Text('Log in to continue',
+                          style: GoogleFonts.acme(
+                            textStyle: Theme.of(context)
+                                .textTheme
+                                .bodyLarge
+                                ?.copyWith(
                                   color: isDarkMode
                                       ? AppColors.accentColorDark
                                       : AppColors.accentColor,
-                                ).copyWith(
+                                )
+                                .copyWith(
                                   fontSize: 24,
                                 ),
-
-                        )
-                      ),
+                          )),
                       const SizedBox(height: 40),
                       TextFormField(
                         controller: _emailController,
@@ -176,39 +176,35 @@ class _LoginScreenState extends State<LoginScreen> {
                             : const Text('Login'),
                       ),
                       const SizedBox(height: 16),
-               
-          const  SizedBox(height: 350,),
+                      const SizedBox(
+                        height: 350,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             'Don\'t have an account? ',
-                            style: GoogleFonts
-                                .poppins(),
+                            style: GoogleFonts.poppins(),
                           ),
                           TextButton(
                             onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                    const  SignupScreen(),
+                                  builder: (context) => const SignupScreen(),
                                 ),
                               );
                             },
                             child: Text(
                               'SignUp',
                               style: GoogleFonts.poppins(
-                                color:
-                                    Colors.blue,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17
-                              ),
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17),
                             ),
                           ),
                         ],
                       )
-                   
                     ],
                   ),
                 ),

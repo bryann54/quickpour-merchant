@@ -18,7 +18,6 @@ class ProductTags extends StatelessWidget {
             ),
           )
           .toList(),
-
     );
   }
 }

@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-     namespace = "c"
+     namespace = "com.example.quickpourmerchant"
     compileSdk flutter.compileSdkVersion
     
     defaultConfig {

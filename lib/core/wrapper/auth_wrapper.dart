@@ -27,34 +27,35 @@ class _AuthWrapperState extends State<AuthWrapper> {
   }
 
   Future<void> _checkAuthStatus() async {
+    if (!mounted) return; // Add this check
     final authBloc = context.read<AuthBloc>();
 
     try {
-      // Check if user is signed in
       if (authBloc.authUseCases.isUserSignedIn()) {
-        // Attempt to get user details
         final user = await authBloc.authUseCases.getCurrentUserDetails();
 
+        if (!mounted) return; // Add this check before navigation
+
         if (user != null) {
-          // User is fully authenticated, navigate to BottomNav
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (_) => HomeScreen()),
           );
+          return; // Add return to prevent further execution
         } else {
-          // No user details found, navigate to Splash/Signup
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (_) => const SplashScreen()),
           );
+          return; // Add return to prevent further execution
         }
-      } else {
-        // No user signed in, set to signup
-        setState(() {
-          isLogin = false;
-          _isChecking = false;
-        });
       }
+
+      if (!mounted) return; // Add this check before setState
+      setState(() {
+        isLogin = false;
+        _isChecking = false;
+      });
     } catch (e) {
-      // Error in authentication, default to login
+      if (!mounted) return; // Add this check before setState
       setState(() {
         isLogin = true;
         _isChecking = false;

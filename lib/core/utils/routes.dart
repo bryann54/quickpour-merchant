@@ -4,15 +4,16 @@ import 'package:quickpourmerchant/features/auth/data/repositories/auth_repositor
 import 'package:quickpourmerchant/features/auth/domain/usecases/auth_usecases.dart';
 import 'package:quickpourmerchant/features/auth/presentation/pages/entry_splash.dart';
 import 'package:quickpourmerchant/features/auth/presentation/pages/login_screen.dart';
-import 'package:quickpourmerchant/features/product/presentation/pages/home_screen.dart';
 import 'package:quickpourmerchant/features/notifications/presentation/pages/notifications_screen.dart';
 import 'package:quickpourmerchant/features/orders/presentation/pages/orders_screen.dart';
 import 'package:quickpourmerchant/features/product/presentation/pages/products_screen.dart';
 import 'package:quickpourmerchant/features/profile/presentation/pages/profile_screen.dart';
+import 'package:quickpourmerchant/features/requests/presentation/pages/requests_screen.dart';
 
 class RouteGenerator {
   static const String home = '/home';
   static const String products = '/products';
+    static const String requests = '/requests';
   static const String orders = '/orders';
   static const String analytics = '/analytics';
   static const String notifications = '/notifications';
@@ -28,6 +29,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => EntrySplashScreen());
       case products:
         return MaterialPageRoute(builder: (_) => ProductsScreen());
+         case requests:
+        return MaterialPageRoute(builder: (_) => RequestsScreen());
       case orders:
         return MaterialPageRoute(builder: (_) => OrdersScreen());
       case analytics:

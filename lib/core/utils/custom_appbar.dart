@@ -92,6 +92,11 @@ class CustomDrawer extends StatelessWidget {
             title: 'Products',
             onTap: () => Navigator.pushNamed(context, '/products'),
           ),
+            DrawerTile(
+            icon: FontAwesomeIcons.redditSquare, // or FontAwesomeIcons.cubes
+            title: 'Requests',
+            onTap: () => Navigator.pushNamed(context, '/requests'),
+          ),
           DrawerTile(
             icon: FontAwesomeIcons
                 .basketShopping, // or FontAwesomeIcons.cartShopping

@@ -19,6 +19,9 @@ import 'package:quickpourmerchant/features/notifications/presentation/bloc/notif
 import 'package:quickpourmerchant/features/orders/presentation/bloc/orders_bloc.dart';
 import 'package:quickpourmerchant/features/product/data/repositories/product_repository.dart';
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
+import 'package:quickpourmerchant/features/requests/data/repositories/drink_request_repo.dart';
+import 'package:quickpourmerchant/features/requests/presentation/bloc/requests_bloc.dart';
+import 'package:quickpourmerchant/features/requests/presentation/bloc/requests_event.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -58,6 +61,11 @@ class MyApp extends StatelessWidget {
         BlocProvider(
             create: (context) =>
                 ProductsBloc(productRepository: ProductRepository())),
+                 BlocProvider(
+          create: (context) => DrinkRequestBloc(
+            repository: DrinkRequestRepository(),
+          )..add(LoadDrinkRequests()),
+        ),
       ],
       child: ChangeNotifierProvider(
         create: (_) => ThemeController(),

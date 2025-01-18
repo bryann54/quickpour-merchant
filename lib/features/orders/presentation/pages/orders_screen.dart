@@ -5,6 +5,7 @@ import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/features/orders/data/models/completed_order_model.dart';
 import 'package:quickpourmerchant/features/orders/presentation/bloc/orders_bloc.dart';
 import 'package:quickpourmerchant/features/orders/presentation/widgets/order_item_card.dart';
+import 'package:quickpourmerchant/features/orders/presentation/widgets/order_shimmer.dart';
 
 class OrdersScreen extends StatelessWidget {
   const OrdersScreen({super.key});
@@ -23,7 +24,12 @@ class OrdersScreen extends StatelessWidget {
         child: BlocBuilder<OrdersBloc, OrdersState>(
           builder: (context, state) {
             if (state is OrdersInitial) {
-              return const Center(child: CircularProgressIndicator());
+            return ListView.builder(
+                itemCount: 7,
+                itemBuilder: (context, index) {
+                  return const OrderItemShimmer();
+                },
+              );
             } else if (state is OrdersEmpty) {
               return _buildEmptyOrdersView(context);
             } else if (state is OrdersLoaded) {

@@ -19,13 +19,22 @@ class Order {
 }
 
 class OrderItem {
-  final String name;
-  final int quantity;
+  final String productName;
   final double price;
+  final int quantity;
 
   OrderItem({
-    required this.name,
-    required this.quantity,
+    required this.productName,
     required this.price,
+    required this.quantity,
   });
+
+  factory OrderItem.fromJson(Map<String, dynamic> json) {
+    return OrderItem(
+      productName: json['productName'] as String,
+      price: (json['price'] as num).toDouble(),
+      quantity: json['quantity'] as int,
+    );
+  }
 }
+

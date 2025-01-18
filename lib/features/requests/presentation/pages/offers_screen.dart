@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickpourmerchant/features/requests/data/models/drink_request_model.dart';
+import 'package:quickpourmerchant/features/requests/data/repositories/drink_request_repo.dart';
 import 'package:quickpourmerchant/features/requests/presentation/bloc/requests_bloc.dart';
 import 'package:quickpourmerchant/features/requests/presentation/bloc/requests_event.dart';
 import 'package:quickpourmerchant/features/requests/presentation/widgets/offer_dialog.dart';
@@ -14,6 +15,10 @@ class OffersScreen extends StatelessWidget {
     super.key,
     required this.request,
   });
+Future<List<Map<String, dynamic>>> _fetchOffers() {
+    final repository = DrinkRequestRepository();
+    return repository.getOffers(request.id);
+  }
 
   Future<bool> _showDeleteConfirmation(BuildContext context) async {
     
@@ -240,9 +245,87 @@ class OffersScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  const Align(
-                      alignment: Alignment.center, child: Text('No offers yet'))
+                
+                  FutureBuilder<List<Map<String, dynamic>>>(
+                    future: _fetchOffers(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasError) {
+                      return Center(
+                          child: Builder(
+                            builder: (context) {
+                              // Log the error to the terminal
+                              debugPrint(
+                                  'Failed to load offers: ${snapshot.error}');
+
+                              return Text(
+                                'Failed to load offers: ${snapshot.error}',
+                                style: TextStyle(
+                                    color: Theme.of(context).colorScheme.error),
+                              );
+                            },
+                          ),
+                        );
+
+                      } else if (snapshot.hasData &&
+                          snapshot.data!.isNotEmpty) {
+                        return ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            final offer = snapshot.data![index];
+                            return Card(
+                             child: ListTile(
+                                title: Text(
+                                  'Offer: Ksh ${offer['price']}',
+                                  style: theme.textTheme.titleMedium
+                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Delivery: ${DateFormat('MMM d, h:mm a').format(DateTime.parse(offer['deliveryTime']))}',
+                                      style: theme.textTheme.bodyMedium,
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      offer['notes'] ?? 'No notes',
+                                      style: theme.textTheme.bodySmall
+                                          ?.copyWith(
+                                              color: theme.colorScheme
+                                                  .onSurfaceVariant),
+                                    ),
+                                  ],
+                                ),
+                                isThreeLine:
+                                    true, // Makes sure we can display more content
+                                trailing: Icon(
+                                  Icons
+                                      .check_circle, // You can customize the icon based on the offer's status
+                                  color: theme.colorScheme.primary,
+                                ),
+                                onTap: () {
+                                  // You can add a tap handler to navigate to a detailed offer page or show more actions
+                                },
+                              ),
+
+                            );
+                          },
+                        );
+                      } else {
+                        return const Align(
+                          alignment: Alignment.center,
+                          child: Text('No offers yet'),
+                        );
+                      }
+                    },
+                  ),
+
                 ],
               ),
             ),

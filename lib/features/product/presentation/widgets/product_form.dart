@@ -120,7 +120,7 @@ class _ProductFormState extends State<ProductForm> {
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Error updating product: ${error.toString()}'),
+          content: Text('Error updating product'),
           backgroundColor: Colors.red,
         ),
       );
@@ -164,40 +164,42 @@ class _ProductFormState extends State<ProductForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CustomTextField(
-            label: 'Product Name',
-            controller: _nameController,
-            enabled: widget.isEditing,
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 16),
-          _buildPriceAndStockFields(),
-          const SizedBox(height: 16),
-          _buildCategoryAndBrandFields(),
-          const SizedBox(height: 16),
-          CustomTextField(
-            label: 'Description',
-            controller: _descriptionController,
-            enabled: widget.isEditing,
-            maxLines: 4,
-          ),
-          const SizedBox(height: 16),
-          ProductTags(tags: widget.product.tags),
-          const SizedBox(height: 16),
-          _buildProductInfo(),
-          if (widget.isEditing) ...[
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _updateProduct,
-              child: const Text('Update Product'),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomTextField(
+              label: 'Product Name',
+              controller: _nameController,
+              enabled: widget.isEditing,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
+            const SizedBox(height: 16),
+            _buildPriceAndStockFields(),
+            const SizedBox(height: 16),
+            _buildCategoryAndBrandFields(),
+            const SizedBox(height: 16),
+            CustomTextField(
+              label: 'Description',
+              controller: _descriptionController,
+              enabled: widget.isEditing,
+              maxLines: 4,
+            ),
+            const SizedBox(height: 16),
+            ProductTags(tags: widget.product.tags),
+            const SizedBox(height: 16),
+            _buildProductInfo(),
+            if (widget.isEditing) ...[
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: _updateProduct,
+                child: const Text('Update Product'),
+              ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
@@ -214,7 +216,14 @@ class _ProductFormState extends State<ProductForm> {
           ),
         ),
         const SizedBox(width: 16),
-        const Spacer(),
+        Expanded(
+          child: CustomTextField(
+            label: 'Stock',
+            controller: _stockController,
+            enabled: widget.isEditing,
+            keyboardType: TextInputType.number,
+          ),
+        ),
       ],
     );
   }
@@ -245,7 +254,7 @@ class _ProductFormState extends State<ProductForm> {
                   ),
                   items: categories.map((Category category) {
                     return DropdownMenuItem<String>(
-                      value: category.id,
+                      value: category.name,
                       child: Text(category.name),
                     );
                   }).toList(),
@@ -278,25 +287,9 @@ class _ProductFormState extends State<ProductForm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Text(
-                'SKU: ${widget.product.sku}',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: CustomTextField(
-                label: 'Stock',
-                controller: _stockController,
-                enabled: widget.isEditing,
-                keyboardType: TextInputType.number,
-              ),
-            ),
-          ],
+        Text(
+          'SKU: ${widget.product.sku}',
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
         const SizedBox(height: 8),
         ProductInfo(

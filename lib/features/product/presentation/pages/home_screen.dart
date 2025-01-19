@@ -69,6 +69,8 @@ class _HomeScreenState extends State<HomeScreen>
               pinned: true,
               expandedHeight: 200.0,
               leading: IconButton(
+                color: Colors.white,
+                iconSize: 30,
                 icon: const Icon(Icons.menu),
                 onPressed: () => _scaffoldKey.currentState?.openDrawer(),
               ),
@@ -91,8 +93,9 @@ class _HomeScreenState extends State<HomeScreen>
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
                 ),
-                unselectedLabelStyle: const TextStyle(
+                unselectedLabelStyle:const  TextStyle(
                   fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
                 ),
                 indicatorColor: Colors.white,
                 tabs: const [
@@ -107,8 +110,8 @@ class _HomeScreenState extends State<HomeScreen>
                 controller: _tabController,
                 children: [
                   _buildHomeContent(context, theme, isDarkMode),
-                  OrdersScreen(),
-                  RequestsScreen(),
+               const   OrdersScreen(),
+                const  RequestsScreen(),
                 ],
               ),
             ),

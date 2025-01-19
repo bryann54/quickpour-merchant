@@ -12,6 +12,8 @@ class OrderItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -74,7 +76,7 @@ class OrderItemWidget extends StatelessWidget {
                       'Order #${order.id}',
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: AppColors.primaryColor,
+                            color:isDarkMode?AppColors.background.withOpacity(.6): AppColors.primaryColor,
                           ),
                     ),
                     const SizedBox(height: 4),
@@ -82,14 +84,18 @@ class OrderItemWidget extends StatelessWidget {
                       'Ksh ${order.total.toStringAsFixed(0)}',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                           color: isDarkMode
+                                ? AppColors.brandAccent.withOpacity(.5)
+                                : Colors.black87,
                           ),
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      order.userName,
+                      'by:  ${order.userName}',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Colors.grey[600],
+                         color: isDarkMode
+                                ? AppColors.shimmerHighlight
+                                : Colors.grey[600],
                           ),
                     ),
                   ],
@@ -97,7 +103,9 @@ class OrderItemWidget extends StatelessWidget {
               ),
               Icon(
                 Icons.chevron_right,
-                color: AppColors.primaryColor,
+                color: isDarkMode
+                    ? AppColors.background.withOpacity(.6)
+                    : AppColors.primaryColor,
               ),
             ],
           ),

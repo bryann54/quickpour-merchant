@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/core/utils/time_range_utils.dart';
-import 'package:quickpourmerchant/features/auth/presentation/pages/login_screen.dart';
 import 'package:quickpourmerchant/features/auth/presentation/widgets/facebook_signin_button.dart';
 import 'package:quickpourmerchant/features/auth/presentation/widgets/google_signin_button.dart';
 import 'package:quickpourmerchant/features/product/presentation/pages/home_screen.dart';
@@ -96,7 +95,7 @@ class _SignupScreenState extends State<SignupScreen> {
           return SafeArea(
             child: SingleChildScrollView(
               child: Padding(
-                padding: EdgeInsets.only(top: 40, left: 10, right: 10.0),
+                padding: const EdgeInsets.only(top: 40, left: 10, right: 10.0),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -129,7 +128,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         const SizedBox(height: 20),
                         // Business Information Section
                         Container(
-                          padding: EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
@@ -213,7 +212,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   });
                 },
               ),
-              Text('24 Hours'),
+              const Text('24 Hours'),
             ],
           ),
 
@@ -222,7 +221,7 @@ class _SignupScreenState extends State<SignupScreen> {
             InkWell(
               onTap: () => _selectTimeRange(context),
               child: Container(
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey),
                   borderRadius: BorderRadius.circular(12),
@@ -238,7 +237,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             : Theme.of(context).textTheme.bodyLarge?.color,
                       ),
                     ),
-                    Icon(Icons.access_time),
+                    const Icon(Icons.access_time),
                   ],
                 ),
               ),
@@ -247,7 +246,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         const SizedBox(height: 20),
                         // Personal Information Section
                         Container(
-                          padding: EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
@@ -468,7 +467,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           GoogleSignInButton(
                         
                           ),
-                          const SizedBox(width: 30),
+                          SizedBox(width: 30),
                           FacebookSignInButton(
                         
                           ),

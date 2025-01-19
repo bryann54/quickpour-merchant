@@ -128,7 +128,7 @@ class _OfferDialogState extends State<OfferDialog> {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: theme.colorScheme.surfaceVariant,
+                    color: theme.colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Column(
@@ -153,7 +153,7 @@ class _OfferDialogState extends State<OfferDialog> {
                   controller: _priceController,
                   decoration: InputDecoration(
                     labelText: 'Total Price',
-                    prefixText: '\Ksh',
+                    prefixText: 'Ksh',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

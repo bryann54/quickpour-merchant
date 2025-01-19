@@ -57,7 +57,7 @@ class _LogOutButtonState extends State<LogOutButton> {
                   : AppColors.darkButtonGradient,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Center(
+            child: const Center(
               child: Text(
                 'logout',
                 style: TextStyle(

@@ -38,7 +38,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
         if (user != null) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => HomeScreen()),
+            MaterialPageRoute(builder: (_) => const HomeScreen()),
           );
           return; // Add return to prevent further execution
         } else {
@@ -82,7 +82,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
                     child: child,
                   );
                 },
-                child: CircularProgressIndicator(
+                child: const CircularProgressIndicator(
                   color: AppColors.background,
                   strokeWidth: 10,
                 ),
@@ -118,7 +118,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
                 },
                 child: Text(
                   isLogin ? "Sign Up" : "Login",
-                  style: TextStyle(color: AppColors.errorDark, fontSize: 20),
+                  style: const TextStyle(color: AppColors.errorDark, fontSize: 20),
                 ),
               ),
             ],

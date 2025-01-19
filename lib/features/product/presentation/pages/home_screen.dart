@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen>
           ],
         ),
       ),
-      floatingActionButton: CustomFAB(),
+      floatingActionButton: const CustomFAB(),
     );
   }
 

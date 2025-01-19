@@ -57,11 +57,11 @@ class ProductCard extends StatelessWidget {
                               color: isDarkMode
                                   ? AppColors.accentColor.withOpacity(.5)
                                   : AppColors.accentColorDark.withOpacity(.3)),
-                          borderRadius: BorderRadius.only(
+                          borderRadius: const BorderRadius.only(
                               topLeft: Radius.circular(12),
                               topRight: Radius.circular(12)),
                         ),
-                        child: SizedBox(
+                        child: const SizedBox(
                           height: 150,
                           child: Center(
                             child: Column(
@@ -121,14 +121,14 @@ class ProductCard extends StatelessWidget {
                     ),
                     Text(
                       product.discountPrice > 0
-                          ? '\Ksh ${product.discountPrice.toStringAsFixed(2)}'
-                          : '\Ksh ${product.price.toStringAsFixed(2)}',
+                          ? 'Ksh ${product.discountPrice.toStringAsFixed(2)}'
+                          : 'Ksh ${product.price.toStringAsFixed(2)}',
                       style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     if (product.discountPrice > 0)
                       Text(
-                        '\Ksh ${product.price.toStringAsFixed(2)}',
+                        'Ksh ${product.price.toStringAsFixed(2)}',
                         style: const TextStyle(
                           fontSize: 12,
                           decoration: TextDecoration.lineThrough,

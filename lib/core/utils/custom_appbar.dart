@@ -119,10 +119,10 @@ class CustomDrawer extends StatelessWidget {
             title: 'Profile',
             onTap: () => Navigator.pushNamed(context, '/profile'),
           ),
-          SizedBox(
+          const SizedBox(
             height: 200,
           ),
-          LogOutButton()
+          const LogOutButton()
         ],
       ),
     );
@@ -169,7 +169,7 @@ class DrawerTile extends StatelessWidget {
             onTap();
           },
         ),
-        Divider()
+        const Divider()
       ],
     );
   }

@@ -231,7 +231,7 @@ class OrderDetailsScreen extends StatelessWidget {
                                       ),
                                       child: Text(
                                         'x${item.quantity}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: AppColors.primaryColor,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -298,7 +298,7 @@ class OrderDetailsScreen extends StatelessWidget {
                 ),
               ),
             const SizedBox(height: 20),
-            ConfirmOrderButton(),
+            const ConfirmOrderButton(),
             const SizedBox(height: 20),
           ],
         ),

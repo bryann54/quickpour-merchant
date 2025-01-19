@@ -5,6 +5,8 @@ import 'package:quickpourmerchant/features/categories/presentation/bloc/categori
 import 'package:quickpourmerchant/features/product/presentation/widgets/add_product_dialog_widget.dart';
 
 class CustomFAB extends StatelessWidget {
+  const CustomFAB({super.key});
+
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
@@ -13,7 +15,7 @@ class CustomFAB extends StatelessWidget {
         context.read<CategoriesBloc>().add(LoadCategories());
         showDialog(
           context: context,
-          builder: (context) => AddProductDialog(),
+          builder: (context) => const AddProductDialog(),
         );
       },
       icon: const Icon(Icons.add),

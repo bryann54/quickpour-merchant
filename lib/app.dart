@@ -76,7 +76,7 @@ class MyApp extends StatelessWidget {
               theme: AppTheme.lightTheme,
               darkTheme: AppTheme.darkTheme,
               themeMode: themeController.themeMode,
-              home: EntrySplashScreen(),
+              home: const EntrySplashScreen(),
               initialRoute: RouteGenerator.home,
               onGenerateRoute: RouteGenerator.generateRoute,
             );

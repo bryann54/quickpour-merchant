@@ -232,9 +232,9 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                               ],
                             ),
                           ),
-                          Row(
+                          const Row(
                             children: [
-                              const Text('additional Instructions',
+                              Text('additional Instructions',
                               style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
                             ],
                           ),
@@ -278,10 +278,26 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             final offer = snapshot.data![index];
-                            return Card(
-                              margin: const EdgeInsets.symmetric(vertical: 1),
+                     return Container(
+                              decoration: BoxDecoration(
+                                color: theme.colorScheme.surface,
+                                border: Border.all(
+                                    color: theme.colorScheme.outline
+                                        .withOpacity(0.2)),
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: theme.colorScheme.shadow
+                                        .withOpacity(0.05),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 2),
                               child: Padding(
-                                padding: const EdgeInsets.only(left: 6,right: 5),
+                                padding: const EdgeInsets.all(16),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -289,87 +305,149 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text(
-                                          offer['storeName'] ?? 'Unknown Store',
-                                          style: theme.textTheme.titleMedium
-                                              ?.copyWith(
-                                            fontWeight: FontWeight.bold,
+                                        Expanded(
+                                          child: Text(
+                                            offer['storeName'] ??
+                                                'Unknown Store',
+                                            style: theme.textTheme.titleMedium
+                                                ?.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                              color:
+                                                  theme.colorScheme.onSurface,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
-                                        Text(
-                                          'Ksh ${offer['price']}',
-                                          style: theme.textTheme.titleLarge
-                                              ?.copyWith(
-                                            color: theme.colorScheme.primary,
-                                            fontWeight: FontWeight.bold,
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 12, vertical: 6),
+                                          decoration: BoxDecoration(
+                                            color: theme.colorScheme.primary
+                                                .withOpacity(0.1),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: Text(
+                                            'Ksh ${offer['price']}',
+                                            style: theme.textTheme.titleMedium
+                                                ?.copyWith(
+                                              color: theme.colorScheme.primary,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 8),
+                                    const SizedBox(height: 16),
                                     Row(
                                       children: [
-                                        Icon(
-                                          Icons.location_on_outlined,
-                                          size: 16,
-                                          color: theme
-                                              .colorScheme.onSurfaceVariant,
-                                        ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          offer['location'] ??
-                                              'Location not specified',
-                                          style: theme.textTheme.bodyMedium
-                                              ?.copyWith(
+                                        Container(
+                                          padding: const EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
                                             color: theme
-                                                .colorScheme.onSurfaceVariant,
+                                                .colorScheme.secondaryContainer
+                                                .withOpacity(0.3),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: Icon(
+                                            Icons.location_on_outlined,
+                                            size: 16,
+                                            color: theme.colorScheme.secondary,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: Text(
+                                            offer['location'] ??
+                                                'Location not specified',
+                                            style: theme.textTheme.bodyMedium
+                                                ?.copyWith(
+                                              color: theme
+                                                  .colorScheme.onSurfaceVariant,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 8),
+                                    const SizedBox(height: 12),
                                     Row(
                                       children: [
-                                        Icon(
-                                          Icons.access_time,
-                                          size: 16,
-                                          color: theme
-                                              .colorScheme.onSurfaceVariant,
+                                        Container(
+                                          padding: const EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            color: theme
+                                                .colorScheme.tertiaryContainer
+                                                .withOpacity(0.3),
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                          ),
+                                          child: Icon(
+                                            Icons.access_time,
+                                            size: 16,
+                                            color: theme.colorScheme.tertiary,
+                                          ),
                                         ),
-                                        const SizedBox(width: 4),
-                                        Text(
-                                          'Delivery by: ${DateFormat('MMM d, h:mm a').format(
-                                            DateTime.parse(
-                                                offer['deliveryTime']),
-                                          )}',
-                                          style: theme.textTheme.bodyMedium,
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: Text(
+                                            'Delivery by: ${DateFormat('MMM d, h:mm a').format(
+                                              DateTime.parse(
+                                                  offer['deliveryTime']),
+                                            )}',
+                                            style: theme.textTheme.bodyMedium
+                                                ?.copyWith(
+                                              color: theme
+                                                  .colorScheme.onSurfaceVariant,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         ),
                                       ],
                                     ),
                                     if (offer['notes']?.isNotEmpty ??
                                         false) ...[
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        'Notes:',
-                                        style: theme.textTheme.bodyMedium
-                                            ?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      Text(
-                                        offer['notes'],
-                                        style: theme.textTheme.bodyMedium
-                                            ?.copyWith(
+                                      const SizedBox(height: 16),
+                                      Container(
+                                        padding: const EdgeInsets.all(12),
+                                        decoration: BoxDecoration(
                                           color: theme
-                                              .colorScheme.onSurfaceVariant,
+                                              .colorScheme.surfaceVariant
+                                              .withOpacity(0.3),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Notes:',
+                                              style: theme.textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                fontWeight: FontWeight.bold,
+                                                color: theme.colorScheme
+                                                    .onSurfaceVariant,
+                                              ),
+                                            ),
+                                            const SizedBox(height: 4),
+                                            Text(
+                                              offer['notes'],
+                                              style: theme.textTheme.bodyMedium
+                                                  ?.copyWith(
+                                                color: theme.colorScheme
+                                                    .onSurfaceVariant,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ],
                                   ],
                                 ),
                               ),
-                            );
-                          },
+                            ); },
                         );
                       } else {
                         return Center(

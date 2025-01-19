@@ -193,7 +193,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
             ),
           ],
         ),
-        floatingActionButton: CustomFAB(),
+        floatingActionButton: const CustomFAB(),
       ),
     );
   }

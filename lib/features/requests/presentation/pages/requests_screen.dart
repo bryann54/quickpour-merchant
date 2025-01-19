@@ -30,7 +30,7 @@ class RequestsScreen extends StatelessWidget {
                 children: [
                   Text(
                     'Error: ${state.message}',
-                    style: TextStyle(color: Colors.red),
+                    style: const TextStyle(color: Colors.red),
                   ),
                   ElevatedButton(
                     onPressed: () {

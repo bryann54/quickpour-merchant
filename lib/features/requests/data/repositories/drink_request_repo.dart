@@ -27,7 +27,7 @@ class DrinkRequestRepository {
         .snapshots()
         .map((snapshot) => snapshot.docs
             .map((doc) =>
-                DrinkRequest.fromMap(doc.data() as Map<String, dynamic>))
+                DrinkRequest.fromMap(doc.data()))
             .toList());
   }
 Future<List<Map<String, dynamic>>> getOffers(String requestId) async {

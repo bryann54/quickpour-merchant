@@ -119,7 +119,7 @@ class _ProductFormState extends State<ProductForm> {
       );
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Error updating product'),
           backgroundColor: Colors.red,
         ),

@@ -13,12 +13,12 @@ class OrdersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Orders',
-          style: Theme.of(context).textTheme.displayLarge,
-        ),
-      ),
+      // appBar: AppBar(
+      //   title: Text(
+      //     'Orders',
+      //     style: Theme.of(context).textTheme.displayLarge,
+      //   ),
+      // ),
       body: BlocProvider(
         create: (_) => OrdersBloc()..add(LoadOrdersFromCheckout()),
         child: BlocBuilder<OrdersBloc, OrdersState>(

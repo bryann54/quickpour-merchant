@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:quickpourmerchant/features/auth/domain/usecases/auth_usecases.dart';
 import 'package:quickpourmerchant/features/requests/data/models/drink_request_model.dart';
+import 'package:quickpourmerchant/features/requests/data/repositories/drink_request_repo.dart';
+import 'package:quickpourmerchant/features/auth/data/repositories/auth_repository.dart';
 
 class OfferDialog extends StatefulWidget {
   final DrinkRequest request;
@@ -21,6 +24,27 @@ class _OfferDialogState extends State<OfferDialog> {
   DateTime? _selectedDeliveryTime;
   String? _additionalNotes;
   bool _isLoading = false;
+
+  String? _storeName;
+  String? _location;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUserDetails();
+  }
+
+  Future<void> _loadUserDetails() async {
+    final authUseCases = AuthUseCases(authRepository: AuthRepository());
+    final currentUser = await authUseCases.getCurrentUserDetails();
+
+    if (currentUser != null) {
+      setState(() {
+        _storeName = currentUser.storeName;
+        _location = currentUser.location;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -44,23 +68,33 @@ class _OfferDialogState extends State<OfferDialog> {
     }
   }
 
-  void _handleSubmit() {
+  void _handleSubmit() async {
     if (_formKey.currentState?.validate() ?? false) {
       _formKey.currentState!.save();
 
-      // TODO: Implement offer submission logic
       setState(() => _isLoading = true);
 
-      // Simulating API call
-      Future.delayed(const Duration(seconds: 1), () {
+      try {
+        final repository = DrinkRequestRepository();
+
+        await repository.submitOffer(
+          requestId: widget.request.id,
+          price: double.parse(_priceController.text),
+          deliveryTime: _selectedDeliveryTime!,
+          notes: _additionalNotes,
+          storeName: _storeName.toString(), 
+          location: _location.toString(), 
+        );
+
         if (mounted) {
-          Navigator.of(context).pop({
-            'price': double.parse(_priceController.text),
-            'deliveryTime': _selectedDeliveryTime,
-            'notes': _additionalNotes,
-          });
+          Navigator.of(context).pop(); // Close dialog on success
         }
-      });
+      } catch (e) {
+        setState(() => _isLoading = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error submitting offer: $e')),
+        );
+      }
     }
   }
 

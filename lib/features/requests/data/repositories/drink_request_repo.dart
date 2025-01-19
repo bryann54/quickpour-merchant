@@ -30,15 +30,59 @@ class DrinkRequestRepository {
                 DrinkRequest.fromMap(doc.data() as Map<String, dynamic>))
             .toList());
   }
-
-  Future<void> addDrinkRequest(DrinkRequest request) async {
+Future<List<Map<String, dynamic>>> getOffers(String requestId) async {
     try {
-      await _firestore
+      // Fetch from nested 'offers' collection
+      final QuerySnapshot snapshot = await _firestore
           .collection('drinkRequests')
-          .doc(request.id)
-          .set(request.toMap());
+          .doc(requestId)
+          .collection('offers')
+          .orderBy('timestamp', descending: true)
+          .get();
+
+      return snapshot.docs
+          .map((doc) => doc.data() as Map<String, dynamic>)
+          .toList();
     } catch (e) {
-      throw Exception('Failed to add drink request: $e');
+      throw Exception('Failed to fetch offers: $e');
     }
   }
+
+
+  Future<void> submitOffer({
+    required String requestId,
+    required double price,
+    required DateTime deliveryTime,
+    String? notes,
+    required String storeName, // Add storeName
+    required String location,
+  }) async {
+    try {
+      // Use subcollection under 'drinkRequests'
+      final offerId = _firestore
+          .collection('drinkRequests')
+          .doc(requestId)
+          .collection('offers')
+          .doc()
+          .id;
+
+      await _firestore
+          .collection('drinkRequests')
+          .doc(requestId)
+          .collection('offers')
+          .doc(offerId)
+          .set({
+        'offerId': offerId,
+        'price': price,
+        'deliveryTime': deliveryTime.toIso8601String(),
+        'notes': notes ?? '',
+        'timestamp': DateTime.now().toIso8601String(),
+        'storeName': storeName, // Store name from the User model
+        'location': location,
+      });
+    } catch (e) {
+      throw Exception('Failed to submit offer: $e');
+    }
+  }
+
 }

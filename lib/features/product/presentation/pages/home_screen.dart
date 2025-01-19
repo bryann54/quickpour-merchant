@@ -10,11 +10,13 @@ import 'package:quickpourmerchant/features/categories/presentation/bloc/categori
 import 'package:quickpourmerchant/features/categories/presentation/pages/categories_screen.dart';
 import 'package:quickpourmerchant/features/categories/presentation/widgets/horizontal_list_widget.dart';
 import 'package:quickpourmerchant/features/categories/presentation/widgets/shimmer_widget.dart';
+import 'package:quickpourmerchant/features/orders/presentation/pages/orders_screen.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
 import 'package:quickpourmerchant/features/product/presentation/widgets/card-shimmer.dart';
 import 'package:quickpourmerchant/features/product/presentation/widgets/custom_fab_widget.dart';
 import 'package:quickpourmerchant/features/product/presentation/widgets/product_card.dart';
+import 'package:quickpourmerchant/features/requests/presentation/pages/requests_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,13 +25,16 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
+    _tabController = TabController(length: 3, vsync: this);
     _initializeData();
   }
 
@@ -78,24 +83,50 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               ),
-            ),
-            SliverPadding(
-              padding: const EdgeInsets.all(5.0),
-              sliver: SliverList(
-                delegate: SliverChildListDelegate([
-                  _buildCategoriesSection(context, theme, isDarkMode),
-                  const SizedBox(height: 16),
-                ]),
+              bottom: TabBar(
+                controller: _tabController,
+                labelColor: Colors.white,
+                unselectedLabelColor: Colors.grey,
+                labelStyle: const TextStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+                unselectedLabelStyle: const TextStyle(
+                  fontSize: 16.0,
+                ),
+                indicatorColor: Colors.white,
+                tabs: const [
+                  Tab(text: 'Home'),
+                  Tab(text: 'Orders'),
+                  Tab(text: 'Requests'),
+                ],
               ),
             ),
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              sliver: _buildProductsSection(theme),
+            SliverFillRemaining(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  _buildHomeContent(context, theme, isDarkMode),
+                  OrdersScreen(),
+                  RequestsScreen(),
+                ],
+              ),
             ),
           ],
         ),
       ),
       floatingActionButton: CustomFAB(),
+    );
+  }
+
+  Widget _buildHomeContent(
+      BuildContext context, ThemeData theme, bool isDarkMode) {
+    return ListView(
+      children: [
+        _buildCategoriesSection(context, theme, isDarkMode),
+        const SizedBox(height: 16),
+        _buildProductsSection(theme),
+      ],
     );
   }
 
@@ -155,61 +186,58 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildProductsSection(ThemeData theme) {
-    return SliverToBoxAdapter(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 3),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'Popular Products',
-                  style: GoogleFonts.montaga(
-                    textStyle: theme.textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 3),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                'Popular Products',
+                style: GoogleFonts.montaga(
+                  textStyle: theme.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          BlocBuilder<ProductsBloc, ProductsState>(
-            builder: (context, state) {
-              if (state is ProductsLoading) {
-                return _buildLoadingGrid();
-              }
-              if (state is ProductsError) {
-                return Center(child: Text(state.message));
-              }
-              if (state is ProductsLoaded) {
-                return state.products.isEmpty
-                    ? Center(
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 50,
+        ),
+        BlocBuilder<ProductsBloc, ProductsState>(
+          builder: (context, state) {
+            if (state is ProductsLoading) {
+              return _buildLoadingGrid();
+            }
+            if (state is ProductsError) {
+              return Center(child: Text(state.message));
+            }
+            if (state is ProductsLoaded) {
+              return state.products.isEmpty
+                  ? Center(
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: 50,
+                          ),
+                          Text(
+                            'You have no products yet...',
+                            style: GoogleFonts.montaga(
+                              textStyle: theme.textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey),
                             ),
-                            Text(
-                              'You have no products yet...',
-                              style: GoogleFonts.montaga(
-                                textStyle: theme.textTheme.titleMedium
-                                    ?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.grey),
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : _buildProductsGrid(state.products);
-              }
-              return const SizedBox.shrink();
-            },
-          ),
-        ],
-      ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : _buildProductsGrid(state.products);
+            }
+            return const SizedBox.shrink();
+          },
+        ),
+      ],
     );
   }
 

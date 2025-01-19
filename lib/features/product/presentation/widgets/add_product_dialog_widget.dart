@@ -52,7 +52,6 @@ class _AddProductDialogState extends State<AddProductDialog> {
                     } else if (state is CategoriesLoaded) {
                       final categories = state.categories;
 
-                      // Validate selected category
                       if (_selectedCategory != null &&
                           !categories.any(
                               (category) => category.id == _selectedCategory)) {
@@ -67,7 +66,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                         ),
                         items: categories.map((Category category) {
                           return DropdownMenuItem<String>(
-                            value: category.name,
+                            value: category.id,
                             child: Text(category.name),
                           );
                         }).toList(),
@@ -97,7 +96,6 @@ class _AddProductDialogState extends State<AddProductDialog> {
                     } else if (state is BrandsLoadedState) {
                       final brands = state.brands;
 
-                      // Validate selected brand
                       if (_selectedBrand != null &&
                           !brands
                               .any((brand) => brand.name == _selectedBrand)) {
@@ -136,10 +134,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                 const SizedBox(height: 16),
                 // Product Name
                 TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Product Name',
-                    border: OutlineInputBorder(),
-                  ),
+                  decoration: const InputDecoration(labelText: 'Product Name'),
                   onChanged: (value) => _productName = value,
                   validator: (value) =>
                       value!.isEmpty ? 'Enter product name' : null,
@@ -147,10 +142,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                 const SizedBox(height: 16),
                 // Price
                 TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Price',
-                    border: OutlineInputBorder(),
-                  ),
+                  decoration: const InputDecoration(labelText: 'Price'),
                   keyboardType: TextInputType.number,
                   onChanged: (value) => _price = double.tryParse(value),
                   validator: (value) =>
@@ -159,20 +151,16 @@ class _AddProductDialogState extends State<AddProductDialog> {
                 const SizedBox(height: 16),
                 // Discount Price
                 TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Discount Price',
-                    border: OutlineInputBorder(),
-                  ),
+                  decoration:
+                      const InputDecoration(labelText: 'Discount Price'),
                   keyboardType: TextInputType.number,
                   onChanged: (value) => _discountPrice = double.tryParse(value),
                 ),
                 const SizedBox(height: 16),
                 // Stock Quantity
                 TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Stock Quantity',
-                    border: OutlineInputBorder(),
-                  ),
+                  decoration:
+                      const InputDecoration(labelText: 'Stock Quantity'),
                   keyboardType: TextInputType.number,
                   onChanged: (value) => _stockQuantity = int.tryParse(value),
                   validator: (value) =>
@@ -181,20 +169,14 @@ class _AddProductDialogState extends State<AddProductDialog> {
                 const SizedBox(height: 16),
                 // SKU
                 TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'SKU',
-                    border: OutlineInputBorder(),
-                  ),
+                  decoration: const InputDecoration(labelText: 'SKU'),
                   onChanged: (value) => _sku = value,
                   validator: (value) => value!.isEmpty ? 'Enter SKU' : null,
                 ),
                 const SizedBox(height: 16),
                 // Description
                 TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: 'Description',
-                    border: OutlineInputBorder(),
-                  ),
+                  decoration: const InputDecoration(labelText: 'Description'),
                   onChanged: (value) => _description = value,
                   validator: (value) =>
                       value!.isEmpty ? 'Enter description' : null,

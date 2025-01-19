@@ -67,7 +67,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                         ),
                         items: categories.map((Category category) {
                           return DropdownMenuItem<String>(
-                            value: category.id,
+                            value: category.name,
                             child: Text(category.name),
                           );
                         }).toList(),

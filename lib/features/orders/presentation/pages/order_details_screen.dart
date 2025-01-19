@@ -11,6 +11,8 @@ class OrderDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
     final DateTime dateTime = DateTime.parse(order.date.toString());
     final String formattedDate =
         DateFormat('EEEE, MMM d, yyyy').format(dateTime);
@@ -23,9 +25,17 @@ class OrderDetailsScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         title: Text(
           'Order Details',
-          style: TextStyle(color: AppColors.primaryColor,),
+          style: TextStyle(
+            color: isDarkMode
+                ? AppColors.background.withOpacity(.6)
+                : AppColors.primaryColor,
+          ),
         ),
-        iconTheme: IconThemeData(color: AppColors.primaryColor,),
+        iconTheme: IconThemeData(
+          color: isDarkMode
+              ? AppColors.background.withOpacity(.6)
+              : AppColors.primaryColor,
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -76,7 +86,9 @@ class OrderDetailsScreen extends StatelessWidget {
                       'Order #${order.id}',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: AppColors.primaryColor,
+                           color: isDarkMode
+                                ? AppColors.background.withOpacity(.6)
+                                : AppColors.primaryColor,
                           ),
                     ),
                     const SizedBox(height: 8),

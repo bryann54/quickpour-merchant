@@ -17,3 +17,10 @@ class DrinkRequestError extends DrinkRequestState {
 
   DrinkRequestError(this.message);
 }
+class OfferSubmitted extends DrinkRequestState {}
+
+class OffersLoaded extends DrinkRequestState {
+  final List<Map<String, dynamic>> offers;
+
+  OffersLoaded(this.offers);
+}

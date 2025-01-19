@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:quickpourmerchant/features/auth/domain/usecases/auth_usecases.dart';
 import 'package:quickpourmerchant/features/requests/data/models/drink_request_model.dart';
 import 'package:quickpourmerchant/features/requests/data/repositories/drink_request_repo.dart';
-import 'package:quickpourmerchant/features/auth/data/models/user_model.dart';
 import 'package:quickpourmerchant/features/auth/data/repositories/auth_repository.dart';
 
 class OfferDialog extends StatefulWidget {
@@ -83,8 +82,8 @@ class _OfferDialogState extends State<OfferDialog> {
           price: double.parse(_priceController.text),
           deliveryTime: _selectedDeliveryTime!,
           notes: _additionalNotes,
-          storeName: _storeName.toString(), // Include storeName
-          location: _location.toString(), // Include location
+          storeName: _storeName.toString(), 
+          location: _location.toString(), 
         );
 
         if (mounted) {

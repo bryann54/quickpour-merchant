@@ -13,7 +13,7 @@ class DrinkRequestBloc extends Bloc<DrinkRequestEvent, DrinkRequestState> {
   })  : _repository = repository,
         super(DrinkRequestInitial()) {
     on<LoadDrinkRequests>(_onLoadDrinkRequests);
-    on<AddDrinkRequest>(_onAddDrinkRequest);
+  
     on<UpdateDrinkRequests>(_onUpdateDrinkRequests);
   }
 
@@ -27,17 +27,6 @@ class DrinkRequestBloc extends Bloc<DrinkRequestEvent, DrinkRequestState> {
         add(UpdateDrinkRequests(requests));
       },
     );
-  }
-
-  Future<void> _onAddDrinkRequest(
-    AddDrinkRequest event,
-    Emitter<DrinkRequestState> emit,
-  ) async {
-    try {
-      await _repository.addDrinkRequest(event.request);
-    } catch (e) {
-      emit(DrinkRequestError(e.toString()));
-    }
   }
 
   void _onUpdateDrinkRequests(

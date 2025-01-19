@@ -12,9 +12,9 @@ class RequestsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Drink Requests'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Drink Requests'),
+      // ),
       body: BlocBuilder<DrinkRequestBloc, DrinkRequestState>(
         builder: (context, state) {
           if (state is DrinkRequestLoading) {

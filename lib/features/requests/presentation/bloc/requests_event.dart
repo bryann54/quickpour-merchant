@@ -15,3 +15,32 @@ class UpdateDrinkRequests extends DrinkRequestEvent {
 
   UpdateDrinkRequests(this.requests);
 }
+class SubmitOffer extends DrinkRequestEvent {
+  final String requestId;
+  final double price;
+  final DateTime deliveryTime;
+  final String? notes;
+  final String storeName;
+  final String location;
+
+  SubmitOffer({
+    required this.requestId,
+    required this.price,
+    required this.deliveryTime,
+    this.notes,
+    required this.storeName,
+    required this.location,
+  });
+}
+
+class LoadOffers extends DrinkRequestEvent {
+  final String requestId;
+
+  LoadOffers(this.requestId);
+}
+
+class UpdateOffers extends DrinkRequestEvent {
+  final List<Map<String, dynamic>> offers;
+
+  UpdateOffers(this.offers);
+}

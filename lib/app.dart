@@ -23,6 +23,7 @@ import 'package:quickpourmerchant/features/requests/data/repositories/drink_requ
 import 'package:quickpourmerchant/features/requests/presentation/bloc/requests_bloc.dart';
 import 'package:quickpourmerchant/features/requests/presentation/bloc/requests_event.dart';
 
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -47,13 +48,14 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        Provider<NotificationsRepository>(
+       Provider<NotificationsRepository>(
           create: (_) => NotificationsRepository(),
         ),
-        BlocProvider(
+        // Then, provide the bloc
+       BlocProvider<NotificationsBloc>(
           create: (context) => NotificationsBloc(
-            context.read<NotificationsRepository>(),
-          ),
+            NotificationsRepository(),
+          )..add(const InitializeNotifications()), // Use the new event name
         ),
         BlocProvider(
           create: (context) => OrdersBloc()..add(LoadOrdersFromCheckout()),

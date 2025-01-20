@@ -17,3 +17,24 @@ class MarkNotificationAsRead extends NotificationsEvent {
   @override
   List<Object> get props => [notificationId];
 }
+
+class FetchUnreadCount extends NotificationsEvent {}
+
+class StartListening extends NotificationsEvent {}
+
+class StopListening extends NotificationsEvent {}
+
+class NotificationsUpdated extends NotificationsEvent {
+  final List<NotificationModel> notifications;
+
+  const NotificationsUpdated(this.notifications);
+
+  @override
+  List<Object> get props => [notifications];
+}
+class InitializeNotifications extends NotificationsEvent {
+  const InitializeNotifications();
+}
+class StopNotificationsListening extends NotificationsEvent {
+  const StopNotificationsListening();
+}

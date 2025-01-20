@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quickpourmerchant/features/analytics/presentation/bloc/analytics_bloc.dart';
 import 'package:quickpourmerchant/features/auth/data/repositories/auth_repository.dart';
 import 'package:quickpourmerchant/features/auth/domain/usecases/auth_usecases.dart';
@@ -46,6 +47,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             color: theme.colorScheme.onSurface,
           ),
         ),
+        centerTitle: true,
         backgroundColor: theme.colorScheme.surface,
         elevation: 0,
       ),
@@ -55,7 +57,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              'View overall statistics of the last',
+              'View overall statistics of the last:',
               style: theme.textTheme.titleMedium?.copyWith(
                 color: theme.colorScheme.onSurface.withOpacity(0.7),
               ),
@@ -63,24 +65,26 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             const SizedBox(height: 16),
             // Time Filter Buttons
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: ['7 Days', '30 Days', '90 Days', 'Custom']
-                  .map((label) => ChoiceChip(
-                        label: Text(label),
-                        selected: label == selectedTimeFilter,
-                        selectedColor: theme.colorScheme.primary,
-                        onSelected: (selected) {
-                          setState(() {
-                            selectedTimeFilter = label;
-                          });
-                        },
-                        backgroundColor: theme.colorScheme.surfaceVariant,
-                        labelStyle: TextStyle(
-                          color: label == selectedTimeFilter
-                              ? theme.colorScheme.onPrimary
-                              : theme.colorScheme.onSurface.withOpacity(0.6),
+                  .map((label) => Expanded(
+                    child: ChoiceChip(
+                          label: Text(label),
+                          selected: label == selectedTimeFilter,
+                          selectedColor: theme.colorScheme.primary,
+                          onSelected: (selected) {
+                            setState(() {
+                              selectedTimeFilter = label;
+                            });
+                          },
+                          backgroundColor: theme.colorScheme.surfaceVariant,
+                          labelStyle: TextStyle(
+                            color: label == selectedTimeFilter
+                                ? theme.colorScheme.onPrimary
+                                : theme.colorScheme.onSurface.withOpacity(0.6),
+                          ),
                         ),
-                      ))
+                  ))
                   .toList(),
             ),
             const SizedBox(height: 20),
@@ -104,14 +108,14 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                           context,
                           'In Stock',
                           state.stockCount.toString(),
-                          Icons.inventory,
+                          FontAwesomeIcons.accusoft,
                           theme.colorScheme.primary,
                         ),
                         _buildStatCard(
                           context,
                           'Orders',
                           state.ordersCount.toString(),
-                          Icons.shopping_cart,
+                          Icons.reviews,
                           theme.colorScheme.secondary,
                           percentage: '13%',
                           isIncrease: true,
@@ -127,9 +131,9 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                         ),
                         _buildStatCard(
                           context,
-                          'Reviews',
+                          'Sales',
                           '2.6k',
-                          Icons.reviews,
+                          FontAwesomeIcons.dollarSign,
                           theme.colorScheme.error,
                           percentage: '1.2%',
                           isIncrease: true,
@@ -188,18 +192,24 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                       ]
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  Center(
+               
+              Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        // Handle button press
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Center(child: Text('Feature coming soon..😎')),
+                          ),
+                        );
                       },
                       child: const Text('Create a Workflow'),
                     ),
                   ),
+
                 ],
               ),
             ),
+               const SizedBox(height: 20),
           ],
         ),
       ),

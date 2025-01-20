@@ -10,23 +10,32 @@ class ConfirmOrderButton extends StatelessWidget {
       padding: const EdgeInsets.only(top: 30.0,left: 10,right: 10),
       child: Align(
         alignment: Alignment.bottomCenter,
-        child: Container(
-          height: 50,
-          width: double.infinity,
-          decoration: BoxDecoration(
-            color: AppColors.primaryColor,
-            borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Center(
-              child: Text(
-                'Confirm Order',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  ),
-                  ),
-                  ),
+        child: GestureDetector(
+          onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Center(child: Text('Feature coming soon..😎')),
+              ),
+            );
+          },
+          child: Container(
+            height: 50,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: AppColors.primaryColor,
+              borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Center(
+                child: Text(
+                  'Confirm Order',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    ),
+                    ),
+                    ),
+          ),
         ),
       ),
     );

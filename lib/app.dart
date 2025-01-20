@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:quickpourmerchant/core/theme/app_theme.dart';
 import 'package:quickpourmerchant/core/theme/theme_controller.dart';
 import 'package:quickpourmerchant/core/utils/routes.dart';
+import 'package:quickpourmerchant/features/analytics/presentation/bloc/analytics_bloc.dart';
 import 'package:quickpourmerchant/features/auth/data/repositories/auth_repository.dart';
 import 'package:quickpourmerchant/features/auth/domain/usecases/auth_usecases.dart';
 import 'package:quickpourmerchant/features/auth/presentation/bloc/auth_bloc.dart';
@@ -16,6 +17,7 @@ import 'package:quickpourmerchant/features/categories/presentation/bloc/categori
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_event.dart';
 import 'package:quickpourmerchant/features/notifications/data/repositories/notifications_repository.dart';
 import 'package:quickpourmerchant/features/notifications/presentation/bloc/notifications_bloc.dart';
+import 'package:quickpourmerchant/features/orders/data/repositories/orders_repository.dart';
 import 'package:quickpourmerchant/features/orders/presentation/bloc/orders_bloc.dart';
 import 'package:quickpourmerchant/features/product/data/repositories/product_repository.dart';
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<BrandsBloc>(
           create: (context) => BrandsBloc(
             brandRepository: BrandRepository(),
-          )..add(FetchBrandsEvent()), // Add this to load brands immediately
+          )..add(FetchBrandsEvent()),
         ),
         BlocProvider<CategoriesBloc>(
           create: (context) =>
@@ -51,15 +53,16 @@ class MyApp extends StatelessWidget {
        Provider<NotificationsRepository>(
           create: (_) => NotificationsRepository(),
         ),
-        // Then, provide the bloc
+       
        BlocProvider<NotificationsBloc>(
           create: (context) => NotificationsBloc(
             NotificationsRepository(),
-          )..add(const InitializeNotifications()), // Use the new event name
+          )..add(const InitializeNotifications()), 
         ),
         BlocProvider(
           create: (context) => OrdersBloc()..add(LoadOrdersFromCheckout()),
         ),
+        BlocProvider(create: (context)=>AnalyticsBloc(productRepository: ProductRepository(), ordersRepository: OrdersRepository())),
         BlocProvider(
             create: (context) =>
                 ProductsBloc(productRepository: ProductRepository())),

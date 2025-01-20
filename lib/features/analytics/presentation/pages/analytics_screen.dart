@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quickpourmerchant/features/analytics/presentation/bloc/analytics_bloc.dart';
 import 'package:quickpourmerchant/features/auth/data/repositories/auth_repository.dart';
 import 'package:quickpourmerchant/features/auth/domain/usecases/auth_usecases.dart';
 
@@ -18,12 +20,16 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
   }
 
   Future<void> _fetchUserName() async {
-    final authRepository = AuthRepository(); 
+    // Fetch the username logic (as per your existing code)
+    final authRepository = AuthRepository();
     final authUseCases = AuthUseCases(authRepository: authRepository);
     final user = await authUseCases.getCurrentUserDetails();
     setState(() {
       userName = user?.storeName ?? '';
     });
+
+    // Fetch analytics data once the user name is fetched
+    context.read<AnalyticsBloc>().add(FetchAnalyticsData());
   }
 
   @override
@@ -76,53 +82,65 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                   .toList(),
             ),
             const SizedBox(height: 20),
-            // Statistics Cards
+            // Display analytics data
             Expanded(
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-                children: [
-                  _buildStatCard(
-                    context,
-                    'In Stock',
-                    '4,398',
-                    Icons.inventory,
-                    theme.colorScheme.primary,
-                  ),
-                  _buildStatCard(
-                    context,
-                    'Orders',
-                    '2,512',
-                    Icons.shopping_cart,
-                    theme.colorScheme.secondary,
-                    percentage: '13%',
-                    isIncrease: true,
-                  ),
-                  _buildStatCard(
-                    context,
-                    'Feedback',
-                    '3.6k',
-                    Icons.thumb_up,
-                    theme.colorScheme.tertiary,
-                    percentage: '13%',
-                    isIncrease: false,
-                  ),
-                  _buildStatCard(
-                    context,
-                    'Reviews',
-                    '2.6k',
-                    Icons.reviews,
-                    theme.colorScheme.error,
-                    percentage: '1.2%',
-                    isIncrease: true,
-                    extraInfo: '233 ASINs',
-                  ),
-                ],
+              child: BlocBuilder<AnalyticsBloc, AnalyticsState>(
+                builder: (context, state) {
+                  if (state is AnalyticsLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (state is AnalyticsError) {
+                    return Center(child: Text(state.message));
+                  } else if (state is AnalyticsLoaded) {
+                    return GridView.count(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      children: [
+                        _buildStatCard(
+                          context,
+                          'In Stock',
+                          state.stockCount.toString(),
+                          Icons.inventory,
+                          theme.colorScheme.primary,
+                        ),
+                        _buildStatCard(
+                          context,
+                          'Orders',
+                          state.ordersCount.toString(),
+                          Icons.shopping_cart,
+                          theme.colorScheme.secondary,
+                          percentage: '13%',
+                          isIncrease: true,
+                        ),
+                        _buildStatCard(
+                          context,
+                          'Feedback',
+                          state.feedbackCount.toString(),
+                          Icons.thumb_up,
+                          theme.colorScheme.tertiary,
+                          percentage: '13%',
+                          isIncrease: false,
+                        ),
+                        _buildStatCard(
+                          context,
+                          'Reviews',
+                          '2.6k',
+                          Icons.reviews,
+                          theme.colorScheme.error,
+                          percentage: '1.2%',
+                          isIncrease: true,
+                          extraInfo: '233 ASINs',
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Center(child: Text('No data available.'));
+                  }
+                },
               ),
             ),
             const SizedBox(height: 16),
-            // My Workflow Card
+            // My Workflow Card (unchanged)
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(

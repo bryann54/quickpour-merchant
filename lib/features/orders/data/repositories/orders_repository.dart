@@ -23,4 +23,14 @@ class OrdersRepository {
       return null;
     }
   }
+  Future<int> fetchOrdersCount() async {
+    final orders = await getOrders(); // Assuming this method exists
+    return orders.length;
+  }
+
+  Future<int> fetchFeedbackCount() async {
+    final orders = await getOrders();
+    // ignore: unnecessary_null_comparison
+    return orders.where((order) => order.id != null).length;
+  }
 }

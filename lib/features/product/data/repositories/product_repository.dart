@@ -61,6 +61,10 @@ class ProductRepository {
         .toList();
   }
 
+Future<int> fetchStockCount() async {
+  final products = await fetchProducts(); // Assuming this method exists
+  return products.fold(0, (sum, product) => product.stockQuantity);
+}
   // Update a product
   Future<void> updateProduct(MerchantProductModel product) async {
     // Verify the product belongs to the current merchant

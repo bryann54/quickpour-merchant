@@ -62,7 +62,7 @@ class ProductRepository {
   }
 
 Future<int> fetchStockCount() async {
-  final products = await fetchProducts(); // Assuming this method exists
+  final products = await fetchProducts();
   return products.fold(0, (sum, product) => product.stockQuantity);
 }
   // Update a product

@@ -29,7 +29,7 @@ class RouteGenerator {
       // case orders:
       //   return MaterialPageRoute(builder: (_) => OrdersScreen());
       case analytics:
-        return MaterialPageRoute(builder: (_) => const AnalyticsScreen());
+        return MaterialPageRoute(builder: (_) =>  AnalyticsScreen());
       case notifications:
         return MaterialPageRoute(builder: (_) => const NotificationsScreen());
       case profile:

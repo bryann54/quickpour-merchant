@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickpourmerchant/features/analytics/presentation/bloc/analytics_bloc.dart';
+import 'package:quickpourmerchant/features/analytics/presentation/widgets/stat_card.dart';
+import 'package:quickpourmerchant/features/analytics/presentation/widgets/workflow_card.dart';
 import 'package:quickpourmerchant/features/auth/data/repositories/auth_repository.dart';
 import 'package:quickpourmerchant/features/auth/domain/usecases/auth_usecases.dart';
 
@@ -96,39 +98,35 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                             crossAxisCount: 2,
                             crossAxisSpacing: 16,
                             mainAxisSpacing: 16,
-                             childAspectRatio: 1.7,
+                            childAspectRatio: 1.78,
                             children: [
-                              _buildStatCard(
-                                context,
-                                'In Stock',
-                                state.stockCount.toString(),
-                                Icons.inventory,
-                                theme.colorScheme.primary,
+                              StatCard(
+                                title: 'In Stock',
+                                value: state.stockCount.toString(),
+                                icon: Icons.inventory,
+                                color: theme.colorScheme.primary,
                               ),
-                              _buildStatCard(
-                                context,
-                                'Orders',
-                                state.ordersCount.toString(),
-                                Icons.shopping_cart,
-                                theme.colorScheme.secondary,
+                              StatCard(
+                                title: 'Orders',
+                                value: state.ordersCount.toString(),
+                                icon: Icons.shopping_cart,
+                                color: theme.colorScheme.secondary,
                                 percentage: '13%',
                                 isIncrease: true,
                               ),
-                              _buildStatCard(
-                                context,
-                                'Feedback',
-                                state.feedbackCount.toString(),
-                                Icons.thumb_up,
-                                theme.colorScheme.tertiary,
+                              StatCard(
+                                title: 'Feedback',
+                                value: state.feedbackCount.toString(),
+                                icon: Icons.thumb_up,
+                                color: theme.colorScheme.tertiary,
                                 percentage: '13%',
                                 isIncrease: false,
                               ),
-                              _buildStatCard(
-                                context,
-                                'Reviews',
-                                '2.6k',
-                                Icons.reviews,
-                                theme.colorScheme.error,
+                              StatCard(
+                                title: 'Reviews',
+                                value: '2.6k',
+                                icon: Icons.reviews,
+                                color: theme.colorScheme.error,
                                 percentage: '1.2%',
                                 isIncrease: true,
                                 extraInfo: '233 ASINs',
@@ -137,54 +135,10 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.surface,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: theme.colorScheme.shadow,
-                                blurRadius: 8,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.bar_chart,
-                                      color: theme.colorScheme.secondary),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    'My Workflow',
-                                    style: theme.textTheme.bodyMedium?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 16),
-                              Text(
-                                "You don't have any Workflows running. Create a Workflow in order to view its insights here.",
-                                style: theme.textTheme.bodyMedium?.copyWith(
-                                  color: theme.colorScheme.onSurface
-                                      .withOpacity(0.7),
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              Center(
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    // Handle button press
-                                  },
-                                  child: const Text('Create a Workflow'),
-                                ),
-                              ),
-                            ],
-                          ),
+                        WorkflowCard(
+                          onCreateWorkflow: () {
+                            // Handle creating a workflow
+                          },
                         ),
                         const SizedBox(height: 16),
                       ],
@@ -199,101 +153,4 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
       ),
     );
   }
-
- Widget _buildStatCard(
-  BuildContext context,
-  String title,
-  String value,
-  IconData icon,
-  Color color, {
-  String? percentage,
-  bool? isIncrease,
-  String? extraInfo,
-}) {
-  final theme = Theme.of(context);
-
-  return Container(
-    decoration: BoxDecoration(
-      color: theme.colorScheme.surface,
-      borderRadius: BorderRadius.circular(12),
-      boxShadow: [
-        BoxShadow(
-          color: theme.colorScheme.shadow,
-          blurRadius: 8,
-          offset: const Offset(0, 4),
-        ),
-      ],
-    ),
-    padding: const EdgeInsets.all(16),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Changed to spaceBetween
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Header row
-        Row(
-          children: [
-            Icon(icon, color: color, size: 20), // Slightly smaller icon
-            const SizedBox(width: 8),
-            Text(
-              title,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
-              ),
-            ),
-          ],
-        ),
-        // Value and metrics row
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    value,
-                    style: theme.textTheme.displayLarge?.copyWith(
-                      fontSize: 24,
-                    ),
-                  ),
-                  if (extraInfo != null)
-                    Text(
-                      extraInfo,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        fontSize: 12,
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            if (percentage != null)
-              Row(
-                children: [
-                  Icon(
-                    isIncrease == true
-                        ? Icons.arrow_upward
-                        : Icons.arrow_downward,
-                    color: isIncrease == true
-                        ? theme.colorScheme.primary
-                        : theme.colorScheme.error,
-                    size: 16,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    percentage,
-                    style: TextStyle(
-                      color: isIncrease == true
-                          ? theme.colorScheme.primary
-                          : theme.colorScheme.error,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
-          ],
-        ),
-      ],
-    ),
-  );
-}}
+}

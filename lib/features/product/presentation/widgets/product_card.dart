@@ -8,6 +8,10 @@ class ProductCard extends StatelessWidget {
   final MerchantProductModel product;
 
   const ProductCard({Key? key, required this.product}) : super(key: key);
+  int _calculateDiscountPercentage(double originalPrice, double discountPrice) {
+    if (originalPrice <= 0 || discountPrice <= 0) return 0;
+    return ((originalPrice - discountPrice) / originalPrice * 100).round();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +49,7 @@ class ProductCard extends StatelessWidget {
                         tag: 'productImage_${product.id}',
                         child: Image.network(
                           product.imageUrls.first,
-                          fit: BoxFit.cover,
+                          fit: BoxFit.contain,
                           errorBuilder: (context, error, stackTrace) =>
                               const Center(child: Icon(Icons.error_outline)),
                         ),
@@ -61,16 +65,17 @@ class ProductCard extends StatelessWidget {
                               topLeft: Radius.circular(12),
                               topRight: Radius.circular(12)),
                         ),
-                        child: const SizedBox(
-                          height: 150,
+                        child:  Container(
+                        color:isDarkMode? Colors.grey.shade900:Colors.grey.shade200,
+                          height: 130,
                           child: Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 FaIcon(
-                                  Icons.error_outline,
+                                  Icons.error,
                                 ),
-                                Text('no image available')
+                        
                               ],
                             ),
                           ),
@@ -79,32 +84,54 @@ class ProductCard extends StatelessWidget {
                     // Discount Percentage Tag (Only appears if there's a discount)
                     if (product.discountPrice > 0)
                       Positioned(
-                        top: 8,
-                        right: 8,
+                        top: 0,
+                        right: 0,
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
+                              horizontal: 15, vertical: 4),
                           decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            '${(100 - ((product.discountPrice / product.price) * 100)).round()}% OFF',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.bold,
+                            gradient:  LinearGradient(
+                              colors: [Colors.orange, AppColors.primaryColor],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
                             ),
+                            // borderRadius: BorderRadius.circular(8),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                blurRadius: 4,
+                                offset: const Offset(2, 2),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const Icon(
+                                FontAwesomeIcons.tag,
+                                color: Colors.white,
+                                size: 12,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                '${_calculateDiscountPercentage(product.price, product.discountPrice)}% OFF',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                  ],
+                ],
                 ),
               ),
             ),
             // Product Details
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -121,14 +148,14 @@ class ProductCard extends StatelessWidget {
                     ),
                     Text(
                       product.discountPrice > 0
-                          ? 'Ksh ${product.discountPrice.toStringAsFixed(2)}'
-                          : 'Ksh ${product.price.toStringAsFixed(2)}',
+                          ? 'Ksh ${product.discountPrice.toStringAsFixed(0)}'
+                          : 'Ksh ${product.price.toStringAsFixed(0)}',
                       style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     if (product.discountPrice > 0)
                       Text(
-                        'Ksh ${product.price.toStringAsFixed(2)}',
+                        'Ksh ${product.price.toStringAsFixed(0)}',
                         style: const TextStyle(
                           fontSize: 12,
                           decoration: TextDecoration.lineThrough,

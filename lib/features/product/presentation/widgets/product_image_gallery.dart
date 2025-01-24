@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/core/utils/strings.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 
@@ -14,7 +15,10 @@ class ProductImageGallery extends StatefulWidget {
   @override
   State<ProductImageGallery> createState() => _ProductImageGalleryState();
 }
-
+int _calculateDiscountPercentage(double originalPrice, double discountPrice) {
+  if (originalPrice <= 0 || discountPrice <= 0) return 0;
+  return ((originalPrice - discountPrice) / originalPrice * 100).round();
+}
 class _ProductImageGalleryState extends State<ProductImageGallery> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
@@ -27,6 +31,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
 
   @override
   Widget build(BuildContext context) {
+
     return Stack(
       children: [
         // Main Image Display
@@ -54,8 +59,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
         // Top Gradient Overlay
         Positioned(
           top: 0,
-          left: 0,
-          right: 0,
+        
           height: 80,
           child: Container(
             decoration: BoxDecoration(
@@ -160,11 +164,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
 
         // Discount Badge
         if (widget.product.discountPrice > 0)
-          Positioned(
-            top: 120,
-            right: 16,
-            child: _buildDiscountBadge(),
-          ),
+          _buildDiscountBadge(),
 
         // Image Counter
         if (widget.product.imageUrls.length > 1)
@@ -296,37 +296,45 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
   }
 
   Widget _buildDiscountBadge() {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.error,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 4,
-            offset: const Offset(0, 2),
+    return Positioned(
+      top: 120,
+      right: 16,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.orange, AppColors.primaryColor],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
-        ],
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // const Icon(
-          //   Icons.local_offer,
-          //   color: Colors.white,
-          //   size: 14,
-          // ),
-          const SizedBox(width: 4),
-          Text(
-            '${(100 - ((widget.product.discountPrice / widget.product.price) * 100)).round()}% OFF',
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
+          // borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 4,
+              offset: const Offset(2, 2),
             ),
-          ),
-        ],
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const Icon(
+              FontAwesomeIcons.tag,
+              color: Colors.white,
+              size: 12,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              '${_calculateDiscountPercentage(widget.product.price, widget.product.discountPrice)}% OFF',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 11,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -379,7 +387,7 @@ class FullScreenImageGallery extends StatelessWidget {
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
                   return Center(
-                    child: CircularProgressIndicator(
+                    child: CircularProgressIndicator.adaptive(
                       value: loadingProgress.expectedTotalBytes != null
                           ? loadingProgress.cumulativeBytesLoaded /
                               loadingProgress.expectedTotalBytes!

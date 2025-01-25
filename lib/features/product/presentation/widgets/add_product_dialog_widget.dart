@@ -54,7 +54,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
 
                       if (_selectedCategory != null &&
                           !categories.any(
-                              (category) => category.id == _selectedCategory)) {
+                              (category) => category.name == _selectedCategory)) {
                         _selectedCategory = null;
                       }
 
@@ -66,7 +66,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                         ),
                         items: categories.map((Category category) {
                           return DropdownMenuItem<String>(
-                            value: category.id,
+                            value: category.name,
                             child: Text(category.name),
                           );
                         }).toList(),

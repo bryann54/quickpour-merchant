@@ -162,13 +162,29 @@ class ProductCard extends StatelessWidget {
                           color: Colors.grey,
                         ),
                       ),
-                    Text(
-                      product.isAvailable ? 'In Stock' : 'Out of Stock',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: product.isAvailable ? Colors.green : Colors.red,
-                      ),
-                    ),
+                   Column(
+                      children: [
+                        if (product.stockQuantity <= 5)
+                          Text(
+                            'Low Stock (${product.stockQuantity} remaining)',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.orange,
+                            ),
+                          ),
+                        Text(
+                          product.isAvailable ? 'In Stock' : 'Out of Stock',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: product.isAvailable
+                                ? (product.stockQuantity <= 5
+                                    ? Colors.orange
+                                    : Colors.green)
+                                : Colors.red,
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),

@@ -47,7 +47,7 @@ class _BrandDetailsScreenState extends State<BrandDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    // final theme = Theme.of(context);
     // final isDarkMode = theme.brightness == Brightness.dark;
 
     return Scaffold(

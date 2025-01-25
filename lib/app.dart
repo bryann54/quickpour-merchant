@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<CategoriesBloc>(
           create: (context) =>
-              CategoriesBloc(FetchCategories(CategoryRepository()))
+              CategoriesBloc(FetchCategories(CategoryRepository(),ProductRepository()))
                 ..add(LoadCategories()),
         ),
         BlocProvider(

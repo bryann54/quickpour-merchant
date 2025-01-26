@@ -35,9 +35,9 @@ class CategoriesScreen extends StatelessWidget {
                       mainAxisSpacing: 5.0,
                       childAspectRatio: 1.2,
                     ),
-                    itemCount: state.categories.length,
+                    itemCount: state.allCategories.length,
                     itemBuilder: (context, index) {
-                      final category = state.categories[index];
+                      final category = state.allCategories[index];
                       return CategoryCard(category: category);
                     },
                   ),

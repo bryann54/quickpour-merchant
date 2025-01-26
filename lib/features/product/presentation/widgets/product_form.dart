@@ -245,7 +245,7 @@ class _ProductFormState extends State<ProductForm> {
               if (state is CategoriesLoading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state is CategoriesLoaded) {
-                final categories = state.categories;
+                final categories = state.allCategories;
                 return DropdownButtonFormField<String>(
                   value: _selectedCategory,
                   decoration: const InputDecoration(

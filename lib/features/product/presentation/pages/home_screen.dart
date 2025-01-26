@@ -176,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen>
           builder: (context, state) {
             if (state is CategoriesLoaded) {
               return HorizontalCategoriesListWidget(
-                  categories: state.categories);
+                  categories: state.categoriesWithProducts);
             }
             return const SizedBox(
               height: 100,

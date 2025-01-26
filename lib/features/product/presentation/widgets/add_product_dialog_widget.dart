@@ -50,7 +50,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
                     if (state is CategoriesLoading) {
                       return const CircularProgressIndicator.adaptive();
                     } else if (state is CategoriesLoaded) {
-                      final categories = state.categories;
+                      final categories = state.allCategories;
 
                       if (_selectedCategory != null &&
                           !categories.any(

@@ -7,13 +7,16 @@ class CategoriesInitial extends CategoriesState {}
 class CategoriesLoading extends CategoriesState {}
 
 class CategoriesLoaded extends CategoriesState {
-  final List<Category> categories;
+  final List<Category> allCategories;
+  final List<Category> categoriesWithProducts;
 
-  CategoriesLoaded(this.categories);
+  CategoriesLoaded({
+    required this.allCategories,
+    required this.categoriesWithProducts,
+  });
 }
 
 class CategoriesError extends CategoriesState {
   final String message;
-
   CategoriesError(this.message);
 }

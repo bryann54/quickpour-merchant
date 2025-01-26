@@ -10,8 +10,11 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     on<LoadCategories>((event, emit) async {
       emit(CategoriesLoading());
       try {
-        final categories = await fetchCategories();
-        emit(CategoriesLoaded(categories));
+        final (allCategories, categoriesWithProducts) = await fetchCategories();
+        emit(CategoriesLoaded(
+          allCategories: allCategories,
+          categoriesWithProducts: categoriesWithProducts,
+        ));
       } catch (e) {
         emit(CategoriesError('Failed to load categories'));
       }

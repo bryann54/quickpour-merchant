@@ -8,8 +8,7 @@ class FetchCategories {
 
   FetchCategories(this.categoryRepository, this.productRepository);
 
-  Future<List<Category>> call() async {
-    // Fetch all categories and convert to Category entities
+  Future<(List<Category>, List<Category>)> call() async {
     final allCategories = (await categoryRepository.getCategories())
         .map((categoryModel) => Category(
               id: categoryModel.id,
@@ -18,15 +17,14 @@ class FetchCategories {
             ))
         .toList();
 
-    // Fetch all products for the merchant
     final products = await productRepository.fetchProducts();
 
-    // Filter categories to only those with products
     final categoriesWithProducts = allCategories.where((category) {
       return products.any((product) =>
           product.categoryName.toLowerCase() == category.name.toLowerCase());
     }).toList();
 
-    return categoriesWithProducts;
+    return (allCategories, categoriesWithProducts);
   }
 }
+

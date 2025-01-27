@@ -28,7 +28,7 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
             builder: (BuildContext context) => CupertinoAlertDialog(
               title: const Text('Delete Request?'),
               content: Text(
-                'Are you sure you want to delete the request for ${request.quantity}x ${request.drinkName}? Any pending offers will be cancelled.',
+                'Are you sure you want to delete the offer for ${request.quantity}x ${request.drinkName}? Any pending offers will be cancelled.',
               ),
               actions: <Widget>[
                 CupertinoDialogAction(
@@ -143,19 +143,7 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                   ),
                 ],
               ),
-              title: Hero(
-                tag: 'drink_name_${request.id}',
-                child: Material(
-                  color: Colors.transparent,
-                  child: Text(
-                    request.drinkName,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
+             
             ),
           ),
           SliverToBoxAdapter(
@@ -184,7 +172,25 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                                   ),
                                 ),
                               ),
+                           
+                            ],
+                          ),
+                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
                               Hero(
+                                tag: 'drink_name_${request.id}',
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: Text(
+                                    request.drinkName,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                                 Hero(
                                 tag: 'quantity_${request.id}',
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
@@ -196,9 +202,9 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: Text(
-                                    'x${request.quantity}',
+                                    'Quantity: ${request.quantity}',
                                     style:
-                                        theme.textTheme.titleMedium?.copyWith(
+                                        theme.textTheme.titleSmall?.copyWith(
                                       color:
                                           theme.colorScheme.onPrimaryContainer,
                                       fontWeight: FontWeight.bold,
@@ -232,17 +238,40 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                               ],
                             ),
                           ),
-                          const Row(
-                            children: [
-                              Text('additional Instructions',
-                              style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
-                            ],
+                          Padding(
+                            padding: const EdgeInsets.all(5.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: theme.colorScheme.onSurfaceVariant.withOpacity(.2),
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Column(
+                                  children: [
+                                    const Row(
+                                      children: [
+                                        Text('additional Instructions',
+                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                                      ],
+                                    ),
+                                    Divider(
+                                      thickness: 1,
+                                    ),
+                                      Row(
+                                      children: [
+                                        Text(request.additionalInstructions),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
                           ),
-                          Row(
-                            children: [
-                              Text(request.additionalInstructions),
-                            ],
-                          )
+                        
                         ],
                       ),
                     ),
@@ -444,6 +473,7 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                                         ),
                                       ),
                                     ],
+                                    
                                   ],
                                 ),
                               ),
@@ -479,7 +509,7 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
       ),
 
 
-// Replace the current FloatingActionButton with:
+//FAB
      floatingActionButton:  FloatingActionButton.extended(
         onPressed: () async {
           final result = await showDialog<Map<String, dynamic>>(

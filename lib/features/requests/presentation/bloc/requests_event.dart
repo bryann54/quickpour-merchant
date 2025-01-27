@@ -44,3 +44,5 @@ class UpdateOffers extends DrinkRequestEvent {
 
   UpdateOffers(this.offers);
 }
+
+

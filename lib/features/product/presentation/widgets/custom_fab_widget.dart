@@ -11,7 +11,7 @@ class CustomFAB extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
       onPressed: () {
-        // Trigger fetching categories before showing the dialog
+        
         context.read<CategoriesBloc>().add(LoadCategories());
         showDialog(
           context: context,
@@ -19,7 +19,7 @@ class CustomFAB extends StatelessWidget {
         );
       },
       icon: const Icon(Icons.add),
-      label: const Text('Update inventory'),
+      label: const Text('Add product'),
       elevation: 15,
     );
   }

@@ -1,51 +1,117 @@
+import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickpourmerchant/features/orders/data/models/completed_order_model.dart';
-import 'package:quickpourmerchant/features/orders/data/models/order_model.dart';
+import 'package:quickpourmerchant/features/orders/data/repositories/orders_repository.dart';
 
 part 'orders_event.dart';
 part 'orders_state.dart';
 
 class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
-  OrdersBloc() : super(OrdersInitial()) {
-    on<LoadOrdersFromCheckout>(_onLoadOrdersFromCheckout);
+  final OrdersRepository _ordersRepository;
+  StreamSubscription<List<CompletedOrder>>? _ordersSubscription;
+  StreamSubscription<int>? _ordersCountSubscription;
+  StreamSubscription<int>? _feedbackCountSubscription;
+
+  OrdersBloc({OrdersRepository? ordersRepository})
+      : _ordersRepository = ordersRepository ?? OrdersRepository(),
+        super(OrdersInitial()) {
+    on<StartOrdersStream>(_onStartOrdersStream);
+    on<OrdersUpdated>(_onOrdersUpdated);
+    on<StopOrdersStream>(_onStopOrdersStream);
+    on<OrdersCountUpdated>(_onOrdersCountUpdated);
+    on<FeedbackCountUpdated>(_onFeedbackCountUpdated);
   }
 
-  void _onLoadOrdersFromCheckout(
-      LoadOrdersFromCheckout event, Emitter<OrdersState> emit) async {
+  void _onStartOrdersStream(
+      StartOrdersStream event, Emitter<OrdersState> emit) {
     emit(OrdersInitial());
-    try {
-      final ordersSnapshot =
-          await FirebaseFirestore.instance.collection('orders').get();
 
-      final orders = ordersSnapshot.docs.map((doc) {
-        final data = doc.data();
+    // Start orders stream
+    _ordersSubscription?.cancel();
+    _ordersSubscription = _ordersRepository.streamOrders().listen(
+      (orders) {
+        add(OrdersUpdated(orders));
+      },
+      onError: (error) {
+        emit(OrdersError('Failed to load orders: $error'));
+      },
+    );
 
-        return CompletedOrder(
-          id: data['orderId'] ?? '',
-          date:
-              DateTime.parse(data['date'] ?? DateTime.now().toIso8601String()),
-          total: (data['totalAmount'] as num?)?.toDouble() ?? 0.0,
-          address: data['address'] as String?,
-          phoneNumber: data['phoneNumber'] as String?,
-          paymentMethod: data['paymentMethod'] ?? '',
-          items: (data['cartItems'] as List<dynamic>)
-              .map((item) => OrderItem.fromJson(item as Map<String, dynamic>))
-              .toList(),
-          deliveryTime: data['deliveryTime'] ?? '',
-          specialInstructions: data['specialInstructions'] ?? '',
-          status: data['status'] ?? '',
-          userEmail: data['userEmail'] ?? '',
-          
-          userName: data['userName'] ?? '',
-        );
-      }).toList();
+    // Start counts streams
+    _ordersCountSubscription?.cancel();
+    _ordersCountSubscription = _ordersRepository.streamOrdersCount().listen(
+      (count) {
+        add(OrdersCountUpdated(count));
+      },
+      onError: (error) {
+        emit(OrdersError('Failed to load orders count: $error'));
+      },
+    );
 
-      emit(OrdersLoaded(orders));
-    } catch (e) {
-      emit(OrdersError('Failed to load orders: ${e.toString()}'));
+    _feedbackCountSubscription?.cancel();
+    _feedbackCountSubscription = _ordersRepository.streamFeedbackCount().listen(
+      (count) {
+        add(FeedbackCountUpdated(count));
+      },
+      onError: (error) {
+        emit(OrdersError('Failed to load feedback count: $error'));
+      },
+    );
+  }
+
+  void _onOrdersUpdated(OrdersUpdated event, Emitter<OrdersState> emit) {
+    if (event.orders.isEmpty) {
+      emit(OrdersEmpty());
+    } else {
+      final currentState = state;
+      if (currentState is OrdersLoaded) {
+        emit(OrdersLoaded(
+          event.orders,
+          ordersCount: currentState.ordersCount,
+          feedbackCount: currentState.feedbackCount,
+        ));
+      } else {
+        emit(OrdersLoaded(event.orders));
+      }
     }
+  }
+
+  void _onOrdersCountUpdated(
+      OrdersCountUpdated event, Emitter<OrdersState> emit) {
+    final currentState = state;
+    if (currentState is OrdersLoaded) {
+      emit(OrdersLoaded(
+        currentState.orders,
+        ordersCount: event.count,
+        feedbackCount: currentState.feedbackCount,
+      ));
+    }
+  }
+
+  void _onFeedbackCountUpdated(
+      FeedbackCountUpdated event, Emitter<OrdersState> emit) {
+    final currentState = state;
+    if (currentState is OrdersLoaded) {
+      emit(OrdersLoaded(
+        currentState.orders,
+        ordersCount: currentState.ordersCount,
+        feedbackCount: event.count,
+      ));
+    }
+  }
+
+  void _onStopOrdersStream(StopOrdersStream event, Emitter<OrdersState> emit) {
+    _ordersSubscription?.cancel();
+    _ordersCountSubscription?.cancel();
+    _feedbackCountSubscription?.cancel();
+  }
+
+  @override
+  Future<void> close() {
+    _ordersSubscription?.cancel();
+    _ordersCountSubscription?.cancel();
+    _feedbackCountSubscription?.cancel();
+    return super.close();
   }
 }

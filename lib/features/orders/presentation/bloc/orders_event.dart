@@ -7,4 +7,33 @@ abstract class OrdersEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadOrdersFromCheckout extends OrdersEvent {}
+class StartOrdersStream extends OrdersEvent {}
+
+class StopOrdersStream extends OrdersEvent {}
+
+class OrdersUpdated extends OrdersEvent {
+  final List<CompletedOrder> orders;
+
+  const OrdersUpdated(this.orders);
+
+  @override
+  List<Object> get props => [orders];
+}
+
+class OrdersCountUpdated extends OrdersEvent {
+  final int count;
+
+  const OrdersCountUpdated(this.count);
+
+  @override
+  List<Object> get props => [count];
+}
+
+class FeedbackCountUpdated extends OrdersEvent {
+  final int count;
+
+  const FeedbackCountUpdated(this.count);
+
+  @override
+  List<Object> get props => [count];
+}

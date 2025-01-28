@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
           )..add(const InitializeNotifications()), 
         ),
         BlocProvider(
-          create: (context) => OrdersBloc()..add(LoadOrdersFromCheckout()),
+          create: (context) => OrdersBloc()..add(StartOrdersStream()),
         ),
         BlocProvider(create: (context)=>AnalyticsBloc(productRepository: ProductRepository(), ordersRepository: OrdersRepository())),
         BlocProvider(

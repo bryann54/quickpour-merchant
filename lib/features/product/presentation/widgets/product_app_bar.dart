@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 import 'package:quickpourmerchant/core/utils/strings.dart';
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
@@ -29,6 +30,7 @@ class ProductAppBar extends StatelessWidget {
       expandedHeight: 400.0,
       floating: false,
       pinned: true,
+      iconTheme: const IconThemeData(color: AppColors.accentColor),
       flexibleSpace: FlexibleSpaceBar(
         title: Text(
           isEditing ? edit : product_details,
@@ -37,9 +39,11 @@ class ProductAppBar extends StatelessWidget {
         background: ProductImageGallery(product: product),
       ),
       actions: [
-        IconButton(
+        IconButton.filled(
+
           icon: Icon(isEditing ? Icons.save : Icons.edit),
           onPressed: onEditPressed,
+          color: AppColors.accentColor,
         ),
         if (!isEditing)
           IconButton(

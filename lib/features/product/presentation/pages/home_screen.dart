@@ -198,7 +198,7 @@ class _HomeScreenState extends State<HomeScreen>
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                'Popular Products',
+                'Your Products',
                 style: GoogleFonts.montaga(
                   textStyle: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,

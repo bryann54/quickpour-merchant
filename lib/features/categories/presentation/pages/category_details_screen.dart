@@ -7,7 +7,6 @@ import 'package:quickpourmerchant/features/categories/presentation/widgets/searc
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
 import 'package:quickpourmerchant/features/product/presentation/widgets/product_card.dart';
 
-
 class CategoryDetailsScreen extends StatefulWidget {
   final Category category;
 
@@ -56,9 +55,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
             floating: false,
             pinned: true,
             iconTheme: const IconThemeData(color: AppColors.background),
-            actions: [
-      
-        ],
+            actions: [],
             flexibleSpace: FlexibleSpaceBar(
               background: _buildHeroSection(),
               collapseMode: CollapseMode.parallax,
@@ -95,7 +92,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
     return Stack(
       children: [
         Hero(
-          tag: 'category_image_${widget.category.id}',
+          tag: 'category_image${widget.category.id}',
           child: Container(
             width: double.infinity,
             height: 200,
@@ -136,20 +133,23 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
         ),
         Positioned.fill(
           child: Center(
-            child: Text(
-              widget.category.name,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                shadows: [
-                  Shadow(
-                    offset: const Offset(1, 1),
-                    blurRadius: 3.0,
-                    color: Colors.black.withOpacity(0.5),
-                  ),
-                ],
+            child: Hero(
+              tag: 'category_name${widget.category.id}',
+              child: Text(
+                widget.category.name,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      offset: const Offset(1, 1),
+                      blurRadius: 3.0,
+                      color: Colors.black.withOpacity(0.5),
+                    ),
+                  ],
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             ),
           ),
         ),

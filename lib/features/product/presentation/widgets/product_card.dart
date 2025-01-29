@@ -55,28 +55,31 @@ class ProductCard extends StatelessWidget {
                         ),
                       )
                     else
-                      Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: isDarkMode
-                                  ? AppColors.accentColor.withOpacity(.5)
-                                  : AppColors.accentColorDark.withOpacity(.3)),
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(12),
-                              topRight: Radius.circular(12)),
-                        ),
-                        child:  Container(
-                        color:isDarkMode? Colors.grey.shade900:Colors.grey.shade200,
-                          height: 130,
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                FaIcon(
-                                  Icons.error,
-                                ),
-                        
-                              ],
+                     Hero(
+                        tag: 'productImage_${product.id}',
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: isDarkMode
+                                    ? AppColors.accentColor.withOpacity(.5)
+                                    : AppColors.accentColorDark.withOpacity(.3)),
+                            borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(12),
+                                topRight: Radius.circular(12)),
+                          ),
+                          child:  Container(
+                          color:isDarkMode? Colors.grey.shade900:Colors.grey.shade200,
+                            height: 130,
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  FaIcon(
+                                    Icons.error,
+                                  ),
+                          
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -86,42 +89,45 @@ class ProductCard extends StatelessWidget {
                       Positioned(
                         top: 0,
                         right: 0,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 4),
-                          decoration: BoxDecoration(
-                            gradient:  LinearGradient(
-                              colors: [Colors.orange, AppColors.primaryColor],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            // borderRadius: BorderRadius.circular(8),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2),
-                                blurRadius: 4,
-                                offset: const Offset(2, 2),
+                        child: Hero(
+                          tag: 'discount_${product.id}',
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 4),
+                            decoration: BoxDecoration(
+                              gradient:  LinearGradient(
+                                colors: [Colors.orange, AppColors.primaryColor],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
                               ),
-                            ],
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const Icon(
-                                FontAwesomeIcons.tag,
-                                color: Colors.white,
-                                size: 12,
-                              ),
-                              const SizedBox(width: 4),
-                              Text(
-                                '${_calculateDiscountPercentage(product.price, product.discountPrice)}% OFF',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
+                              // borderRadius: BorderRadius.circular(8),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  blurRadius: 4,
+                                  offset: const Offset(2, 2),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  FontAwesomeIcons.tag,
+                                  color: Colors.white,
+                                  size: 12,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  '${_calculateDiscountPercentage(product.price, product.discountPrice)}% OFF',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -137,14 +143,19 @@ class ProductCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      product.productName,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
+                   Hero(
+                      tag: 'product_name_${product.id}',
+                      child: Material(
+                        child: Text(
+                          product.productName,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
                     ),
                     Text(
                       product.discountPrice > 0

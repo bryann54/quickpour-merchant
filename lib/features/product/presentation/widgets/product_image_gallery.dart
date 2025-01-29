@@ -171,18 +171,21 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
           Positioned(
             top: 16,
             left: 16,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.7),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Text(
-                '${_currentPage + 1}/${widget.product.imageUrls.length}',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
+            child: Hero(
+              tag: 'productImage_${widget.product.id}',
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Text(
+                  '${_currentPage + 1}/${widget.product.imageUrls.length}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -192,27 +195,32 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
   }
 
   Widget _buildEmptyState() {
-    return Container(
-      color: Colors.grey[100],
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            FaIcon(
-              FontAwesomeIcons.image,
-              color: Colors.grey[400],
-              size: 64,
-            ),
-            const SizedBox(height: 16),
-            Text(
-              no_image,
-              style: TextStyle(
-                color: Colors.grey[600],
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
+    return Hero(
+      tag: 'productImage_${widget.product.id}',
+      child: Container(
+        color: Colors.grey[100],
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FaIcon(
+                Icons.error,
+                color: Colors.grey[400],
+                size: 64,
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              Material(
+                child: Text(
+                  no_image,
+                  style: TextStyle(
+                    color: Colors.grey[600],
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -222,7 +230,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
     return GestureDetector(
       onTap: () => _showFullScreenImage(index),
       child: Hero(
-        tag: 'productImage_${widget.product.id}_$index',
+        tag: 'productImage_${widget.product.id}',
         child: Container(
           decoration: BoxDecoration(
             color: Colors.grey[200],
@@ -246,7 +254,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
             loadingBuilder: (context, child, loadingProgress) {
               if (loadingProgress == null) return child;
               return Center(
-                child: CircularProgressIndicator(
+                child: CircularProgressIndicator.adaptive(
                   value: loadingProgress.expectedTotalBytes != null
                       ? loadingProgress.cumulativeBytesLoaded /
                           loadingProgress.expectedTotalBytes!
@@ -299,41 +307,44 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
     return Positioned(
       top: 120,
       right: 16,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.orange, AppColors.primaryColor],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-          // borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              blurRadius: 4,
-              offset: const Offset(2, 2),
+      child: Hero(
+        tag: 'discount_${widget.product.id}',
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.orange, AppColors.primaryColor],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-          ],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Icon(
-              FontAwesomeIcons.tag,
-              color: Colors.white,
-              size: 12,
-            ),
-            const SizedBox(width: 4),
-            Text(
-              '${_calculateDiscountPercentage(widget.product.price, widget.product.discountPrice)}% OFF',
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 11,
-                fontWeight: FontWeight.bold,
+            // borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 4,
+                offset: const Offset(2, 2),
               ),
-            ),
-          ],
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const Icon(
+                FontAwesomeIcons.tag,
+                color: Colors.white,
+                size: 12,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                '${_calculateDiscountPercentage(widget.product.price, widget.product.discountPrice)}% OFF',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 11,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

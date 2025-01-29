@@ -170,11 +170,16 @@ class _ProductFormState extends State<ProductForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomTextField(
-              label: 'Product Name',
-              controller: _nameController,
-              enabled: widget.isEditing,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            Hero(
+              tag: 'product_name_${widget.product.id}',
+              child: Material(
+                child: CustomTextField(
+                  label: 'Product Name',
+                  controller: _nameController,
+                  enabled: widget.isEditing,
+                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ),
             ),
             const SizedBox(height: 16),
             _buildPriceAndStockFields(),

@@ -72,22 +72,28 @@ class OrderItemWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Order #${order.id}',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color:isDarkMode?AppColors.background.withOpacity(.6): AppColors.primaryColor,
-                          ),
+                   Hero(
+                      tag: 'order_id-${order.id}',
+                      child: Text(
+                        'Order #${order.id}',
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color:isDarkMode?AppColors.background.withOpacity(.6): AppColors.primaryColor,
+                            ),
+                      ),
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      'Ksh ${order.total.toStringAsFixed(0)}',
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                           color: isDarkMode
-                                ? AppColors.brandAccent.withOpacity(.5)
-                                : Colors.black87,
-                          ),
+                     Hero(
+                      tag: 'order_price-${order.id}',
+                      child: Text(
+                        'Ksh ${order.total.toStringAsFixed(0)}',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              fontWeight: FontWeight.bold,
+                             color: isDarkMode
+                                  ? AppColors.brandAccent.withOpacity(.5)
+                                  : Colors.black87,
+                            ),
+                      ),
                     ),
                     const SizedBox(height: 4),
                     Text(

@@ -2,6 +2,7 @@ import 'package:quickpourmerchant/features/product/data/repositories/product_rep
 
 import '../entities/category.dart';
 import '../../data/repositories/category_repository.dart';
+
 class FetchCategories {
   final CategoryRepository categoryRepository;
   final ProductRepository productRepository;
@@ -27,4 +28,3 @@ class FetchCategories {
     return (allCategories, categoriesWithProducts);
   }
 }
-

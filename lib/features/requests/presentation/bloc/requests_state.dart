@@ -17,6 +17,7 @@ class DrinkRequestError extends DrinkRequestState {
 
   DrinkRequestError(this.message);
 }
+
 class OfferSubmitted extends DrinkRequestState {}
 
 class OffersLoaded extends DrinkRequestState {

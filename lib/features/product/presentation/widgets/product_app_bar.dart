@@ -23,9 +23,9 @@ class ProductAppBar extends StatelessWidget {
     if (originalPrice <= 0 || discountPrice <= 0) return 0;
     return ((originalPrice - discountPrice) / originalPrice * 100).round();
   }
+
   @override
   Widget build(BuildContext context) {
- 
     return SliverAppBar(
       expandedHeight: 400.0,
       floating: false,
@@ -40,7 +40,6 @@ class ProductAppBar extends StatelessWidget {
       ),
       actions: [
         IconButton.filled(
-
           icon: Icon(isEditing ? Icons.save : Icons.edit),
           onPressed: onEditPressed,
           color: AppColors.accentColor,

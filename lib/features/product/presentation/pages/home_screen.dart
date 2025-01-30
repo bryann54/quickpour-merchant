@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen>
                   fontSize: 20.0,
                   fontWeight: FontWeight.bold,
                 ),
-                unselectedLabelStyle:const  TextStyle(
+                unselectedLabelStyle: const TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
                 ),
@@ -110,8 +110,8 @@ class _HomeScreenState extends State<HomeScreen>
                 controller: _tabController,
                 children: [
                   _buildHomeContent(context, theme, isDarkMode),
-               const   OrdersScreen(),
-                const  RequestsScreen(),
+                  const OrdersScreen(),
+                  const RequestsScreen(),
                 ],
               ),
             ),
@@ -133,61 +133,67 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Widget _buildCategoriesSection(
-      BuildContext context, ThemeData theme, bool isDarkMode) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 3, right: 3, bottom: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Related Categories',
-                style: GoogleFonts.montaga(
-                  textStyle: theme.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+Widget _buildCategoriesSection(
+    BuildContext context, ThemeData theme, bool isDarkMode) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 3, right: 3, bottom: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Related Categories',
+              style: GoogleFonts.montaga(
+                textStyle: theme.textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              TextButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const CategoriesScreen()),
-                ),
-                style: TextButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  minimumSize: Size.zero,
-                ),
-                child: Text(
-                  'See All',
-                  style: GoogleFonts.montaga(
-                    textStyle: theme.textTheme.bodyLarge?.copyWith(
-                      color: isDarkMode ? Colors.white : AppColors.accentColor,
+            ),
+            BlocBuilder<CategoriesBloc, CategoriesState>(
+              builder: (context, state) {
+                if (state is CategoriesLoaded && state.categoriesWithProducts.length >= 6) {
+                  return TextButton(
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const CategoriesScreen()),
                     ),
-                  ),
-                ),
-              ),
-            ],
-          ),
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      minimumSize: Size.zero,
+                    ),
+                    child: Text(
+                      'See All',
+                      style: GoogleFonts.montaga(
+                        textStyle: theme.textTheme.bodyLarge?.copyWith(
+                          color: isDarkMode ? Colors.white : AppColors.accentColor,
+                        ),
+                      ),
+                    ),
+                  );
+                }
+                return const SizedBox.shrink();
+              },
+            ),
+          ],
         ),
-        BlocBuilder<CategoriesBloc, CategoriesState>(
-          builder: (context, state) {
-            if (state is CategoriesLoaded) {
-              return HorizontalCategoriesListWidget(
-                  categories: state.categoriesWithProducts);
-            }
-            return const SizedBox(
-              height: 100,
-              child: Center(child: LoadingHorizontalList()),
-            );
-          },
-        ),
-      ],
-    );
-  }
-
+      ),
+      BlocBuilder<CategoriesBloc, CategoriesState>(
+        builder: (context, state) {
+          if (state is CategoriesLoaded) {
+            return HorizontalCategoriesListWidget(
+                categories: state.categoriesWithProducts);
+          }
+          return const SizedBox(
+            height: 100,
+            child: Center(child: LoadingHorizontalList()),
+          );
+        },
+      ),
+    ],
+  );
+}
   Widget _buildProductsSection(ThemeData theme) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

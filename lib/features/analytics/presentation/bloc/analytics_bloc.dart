@@ -1,4 +1,3 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:quickpourmerchant/features/orders/data/repositories/orders_repository.dart';
@@ -29,7 +28,7 @@ class AnalyticsBloc extends Bloc<AnalyticsEvent, AnalyticsState> {
           feedbackCount: feedbackCount,
         ));
       } catch (e) {
-        emit(AnalyticsError('Failed to fetch analytics: ${e.toString()}'));
+        emit(AnalyticsError('Failed to fetch analytics}'));
       }
     });
   }

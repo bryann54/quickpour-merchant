@@ -28,7 +28,7 @@ class StatCardDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -201,7 +201,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                               selectedTimeFilter = label;
                             });
                           },
-                          backgroundColor: theme.colorScheme.surfaceVariant,
+                          backgroundColor: theme.colorScheme.surfaceContainerHighest,
                           labelStyle: TextStyle(
                             color: label == selectedTimeFilter
                                 ? theme.colorScheme.onPrimary
@@ -317,7 +317,8 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                       onPressed: () {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Center(child: Text('Feature coming soon..😎')),
+                            content:
+                                Center(child: Text('Feature coming soon..😎')),
                           ),
                         );
                       },
@@ -352,14 +353,14 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
                 StatCardDetailView(
-                  title: title,
-                  value: value,
-                  icon: icon,
-                  color: color,
-                  percentage: percentage,
-                  isIncrease: isIncrease,
-                  extraInfo: extraInfo,
-                ),
+              title: title,
+              value: value,
+              icon: icon,
+              color: color,
+              percentage: percentage,
+              isIncrease: isIncrease,
+              extraInfo: extraInfo,
+            ),
             transitionDuration: const Duration(milliseconds: 300),
             reverseTransitionDuration: const Duration(milliseconds: 300),
           ),

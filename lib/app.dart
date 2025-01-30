@@ -25,7 +25,6 @@ import 'package:quickpourmerchant/features/requests/data/repositories/drink_requ
 import 'package:quickpourmerchant/features/requests/presentation/bloc/requests_bloc.dart';
 import 'package:quickpourmerchant/features/requests/presentation/bloc/requests_event.dart';
 
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -39,9 +38,9 @@ class MyApp extends StatelessWidget {
           )..add(FetchBrandsEvent()),
         ),
         BlocProvider<CategoriesBloc>(
-          create: (context) =>
-              CategoriesBloc(FetchCategories(CategoryRepository(),ProductRepository()))
-                ..add(LoadCategories()),
+          create: (context) => CategoriesBloc(
+              FetchCategories(CategoryRepository(), ProductRepository()))
+            ..add(LoadCategories()),
         ),
         BlocProvider(
           create: (context) => AuthBloc(
@@ -50,25 +49,27 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-       Provider<NotificationsRepository>(
+        Provider<NotificationsRepository>(
           create: (_) => NotificationsRepository(),
         ),
-       
-       BlocProvider<NotificationsBloc>(
+        BlocProvider<NotificationsBloc>(
           create: (context) => NotificationsBloc(
             NotificationsRepository(),
-          )..add(const InitializeNotifications()), 
+          )..add(const InitializeNotifications()),
         ),
         BlocProvider(
           create: (context) => OrdersBloc()..add(StartOrdersStream()),
         ),
-        BlocProvider(create: (context)=>AnalyticsBloc(productRepository: ProductRepository(), ordersRepository: OrdersRepository())),
+        BlocProvider(
+            create: (context) => AnalyticsBloc(
+                productRepository: ProductRepository(),
+                ordersRepository: OrdersRepository())),
         BlocProvider(
           create: (context) => ProductsBloc(
             productRepository: ProductRepository(),
           ),
         ),
-                 BlocProvider(
+        BlocProvider(
           create: (context) => DrinkRequestBloc(
             repository: DrinkRequestRepository(),
           )..add(LoadDrinkRequests()),

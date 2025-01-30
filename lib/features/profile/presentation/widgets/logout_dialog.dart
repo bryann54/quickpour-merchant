@@ -18,9 +18,9 @@ class CustomLogoutDialog extends StatelessWidget {
     return AlertDialog.adaptive(
       backgroundColor: isDarkMode
           ? AppColors.cardColorDark
-          : AppColors.cardColor, // Custom color for the dialog
+          : AppColors.cardColor, 
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(15.0), // Rounded corners
+        borderRadius: BorderRadius.circular(15.0),
       ),
       title: const Text(
         'confirm logout',
@@ -56,14 +56,14 @@ class CustomLogoutDialog extends StatelessWidget {
             ),
             Expanded(
               child: GestureDetector(
-                onTap: onConfirm, // Confirm (logout) action
-                child: const Padding(
+                onTap: onConfirm,
+                child:  Padding(
                   padding: EdgeInsets.all(8.0),
                   child: Center(
                     child: Text(
                       'logout',
                       style: TextStyle(
-                        color: AppColors.textPrimary, // Custom text color
+                        color:isDarkMode?Colors.white: AppColors.textPrimary,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),

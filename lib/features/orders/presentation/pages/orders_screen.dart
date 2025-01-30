@@ -13,13 +13,12 @@ class OrdersScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
       body: BlocProvider(
         create: (_) => OrdersBloc()..add(StartOrdersStream()),
         child: BlocBuilder<OrdersBloc, OrdersState>(
           builder: (context, state) {
             if (state is OrdersInitial) {
-            return ListView.builder(
+              return ListView.builder(
                 itemCount: 7,
                 itemBuilder: (context, index) {
                   return const OrderItemShimmer();

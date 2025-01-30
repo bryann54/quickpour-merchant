@@ -82,8 +82,8 @@ class _OfferDialogState extends State<OfferDialog> {
           price: double.parse(_priceController.text),
           deliveryTime: _selectedDeliveryTime!,
           notes: _additionalNotes,
-          storeName: _storeName.toString(), 
-          location: _location.toString(), 
+          storeName: _storeName.toString(),
+          location: _location.toString(),
         );
 
         if (mounted) {

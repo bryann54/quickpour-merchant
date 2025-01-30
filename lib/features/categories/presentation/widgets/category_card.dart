@@ -52,7 +52,8 @@ class CategoryCard extends StatelessWidget {
                     placeholder: (context, url) => const Center(
                       child: CircularProgressIndicator.adaptive(),
                     ),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -60,7 +61,7 @@ class CategoryCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 2),
-           Hero(
+          Hero(
             tag: 'category_name${category.id}',
             child: Material(
               child: Text(

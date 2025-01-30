@@ -27,7 +27,6 @@ class DrinkRequestListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-  
     final timestamp = DateTime.parse(request.timestamp).toLocal();
 
     return Card(
@@ -119,8 +118,7 @@ class DrinkRequestListTile extends StatelessWidget {
                             const SizedBox(width: 4),
                             Expanded(
                               child: Text(
-                                DateFormat('MMM d, h:mm a').format(
-                                    timestamp),
+                                DateFormat('MMM d, h:mm a').format(timestamp),
                                 style: theme.textTheme.bodySmall?.copyWith(
                                   color: theme.colorScheme.onSurfaceVariant,
                                 ),

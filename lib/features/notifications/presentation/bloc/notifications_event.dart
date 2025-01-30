@@ -32,9 +32,11 @@ class NotificationsUpdated extends NotificationsEvent {
   @override
   List<Object> get props => [notifications];
 }
+
 class InitializeNotifications extends NotificationsEvent {
   const InitializeNotifications();
 }
+
 class StopNotificationsListening extends NotificationsEvent {
   const StopNotificationsListening();
 }

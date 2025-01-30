@@ -177,7 +177,8 @@ class _ProductFormState extends State<ProductForm> {
                   label: 'Product Name',
                   controller: _nameController,
                   enabled: widget.isEditing,
-                  style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 24, fontWeight: FontWeight.bold),
                 ),
               ),
             ),

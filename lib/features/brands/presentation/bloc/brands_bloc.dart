@@ -11,9 +11,9 @@ class BrandsBloc extends Bloc<BrandsEvent, BrandsState> {
 
   BrandsBloc({required this.brandRepository}) : super(BrandsInitialState()) {
     on<FetchBrandsEvent>(_onFetchBrands);
-    // on<AddBrandEvent>(_onAddBrand);
-    // on<UpdateBrandEvent>(_onUpdateBrand);
-    // on<DeleteBrandEvent>(_onDeleteBrand);
+    on<AddBrandEvent>(_onAddBrand);
+    on<UpdateBrandEvent>(_onUpdateBrand);
+    on<DeleteBrandEvent>(_onDeleteBrand);
   }
 
   void _onFetchBrands(FetchBrandsEvent event, Emitter<BrandsState> emit) async {
@@ -26,55 +26,48 @@ class BrandsBloc extends Bloc<BrandsEvent, BrandsState> {
     }
   }
 
-  // void _onAddBrand(AddBrandEvent event, Emitter<BrandsState> emit) async {
-  //   if (state is BrandsLoadedState) {
-  //     try {
-  //       final currentBrands = (state as BrandsLoadedState).brands;
-  //       final updatedBrands = List<BrandModel>.from(currentBrands)
-  //         ..add(event.brand);
+  void _onAddBrand(AddBrandEvent event, Emitter<BrandsState> emit) async {
+    try {
+      emit(BrandsLoadingState());
 
-  //       // Optional: Add to repository if supported
-  //       await brandRepository.addBrand(event.brand);
+      // Add to repository
+      await brandRepository.addBrand(event.brand);
 
-  //       emit(BrandsLoadedState(updatedBrands));
-  //     } catch (e) {
-  //       emit(BrandsErrorState('Failed to add brand: ${e.toString()}'));
-  //     }
-  //   }
-  // }
+      // Fetch updated brands list
+      final updatedBrands = await brandRepository.getBrands();
 
-  // void _onUpdateBrand(UpdateBrandEvent event, Emitter<BrandsState> emit) async {
-  //   if (state is BrandsLoadedState) {
-  //     try {
-  //       final currentBrands = (state as BrandsLoadedState).brands;
-  //       final updatedBrands = currentBrands
-  //           .map((brand) => brand.id == event.brand.id ? event.brand : brand)
-  //           .toList();
+      emit(BrandsLoadedState(updatedBrands));
+    } catch (e) {
+      print(
+        'Error adding brand: ${e.toString()}',
+      );
+      emit(BrandsErrorState('Failed to add brand: ${e.toString()}'));
+    }
+  }
 
-  //       // Optional: Update in repository if supported
-  //       await brandRepository.updateBrand(event.brand);
+  void _onUpdateBrand(UpdateBrandEvent event, Emitter<BrandsState> emit) async {
+    try {
+      emit(BrandsLoadingState());
 
-  //       emit(BrandsLoadedState(updatedBrands));
-  //     } catch (e) {
-  //       emit(BrandsErrorState('Failed to update brand: ${e.toString()}'));
-  //     }
-  //   }
-  // }
+      await brandRepository.updateBrand(event.brand);
 
-  // void _onDeleteBrand(DeleteBrandEvent event, Emitter<BrandsState> emit) async {
-  //   if (state is BrandsLoadedState) {
-  //     try {
-  //       final currentBrands = (state as BrandsLoadedState).brands;
-  //       final updatedBrands =
-  //           currentBrands.where((brand) => brand.id != event.brandId).toList();
+      final updatedBrands = await brandRepository.getBrands();
+      emit(BrandsLoadedState(updatedBrands));
+    } catch (e) {
+      emit(BrandsErrorState('Failed to update brand: ${e.toString()}'));
+    }
+  }
 
-  //       // Optional: Delete from repository if supported
-  //       await brandRepository.deleteBrand(event.brandId);
+  void _onDeleteBrand(DeleteBrandEvent event, Emitter<BrandsState> emit) async {
+    try {
+      emit(BrandsLoadingState());
 
-  //       emit(BrandsLoadedState(updatedBrands));
-  //     } catch (e) {
-  //       emit(BrandsErrorState('Failed to delete brand: ${e.toString()}'));
-  //     }
-  //   }
-  // }
+      await brandRepository.deleteBrand(event.brandId);
+
+      final updatedBrands = await brandRepository.getBrands();
+      emit(BrandsLoadedState(updatedBrands));
+    } catch (e) {
+      emit(BrandsErrorState('Failed to delete brand: ${e.toString()}'));
+    }
+  }
 }

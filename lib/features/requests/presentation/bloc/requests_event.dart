@@ -15,6 +15,7 @@ class UpdateDrinkRequests extends DrinkRequestEvent {
 
   UpdateDrinkRequests(this.requests);
 }
+
 class SubmitOffer extends DrinkRequestEvent {
   final String requestId;
   final double price;
@@ -44,5 +45,3 @@ class UpdateOffers extends DrinkRequestEvent {
 
   UpdateOffers(this.offers);
 }
-
-

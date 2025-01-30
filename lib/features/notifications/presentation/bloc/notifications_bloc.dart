@@ -49,7 +49,6 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     _repository.dispose();
   }
 
-
   Future<void> _onFetchNotifications(
     FetchNotifications event,
     Emitter<NotificationsState> emit,
@@ -73,7 +72,7 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     }
   }
 
- Future<void> _onMarkNotificationAsRead(
+  Future<void> _onMarkNotificationAsRead(
     MarkNotificationAsRead event,
     Emitter<NotificationsState> emit,
   ) async {

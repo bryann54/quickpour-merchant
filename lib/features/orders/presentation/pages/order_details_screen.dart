@@ -11,7 +11,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     final theme = Theme.of(context);
+    final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
     final DateTime dateTime = DateTime.parse(order.date.toString());
     final String formattedDate =
@@ -19,7 +19,6 @@ class OrderDetailsScreen extends StatelessWidget {
     final String formattedTime = DateFormat('h:mm a').format(dateTime);
 
     return Scaffold(
-
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
@@ -88,7 +87,7 @@ class OrderDetailsScreen extends StatelessWidget {
                         'Order #${order.id}',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.bold,
-                             color: isDarkMode
+                              color: isDarkMode
                                   ? AppColors.background.withOpacity(.6)
                                   : AppColors.primaryColor,
                             ),

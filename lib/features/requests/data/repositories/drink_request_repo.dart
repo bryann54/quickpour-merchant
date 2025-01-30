@@ -26,11 +26,11 @@ class DrinkRequestRepository {
         .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.docs
-            .map((doc) =>
-                DrinkRequest.fromMap(doc.data()))
+            .map((doc) => DrinkRequest.fromMap(doc.data()))
             .toList());
   }
-Future<List<Map<String, dynamic>>> getOffers(String requestId) async {
+
+  Future<List<Map<String, dynamic>>> getOffers(String requestId) async {
     try {
       // Fetch from nested 'offers' collection
       final QuerySnapshot snapshot = await _firestore
@@ -47,7 +47,6 @@ Future<List<Map<String, dynamic>>> getOffers(String requestId) async {
       throw Exception('Failed to fetch offers: $e');
     }
   }
-
 
   Future<void> submitOffer({
     required String requestId,
@@ -84,5 +83,4 @@ Future<List<Map<String, dynamic>>> getOffers(String requestId) async {
       throw Exception('Failed to submit offer: $e');
     }
   }
-
 }

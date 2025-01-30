@@ -8,12 +8,10 @@ class DrinkRequestBloc extends Bloc<DrinkRequestEvent, DrinkRequestState> {
   final DrinkRequestRepository _repository;
   StreamSubscription? _requestsSubscription;
 
-  DrinkRequestBloc({
-    required DrinkRequestRepository repository,
-  })  : _repository = repository,
+  DrinkRequestBloc({required DrinkRequestRepository repository})
+      : _repository = repository,
         super(DrinkRequestInitial()) {
     on<LoadDrinkRequests>(_onLoadDrinkRequests);
-  
     on<UpdateDrinkRequests>(_onUpdateDrinkRequests);
   }
 
@@ -21,10 +19,14 @@ class DrinkRequestBloc extends Bloc<DrinkRequestEvent, DrinkRequestState> {
     LoadDrinkRequests event,
     Emitter<DrinkRequestState> emit,
   ) {
+    emit(DrinkRequestLoading()); // Emit loading state
     _requestsSubscription?.cancel();
     _requestsSubscription = _repository.streamDrinkRequests().listen(
       (requests) {
         add(UpdateDrinkRequests(requests));
+      },
+      onError: (error) {
+        emit(DrinkRequestError(error.toString()));
       },
     );
   }

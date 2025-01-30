@@ -15,10 +15,12 @@ class ProductImageGallery extends StatefulWidget {
   @override
   State<ProductImageGallery> createState() => _ProductImageGalleryState();
 }
+
 int _calculateDiscountPercentage(double originalPrice, double discountPrice) {
   if (originalPrice <= 0 || discountPrice <= 0) return 0;
   return ((originalPrice - discountPrice) / originalPrice * 100).round();
 }
+
 class _ProductImageGalleryState extends State<ProductImageGallery> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
@@ -31,7 +33,6 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
 
   @override
   Widget build(BuildContext context) {
-
     return Stack(
       children: [
         // Main Image Display
@@ -59,7 +60,6 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
         // Top Gradient Overlay
         Positioned(
           top: 0,
-        
           height: 80,
           child: Container(
             decoration: BoxDecoration(
@@ -163,8 +163,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
         ],
 
         // Discount Badge
-        if (widget.product.discountPrice > 0)
-          _buildDiscountBadge(),
+        if (widget.product.discountPrice > 0) _buildDiscountBadge(),
 
         // Image Counter
         if (widget.product.imageUrls.length > 1)
@@ -174,7 +173,8 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
             child: Hero(
               tag: 'productImage_${widget.product.id}',
               child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: Colors.black.withOpacity(0.7),
                   borderRadius: BorderRadius.circular(16),
@@ -312,7 +312,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               colors: [Colors.orange, AppColors.primaryColor],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,

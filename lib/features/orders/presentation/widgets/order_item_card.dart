@@ -3,8 +3,6 @@ import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/features/orders/data/models/completed_order_model.dart';
 import 'package:quickpourmerchant/features/orders/presentation/pages/order_details_screen.dart';
 
-
-
 class OrderItemWidget extends StatelessWidget {
   final CompletedOrder order;
 
@@ -12,7 +10,7 @@ class OrderItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      final theme = Theme.of(context);
+    final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
     return GestureDetector(
       onTap: () {
@@ -42,7 +40,7 @@ class OrderItemWidget extends StatelessWidget {
                     gradient: LinearGradient(
                       colors: [
                         AppColors.primaryColor,
-                      AppColors.primaryColor.withOpacity(0.7),
+                        AppColors.primaryColor.withOpacity(0.7),
                       ],
                     ),
                     boxShadow: [
@@ -72,24 +70,27 @@ class OrderItemWidget extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                   Hero(
+                    Hero(
                       tag: 'order_id-${order.id}',
                       child: Text(
                         'Order #${order.id}',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color:isDarkMode?AppColors.background.withOpacity(.6): AppColors.primaryColor,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: isDarkMode
+                                      ? AppColors.background.withOpacity(.6)
+                                      : AppColors.primaryColor,
+                                ),
                       ),
                     ),
                     const SizedBox(height: 4),
-                     Hero(
+                    Hero(
                       tag: 'order_price-${order.id}',
                       child: Text(
                         'Ksh ${order.total.toStringAsFixed(0)}',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.bold,
-                             color: isDarkMode
+                              color: isDarkMode
                                   ? AppColors.brandAccent.withOpacity(.5)
                                   : Colors.black87,
                             ),
@@ -99,7 +100,7 @@ class OrderItemWidget extends StatelessWidget {
                     Text(
                       'by:  ${order.userName}',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                         color: isDarkMode
+                            color: isDarkMode
                                 ? AppColors.shimmerHighlight
                                 : Colors.grey[600],
                           ),

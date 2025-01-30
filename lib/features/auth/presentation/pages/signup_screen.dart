@@ -68,8 +68,7 @@ class _SignupScreenState extends State<SignupScreen> {
     }
   }
 
-  
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
@@ -99,150 +98,157 @@ class _SignupScreenState extends State<SignupScreen> {
                 child: Form(
                   key: _formKey,
                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          'Create Merchant Account',
-                          style: GoogleFonts.acme(
-                            textStyle: Theme.of(context)
-                                .textTheme
-                                .headlineMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.bold,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'Create Merchant Account',
+                        style: GoogleFonts.acme(
+                          textStyle: Theme.of(context)
+                              .textTheme
+                              .headlineMedium
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        'Set up your store profile',
+                        style: GoogleFonts.acme(
+                          textStyle:
+                              Theme.of(context).textTheme.bodyLarge?.copyWith(
+                                    color: isDarkMode
+                                        ? AppColors.accentColorDark
+                                        : AppColors.accentColor,
+                                    fontSize: 20,
+                                  ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      // Business Information Section
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: isDarkMode
+                                ? Colors.grey[700]!
+                                : Colors.grey[300]!,
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Business Information',
+                              style: GoogleFonts.acme(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              controller: _storeNameController,
+                              decoration: InputDecoration(
+                                labelText: 'Store Name',
+                                prefixIcon: const Icon(Icons.store_outlined),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                          ),
+                              ),
+                              validator: (value) {
+                                if (value?.isEmpty ?? true) {
+                                  return 'Please enter store name';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 16),
+                            TextFormField(
+                              controller: _locationController,
+                              decoration: InputDecoration(
+                                labelText: 'Store Location',
+                                prefixIcon:
+                                    const Icon(Icons.location_on_outlined),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value?.isEmpty ?? true) {
+                                  return 'Please enter store location';
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
                         ),
+                      ),
+                      Text(
+                        'Operating Hours',
+                        style: GoogleFonts.acme(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: _is24Hours,
+                            onChanged: (value) {
+                              setState(() {
+                                _is24Hours = value ?? false;
+                                if (_is24Hours) {
+                                  _storeHours = StoreHours(
+                                    opening:
+                                        const TimeOfDay(hour: 0, minute: 0),
+                                    closing:
+                                        const TimeOfDay(hour: 23, minute: 59),
+                                    is24Hours: true,
+                                  );
+                                } else {
+                                  _storeHours = null;
+                                }
+                              });
+                            },
+                          ),
+                          const Text('24 Hours'),
+                        ],
+                      ),
+
+                      if (!_is24Hours) ...[
                         const SizedBox(height: 8),
-                        Text(
-                          'Set up your store profile',
-                          style: GoogleFonts.acme(
-                            textStyle:
-                                Theme.of(context).textTheme.bodyLarge?.copyWith(
-                                      color: isDarkMode
-                                          ? AppColors.accentColorDark
-                                          : AppColors.accentColor,
-                                      fontSize: 20,
-                                    ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        // Business Information Section
-                        Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: isDarkMode
-                                  ? Colors.grey[700]!
-                                  : Colors.grey[300]!,
+                        InkWell(
+                          onTap: () => _selectTimeRange(context),
+                          child: Container(
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  _storeHours?.getDisplayText() ??
+                                      'Select Operating Hours',
+                                  style: TextStyle(
+                                    color: _storeHours == null
+                                        ? Colors.grey
+                                        : Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge
+                                            ?.color,
+                                  ),
+                                ),
+                                const Icon(Icons.access_time),
+                              ],
                             ),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Business Information',
-                                style: GoogleFonts.acme(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              TextFormField(
-                                controller: _storeNameController,
-                                decoration: InputDecoration(
-                                  labelText: 'Store Name',
-                                  prefixIcon: const Icon(Icons.store_outlined),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                validator: (value) {
-                                  if (value?.isEmpty ?? true) {
-                                    return 'Please enter store name';
-                                  }
-                                  return null;
-                                },
-                              ),
-                              const SizedBox(height: 16),
-                              TextFormField(
-                                controller: _locationController,
-                                decoration: InputDecoration(
-                                  labelText: 'Store Location',
-                                  prefixIcon:
-                                      const Icon(Icons.location_on_outlined),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                validator: (value) {
-                                  if (value?.isEmpty ?? true) {
-                                    return 'Please enter store location';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ],
-                          ),
                         ),
-                            Text(
-            'Operating Hours',
-            style: GoogleFonts.acme(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          
-          Row(
-            children: [
-              Checkbox(
-                value: _is24Hours,
-                onChanged: (value) {
-                  setState(() {
-                    _is24Hours = value ?? false;
-                    if (_is24Hours) {
-                      _storeHours = StoreHours(
-                        opening: const TimeOfDay(hour: 0, minute: 0),
-                        closing: const TimeOfDay(hour: 23, minute: 59),
-                        is24Hours: true,
-                      );
-                    } else {
-                      _storeHours = null;
-                    }
-                  });
-                },
-              ),
-              const Text('24 Hours'),
-            ],
-          ),
+                      ],
 
-          if (!_is24Hours) ...[
-            const SizedBox(height: 8),
-            InkWell(
-              onTap: () => _selectTimeRange(context),
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      _storeHours?.getDisplayText() ?? 'Select Operating Hours',
-                      style: TextStyle(
-                        color: _storeHours == null 
-                            ? Colors.grey 
-                            : Theme.of(context).textTheme.bodyLarge?.color,
-                      ),
-                    ),
-                    const Icon(Icons.access_time),
-                  ],
-                ),
-              ),
-            ),
-      
                         const SizedBox(height: 20),
                         // Personal Information Section
                         Container(
@@ -376,43 +382,52 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ),
                         const SizedBox(height: 24),
-                ElevatedButton(
-            onPressed: state is AuthLoading
-                ? null
-                : () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      if (_storeHours == null && !_is24Hours) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Please select operating hours'),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                        return;
-                      }
+                        ElevatedButton(
+                          onPressed: state is AuthLoading
+                              ? null
+                              : () {
+                                  if (_formKey.currentState?.validate() ??
+                                      false) {
+                                    if (_storeHours == null && !_is24Hours) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                              'Please select operating hours'),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                      return;
+                                    }
 
-                      final storeHours = _is24Hours
-                          ? StoreHours(
-                              opening: const TimeOfDay(hour: 0, minute: 0),
-                              closing: const TimeOfDay(hour: 23, minute: 59),
-                              is24Hours: true,
-                            )
-                          : _storeHours!;
+                                    final storeHours = _is24Hours
+                                        ? StoreHours(
+                                            opening: const TimeOfDay(
+                                                hour: 0, minute: 0),
+                                            closing: const TimeOfDay(
+                                                hour: 23, minute: 59),
+                                            is24Hours: true,
+                                          )
+                                        : _storeHours!;
 
-                      context.read<AuthBloc>().add(
-                        SignupEvent(
-                          email: _emailController.text.trim(),
-                          password: _passwordController.text.trim(),
-                          fullName: _fullNameController.text.trim(),
-                          storeName: _storeNameController.text.trim(),
-                          location: _locationController.text.trim(),
-                          imageUrl: '',
-                          storeHours: storeHours.toJson(),
-                          is24Hours: _is24Hours,
-                        ),
-                      );
-                    }
-                  },
+                                    context.read<AuthBloc>().add(
+                                          SignupEvent(
+                                            email: _emailController.text.trim(),
+                                            password:
+                                                _passwordController.text.trim(),
+                                            fullName:
+                                                _fullNameController.text.trim(),
+                                            storeName: _storeNameController.text
+                                                .trim(),
+                                            location:
+                                                _locationController.text.trim(),
+                                            imageUrl: '',
+                                            storeHours: storeHours.toJson(),
+                                            is24Hours: _is24Hours,
+                                          ),
+                                        );
+                                  }
+                                },
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             shape: RoundedRectangleBorder(
@@ -432,50 +447,48 @@ class _SignupScreenState extends State<SignupScreen> {
                               : const Text('Create Store Account'),
                         ),
 
-                      const SizedBox(height: 70),
-                   Padding(
-                     padding: const EdgeInsets.all(8.0),
-                     child: Row(
-                       children: [
-                         const Expanded(
-                           child: Divider(
-                             color: Colors.grey,
-                             thickness: 1,
-                           ),
-                         ),
-                         Padding(
-                           padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                           child: Text(
-                             'Or Sign Up with',
-                             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                   color: Colors.grey,
-                                 ),
-                           ),
-                         ),
-                         const Expanded(
-                           child: Divider(
-                             color: Colors.grey,
-                             thickness: 1,
-                           ),
-                         ),
-                       ],
-                     ),
-                   ),
-                  const    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          GoogleSignInButton(
-                        
+                        const SizedBox(height: 70),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              const Expanded(
+                                child: Divider(
+                                  color: Colors.grey,
+                                  thickness: 1,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                child: Text(
+                                  'Or Sign Up with',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        color: Colors.grey,
+                                      ),
+                                ),
+                              ),
+                              const Expanded(
+                                child: Divider(
+                                  color: Colors.grey,
+                                  thickness: 1,
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(width: 30),
-                          FacebookSignInButton(
-                        
-                          ),
-                        ],
-                      ),
-                  ],
-                  
-              
+                        ),
+                        // const Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     GoogleSignInButton(),
+                        //     SizedBox(width: 30),
+                        //     FacebookSignInButton(),
+                        //   ],
+                        // ),
+                      
                     ],
                   ),
                 ),

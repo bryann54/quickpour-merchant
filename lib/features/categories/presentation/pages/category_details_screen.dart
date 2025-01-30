@@ -55,7 +55,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
             floating: false,
             pinned: true,
             iconTheme: const IconThemeData(color: AppColors.background),
-            actions: [],
+            actions: const [],
             flexibleSpace: FlexibleSpaceBar(
               background: _buildHeroSection(),
               collapseMode: CollapseMode.parallax,

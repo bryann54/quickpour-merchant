@@ -8,19 +8,52 @@ class BrandRepository {
     try {
       QuerySnapshot querySnapshot = await _firestore.collection('brands').get();
       return querySnapshot.docs.map((doc) {
-        return BrandModel.fromJson(doc.data() as Map<String, dynamic>);
+        final data = doc.data() as Map<String, dynamic>;
+        data['id'] = doc.id; // Ensure the document ID is included
+        return BrandModel.fromJson(data);
       }).toList();
     } catch (e) {
       throw Exception('Error fetching brands: $e');
     }
   }
 
-  Future<void> addBrands(List<BrandModel> brands) async {
-    final batch = _firestore.batch();
-    for (var brand in brands) {
-      final docRef = _firestore.collection('brands').doc(brand.id);
-      batch.set(docRef, brand.toJson());
+  Future<void> addBrand(BrandModel brand) async {
+    try {
+      // Create a new document with auto-generated ID
+      DocumentReference docRef = _firestore.collection('brands').doc();
+
+      // Update the brand model with the new ID
+      final brandWithId = BrandModel(
+        id: docRef.id,
+        name: brand.name,
+        country: brand.country,
+        description: brand.description,
+        logoUrl: brand.logoUrl,
+      );
+
+      // Set the data
+      await docRef.set(brandWithId.toJson());
+    } catch (e) {
+      throw Exception('Error adding brand: $e');
     }
-    await batch.commit();
+  }
+
+  Future<void> updateBrand(BrandModel brand) async {
+    try {
+      await _firestore
+          .collection('brands')
+          .doc(brand.id)
+          .update(brand.toJson());
+    } catch (e) {
+      throw Exception('Error updating brand: $e');
+    }
+  }
+
+  Future<void> deleteBrand(String brandId) async {
+    try {
+      await _firestore.collection('brands').doc(brandId).delete();
+    } catch (e) {
+      throw Exception('Error deleting brand: $e');
+    }
   }
 }

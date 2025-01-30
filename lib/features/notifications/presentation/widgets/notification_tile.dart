@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
@@ -9,7 +7,8 @@ class NotificationTile extends StatelessWidget {
   final NotificationModel notification;
   final VoidCallback onTap;
 
-  const NotificationTile({super.key, 
+  const NotificationTile({
+    super.key,
     required this.notification,
     required this.onTap,
   });

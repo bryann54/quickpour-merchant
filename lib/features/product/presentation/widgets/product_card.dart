@@ -55,29 +55,31 @@ class ProductCard extends StatelessWidget {
                         ),
                       )
                     else
-                     Hero(
+                      Hero(
                         tag: 'productImage_${product.id}',
                         child: Container(
                           decoration: BoxDecoration(
                             border: Border.all(
                                 color: isDarkMode
                                     ? AppColors.accentColor.withOpacity(.5)
-                                    : AppColors.accentColorDark.withOpacity(.3)),
+                                    : AppColors.accentColorDark
+                                        .withOpacity(.3)),
                             borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(12),
                                 topRight: Radius.circular(12)),
                           ),
-                          child:  Container(
-                          color:isDarkMode? Colors.grey.shade900:Colors.grey.shade200,
+                          child: Container(
+                            color: isDarkMode
+                                ? Colors.grey.shade900
+                                : Colors.grey.shade200,
                             height: 130,
-                            child: Center(
+                            child: const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   FaIcon(
                                     Icons.error,
                                   ),
-                          
                                 ],
                               ),
                             ),
@@ -95,7 +97,7 @@ class ProductCard extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 4),
                             decoration: BoxDecoration(
-                              gradient:  LinearGradient(
+                              gradient: const LinearGradient(
                                 colors: [Colors.orange, AppColors.primaryColor],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
@@ -131,7 +133,7 @@ class ProductCard extends StatelessWidget {
                           ),
                         ),
                       ),
-                ],
+                  ],
                 ),
               ),
             ),
@@ -143,7 +145,7 @@ class ProductCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                   Hero(
+                    Hero(
                       tag: 'product_name_${product.id}',
                       child: Material(
                         child: Text(
@@ -173,12 +175,12 @@ class ProductCard extends StatelessWidget {
                           color: Colors.grey,
                         ),
                       ),
-                   Column(
+                    Column(
                       children: [
                         if (product.stockQuantity <= 5)
                           Text(
                             'Low Stock (${product.stockQuantity} remaining)',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 12,
                               color: Colors.orange,
                             ),

@@ -17,7 +17,7 @@
 // import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
 
 // class AddProductDialog extends StatefulWidget {
-  
+
 //   const AddProductDialog({super.key});
 
 //   @override
@@ -341,7 +341,6 @@
 //                 ),
 //                 const SizedBox(height: 16),
 
-
 //                 // Category Dropdown
 //                 BlocBuilder<CategoriesBloc, CategoriesState>(
 //                   builder: (context, state) {
@@ -437,7 +436,7 @@
 //                           prefixText: 'Ksh ',
 //                           border: OutlineInputBorder(
 //                             borderRadius: BorderRadius.circular(8),
-                            
+
 //                           ),
 //                           prefixIcon:  Icon(Icons.attach_money,size: 24,color: isDarkMode?AppColors.background.withOpacity(.5):Colors.grey.withOpacity(0.5),),
 //                         ),

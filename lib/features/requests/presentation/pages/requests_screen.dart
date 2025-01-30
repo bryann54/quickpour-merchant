@@ -56,7 +56,7 @@ class RequestsScreen extends StatelessWidget {
               separatorBuilder: (context, index) => const SizedBox(height: 12),
               itemBuilder: (context, index) {
                 final request = state.requests[index];
-            return DrinkRequestListTile(request: request);
+                return DrinkRequestListTile(request: request);
               },
             );
           }

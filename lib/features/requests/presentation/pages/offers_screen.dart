@@ -16,12 +16,12 @@ class OffersScreen extends StatelessWidget {
     required this.request,
   });
 
-Future<List<Map<String, dynamic>>> _fetchOffers() {
+  Future<List<Map<String, dynamic>>> _fetchOffers() {
     final repository = DrinkRequestRepository();
     return repository.getOffers(request.id);
   }
+
   Future<bool> _showDeleteConfirmation(BuildContext context) async {
-    
     if (Theme.of(context).platform == TargetPlatform.iOS) {
       return await showCupertinoDialog<bool>(
             context: context,
@@ -73,12 +73,9 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
   }
 
   void _handleDelete(BuildContext context) async {
-      
     final shouldDelete = await _showDeleteConfirmation(context);
 
     if (shouldDelete && context.mounted) {
-    
-
       // Show success snackbar with undo option
       if (context.mounted) {
         ScaffoldMessenger.of(context).clearSnackBars();
@@ -117,15 +114,15 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
         slivers: [
           SliverAppBar(
             expandedHeight: 200,
-              iconTheme: const IconThemeData(color: Colors.white), 
+            iconTheme: const IconThemeData(color: Colors.white),
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-          // In your SliverAppBar's FlexibleSpaceBar, replace the current background Stack with:
+              // In your SliverAppBar's FlexibleSpaceBar, replace the current background Stack with:
               background: Stack(
                 fit: StackFit.expand,
                 children: [
                   Image.asset(
-                    'assets/11.jpg', 
+                    'assets/11.jpg',
                     fit: BoxFit.cover,
                   ),
                   // Gradient overlay for better text visibility
@@ -143,7 +140,6 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                   ),
                 ],
               ),
-             
             ),
           ),
           SliverToBoxAdapter(
@@ -172,42 +168,47 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                                   ),
                                 ),
                               ),
-                           
                             ],
                           ),
-                          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Hero(
-                                tag: 'drink_name_${request.id}',
-                                child: Material(
-                                  color: Colors.transparent,
-                                  child: Text(
-                                    request.drinkName,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
+                              Flexible(
+                                child: Hero(
+                                  tag: 'drink_name_${request.id}',
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: Text(
+                                      request.drinkName,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
                                 ),
                               ),
-                                 Hero(
-                                tag: 'quantity_${request.id}',
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 8,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: theme.colorScheme.primaryContainer,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Text(
-                                    'Quantity: ${request.quantity}',
-                                    style:
-                                        theme.textTheme.titleSmall?.copyWith(
-                                      color:
-                                          theme.colorScheme.onPrimaryContainer,
-                                      fontWeight: FontWeight.bold,
+                              Flexible(
+                                child: Hero(
+                                  tag: 'quantity_${request.id}',
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 8,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: theme.colorScheme.primaryContainer,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Text(
+                                      'Quantity: ${request.quantity}',
+                                      style:
+                                          theme.textTheme.titleSmall?.copyWith(
+                                        color: theme
+                                            .colorScheme.onPrimaryContainer,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -225,16 +226,16 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                                   color: theme.colorScheme.onSurfaceVariant,
                                 ),
                                 const SizedBox(width: 8),
-                               Expanded(
-                              child: Text(
-                                DateFormat('MMM d, h:mm a').format(
-                                    timestamp), // Use the DateTime object here
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.colorScheme.onSurfaceVariant,
+                                Expanded(
+                                  child: Text(
+                                    DateFormat('MMM d, h:mm a').format(
+                                        timestamp), // Use the DateTime object here
+                                    style: theme.textTheme.bodySmall?.copyWith(
+                                      color: theme.colorScheme.onSurfaceVariant,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              ),
                               ],
                             ),
                           ),
@@ -243,7 +244,8 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                             child: Container(
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                  color: theme.colorScheme.onSurfaceVariant.withOpacity(.2),
+                                  color: theme.colorScheme.onSurfaceVariant
+                                      .withOpacity(.2),
                                   width: 1,
                                 ),
                                 borderRadius: BorderRadius.circular(10),
@@ -255,13 +257,15 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                                     const Row(
                                       children: [
                                         Text('additional Instructions',
-                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold)),
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold)),
                                       ],
                                     ),
-                                    Divider(
+                                    const Divider(
                                       thickness: 1,
                                     ),
-                                      Row(
+                                    Row(
                                       children: [
                                         Text(request.additionalInstructions),
                                       ],
@@ -271,20 +275,17 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                               ),
                             ),
                           ),
-                        
                         ],
                       ),
                     ),
                   ),
-              
                   Text(
                     'Offers',
                     style: theme.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                
-       FutureBuilder<List<Map<String, dynamic>>>(
+                  FutureBuilder<List<Map<String, dynamic>>>(
                     future: _fetchOffers(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -294,7 +295,7 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                       } else if (snapshot.hasError) {
                         return Center(
                           child: Text(
-                            'Failed to load offers: ${snapshot.error}',
+                            'Failed to load offers',
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.error),
                           ),
@@ -307,7 +308,7 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
                             final offer = snapshot.data![index];
-                     return Container(
+                            return Container(
                               decoration: BoxDecoration(
                                 color: theme.colorScheme.surface,
                                 border: Border.all(
@@ -442,7 +443,7 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                                         padding: const EdgeInsets.all(12),
                                         decoration: BoxDecoration(
                                           color: theme
-                                              .colorScheme.surfaceVariant
+                                              .colorScheme.surfaceContainerHighest
                                               .withOpacity(0.3),
                                           borderRadius:
                                               BorderRadius.circular(8),
@@ -473,11 +474,11 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                                         ),
                                       ),
                                     ],
-                                    
                                   ],
                                 ),
                               ),
-                            ); },
+                            );
+                          },
                         );
                       } else {
                         return Center(
@@ -489,7 +490,6 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                                 size: 48,
                                 color: theme.colorScheme.onSurfaceVariant,
                               ),
-                            
                               Text(
                                 'No offers yet',
                                 style: theme.textTheme.titleMedium?.copyWith(
@@ -501,16 +501,16 @@ Future<List<Map<String, dynamic>>> _fetchOffers() {
                         );
                       }
                     },
-                  ) ],
+                  )
+                ],
               ),
             ),
           ),
         ],
       ),
 
-
 //FAB
-     floatingActionButton:  FloatingActionButton.extended(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () async {
           final result = await showDialog<Map<String, dynamic>>(
             context: context,

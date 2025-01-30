@@ -118,7 +118,8 @@ class _AuthWrapperState extends State<AuthWrapper> {
                 },
                 child: Text(
                   isLogin ? "Sign Up" : "Login",
-                  style: const TextStyle(color: AppColors.errorDark, fontSize: 20),
+                  style:
+                      const TextStyle(color: AppColors.errorDark, fontSize: 20),
                 ),
               ),
             ],

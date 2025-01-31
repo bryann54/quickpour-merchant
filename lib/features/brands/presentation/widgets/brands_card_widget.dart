@@ -23,54 +23,69 @@ class BrandCardWidget extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Stack(
           children: [
-            ClipRRect(
-              borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(16)),
-              child: CachedNetworkImage(
-                imageUrl: brand.logoUrl,
-                placeholder: (context, url) => Container(
-                  height: 100,
-                  color: Colors.grey.shade200,
-                  child: const Center(child: CircularProgressIndicator()),
+            // Background Image
+            Hero(
+              tag: 'brand-image-${brand.id}',
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: CachedNetworkImage(
+                  imageUrl: brand.logoUrl,
+                  placeholder: (context, url) => const Center(
+                    child: CircularProgressIndicator.adaptive(),
+                  ),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  fit: BoxFit.contain,
+                  width: double.infinity,
+                  height: double.infinity,
                 ),
-                errorWidget: (context, url, error) =>
-                    const Icon(Icons.error, size: 48),
-                height: 90,
-                width: double.infinity,
-                fit: BoxFit.contain,
               ),
             ),
-
+            // Gradient Overlay
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                gradient: LinearGradient(
+                  colors: [Colors.black.withOpacity(0.4), Colors.transparent],
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                ),
+              ),
+            ),
             // Brand Details
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min, // Prevents extra space
-                  children: [
-                    Expanded(
-                      child: Text(
-                        brand.name,
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? Colors.white70
-                                      : Colors.black87,
-                                ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
+            Positioned(
+              bottom: 1,
+              left: 16,
+              right: 16,
+              child: Hero(
+                tag: 'brand-name-${brand.id}',
+                child: Material(
+                  color: Colors.transparent,
+                  child: Text(
+                    brand.country,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
             ),
+            // Verified Badge
+            if (isVerified)
+              Positioned(
+                top: 16,
+                right: 16,
+                child: Icon(
+                  Icons.verified,
+                  color: Theme.of(context).primaryColor,
+                  size: 24,
+                ),
+              ),
           ],
         ),
       ),

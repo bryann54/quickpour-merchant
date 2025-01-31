@@ -81,7 +81,7 @@ class _BrandDetailsScreenState extends State<BrandDetailsScreen> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 200,
+            expandedHeight: 250,
             floating: false,
             pinned: true,
             iconTheme: const IconThemeData(color: AppColors.background),
@@ -182,10 +182,10 @@ class _BrandDetailsScreenState extends State<BrandDetailsScreen> {
     return Stack(
       children: [
         Hero(
-          tag: 'brand_image${widget.brand.id}',
+          tag: 'brand-image-${widget.brand.id}',
           child: Container(
             width: double.infinity,
-            height: 200,
+            height: 250,
             decoration: BoxDecoration(
               border: Border.all(color: AppColors.accentColor.withOpacity(0.4)),
               image: DecorationImage(
@@ -209,7 +209,7 @@ class _BrandDetailsScreenState extends State<BrandDetailsScreen> {
         ),
         Container(
           width: double.infinity,
-          height: 200,
+          height: 250,
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -227,21 +227,25 @@ class _BrandDetailsScreenState extends State<BrandDetailsScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Hero(
-                  tag: 'brand_name${widget.brand.id}',
-                  child: Text(
-                    widget.brand.name,
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      shadows: [
-                        Shadow(
-                          offset: const Offset(1, 1),
-                          blurRadius: 3.0,
-                          color: Colors.black.withOpacity(0.5),
-                        ),
-                      ],
+                  tag: 'brand-name-${widget.brand.id}',
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Text(
+                      widget.brand.name,
+                      style:
+                          Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        shadows: [
+                          Shadow(
+                            offset: const Offset(1, 1),
+                            blurRadius: 3.0,
+                            color: Colors.black.withOpacity(0.5),
+                          ),
+                        ],
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                 ),
                 const SizedBox(height: 4),

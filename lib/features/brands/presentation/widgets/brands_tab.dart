@@ -8,7 +8,6 @@ import 'package:quickpourmerchant/features/categories/presentation/widgets/shimm
 class BrandsTab extends StatelessWidget {
   const BrandsTab({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

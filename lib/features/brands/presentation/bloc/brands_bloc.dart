@@ -38,10 +38,7 @@ class BrandsBloc extends Bloc<BrandsEvent, BrandsState> {
 
       emit(BrandsLoadedState(updatedBrands));
     } catch (e) {
-      print(
-        'Error adding brand: ${e.toString()}',
-      );
-      emit(BrandsErrorState('Failed to add brand: ${e.toString()}'));
+      emit(const BrandsErrorState('Failed to add brand'));
     }
   }
 
@@ -54,7 +51,7 @@ class BrandsBloc extends Bloc<BrandsEvent, BrandsState> {
       final updatedBrands = await brandRepository.getBrands();
       emit(BrandsLoadedState(updatedBrands));
     } catch (e) {
-      emit(BrandsErrorState('Failed to update brand: ${e.toString()}'));
+      emit(const BrandsErrorState('Failed to update brand'));
     }
   }
 
@@ -67,7 +64,7 @@ class BrandsBloc extends Bloc<BrandsEvent, BrandsState> {
       final updatedBrands = await brandRepository.getBrands();
       emit(BrandsLoadedState(updatedBrands));
     } catch (e) {
-      emit(BrandsErrorState('Failed to delete brand: ${e.toString()}'));
+      emit(const BrandsErrorState('Failed to delete brand'));
     }
   }
 }

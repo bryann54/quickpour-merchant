@@ -13,6 +13,7 @@ import 'package:quickpourmerchant/features/profile/presentation/widgets/logout_b
 import 'package:quickpourmerchant/features/profile/presentation/widgets/profile_shimmer.dart';
 import 'package:quickpourmerchant/features/profile/presentation/widgets/settings_dialog.dart';
 import 'package:image_picker/image_picker.dart';
+
 class ProfileScreen extends StatefulWidget {
   final AuthUseCases authUseCases;
 
@@ -26,7 +27,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-    final ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker();
   XFile? _pickedImage;
 
   Future<void> _pickImage() async {
@@ -37,6 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
     }
   }
+
   Future<User?>? _userFuture;
   final ScrollController _scrollController = ScrollController();
 
@@ -159,7 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         right: 0,
                         child: IconButton(
                           onPressed: _pickImage,
-                          icon: Icon(Icons.camera_alt,
+                          icon: const Icon(Icons.camera_alt,
                               color: Colors.grey, size: 30),
                         ),
                       ),
@@ -174,7 +176,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       color: Colors.white,
                     ),
                   ),
-                 
                   Text(
                     user.email,
                     style: const TextStyle(color: Colors.white70),
@@ -207,7 +208,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ],
                   ),
-                   
                 ],
               ),
             ),
@@ -244,10 +244,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildStatsSection(User user) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.backgroundDark.withOpacity(0.1),
+        color: isDarkMode
+            ? AppColors.background.withOpacity(.1)
+            : AppColors.backgroundDark.withOpacity(0.1),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.accentColor.withOpacity(0.2)),
       ),
@@ -285,9 +289,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildAppearanceSection() {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.backgroundDark.withOpacity(0.1),
+        color: isDarkMode
+            ? AppColors.background.withOpacity(.1)
+            : AppColors.backgroundDark.withOpacity(0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: AppColors.accentColor.withOpacity(0.2),
@@ -328,7 +336,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-
   Widget _buildSectionTitle(BuildContext context, String title) {
     return Text(
       title,
@@ -341,9 +348,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buildProfileOptions(BuildContext context, User user) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.backgroundDark.withOpacity(0.1),
+        color: isDarkMode
+            ? AppColors.background.withOpacity(.1)
+            : AppColors.backgroundDark.withOpacity(0.1),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.accentColor.withOpacity(0.2),
@@ -430,7 +441,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Divider(
         height: 1,
-        color: AppColors.dividerColorDark.withOpacity(0.3),
+        color: AppColors.dividerColorDark.withOpacity(0.1),
       ),
     );
   }

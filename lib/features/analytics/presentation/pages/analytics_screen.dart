@@ -201,7 +201,8 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                               selectedTimeFilter = label;
                             });
                           },
-                          backgroundColor: theme.colorScheme.surfaceContainerHighest,
+                          backgroundColor:
+                              theme.colorScheme.surfaceContainerHighest,
                           labelStyle: TextStyle(
                             color: label == selectedTimeFilter
                                 ? theme.colorScheme.onPrimary

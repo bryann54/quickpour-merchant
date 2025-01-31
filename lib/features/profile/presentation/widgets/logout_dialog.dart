@@ -16,9 +16,8 @@ class CustomLogoutDialog extends StatelessWidget {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
     return AlertDialog.adaptive(
-      backgroundColor: isDarkMode
-          ? AppColors.cardColorDark
-          : AppColors.cardColor, 
+      backgroundColor:
+          isDarkMode ? AppColors.cardColorDark : AppColors.cardColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
       ),
@@ -57,13 +56,14 @@ class CustomLogoutDialog extends StatelessWidget {
             Expanded(
               child: GestureDetector(
                 onTap: onConfirm,
-                child:  Padding(
-                  padding: EdgeInsets.all(8.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Center(
                     child: Text(
                       'logout',
                       style: TextStyle(
-                        color:isDarkMode?Colors.white: AppColors.textPrimary,
+                        color:
+                            isDarkMode ? Colors.white : AppColors.textPrimary,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),

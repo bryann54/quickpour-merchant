@@ -35,9 +35,9 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // Main Image Display
+        SizedBox(height: 20,),
         SizedBox(
-          height: 450,
+          height: 350,
           child: PageView.builder(
             controller: _pageController,
             onPageChanged: (index) {
@@ -170,22 +170,19 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
           Positioned(
             top: 16,
             left: 16,
-            child: Hero(
-              tag: 'productImage_${widget.product.id}',
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.7),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Text(
-                  '${_currentPage + 1}/${widget.product.imageUrls.length}',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.7),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Text(
+                '${_currentPage + 1}/${widget.product.imageUrls.length}',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),

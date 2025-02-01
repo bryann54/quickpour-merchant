@@ -27,7 +27,7 @@ class ProductAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      expandedHeight: 400.0,
+      expandedHeight: 300.0,
       floating: false,
       pinned: true,
       iconTheme: const IconThemeData(color: AppColors.accentColor),
@@ -40,7 +40,7 @@ class ProductAppBar extends StatelessWidget {
       ),
       actions: [
         IconButton.filled(
-          icon: Icon(isEditing ? Icons.save : Icons.edit),
+          icon: Icon(isEditing ? null: Icons.edit),
           onPressed: onEditPressed,
           color: AppColors.accentColor,
         ),

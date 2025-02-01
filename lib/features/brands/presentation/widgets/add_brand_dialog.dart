@@ -192,7 +192,7 @@ class _AddBrandDialogState extends State<AddBrandDialog> {
                       maxLines: 3,
                       decoration: _buildInputDecoration(
                         label: 'Description',
-                        hint: 'e.g. A soft drink company to quench your thirst',
+                        hint: 'e.g. A soft drink brand to quench your thirst',
                         prefixIcon: Icons.description,
                       ),
                       validator: (value) {

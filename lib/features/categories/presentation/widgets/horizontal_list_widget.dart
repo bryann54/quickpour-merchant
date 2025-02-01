@@ -28,7 +28,7 @@ class HorizontalCategoriesListWidget extends StatelessWidget {
             child: categories.isEmpty
                 ? Expanded(
                     child: SizedBox(
-                      height: 50, // Minimal height for the empty state
+                      height: 50,
                       child: Center(
                         child: Text(
                           'No categories available',
@@ -44,9 +44,9 @@ class HorizontalCategoriesListWidget extends StatelessWidget {
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     crossAxisCount: 3,
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 8,
-                    childAspectRatio: 1,
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 1,
+                    childAspectRatio: 1.3,
                     children: List.generate(
                       categories.length > 6 ? 6 : categories.length,
                       (index) => CategoryCard(

@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickpourmerchant/core/utils/strings.dart';
+import 'package:quickpourmerchant/features/brands/data/models/brands_model.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
 import 'package:quickpourmerchant/features/product/presentation/widgets/custom_text_field.dart';
@@ -10,6 +11,7 @@ import 'package:quickpourmerchant/features/product/presentation/widgets/product_
 import 'package:quickpourmerchant/features/categories/domain/entities/category.dart';
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_bloc.dart';
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_state.dart';
+import 'package:quickpourmerchant/features/brands/presentation/bloc/brands_bloc.dart';
 
 class ProductForm extends StatefulWidget {
   final MerchantProductModel product;
@@ -34,9 +36,9 @@ class _ProductFormState extends State<ProductForm> {
   late final TextEditingController _priceController;
   late final TextEditingController _discountPriceController;
   late final TextEditingController _stockController;
-  late final TextEditingController _brandController;
   late final TextEditingController _skuController;
   String? _selectedCategory;
+  String? _selectedBrand;
 
   @override
   void initState() {
@@ -45,18 +47,20 @@ class _ProductFormState extends State<ProductForm> {
   }
 
   void _initializeControllers() {
-    _nameController = TextEditingController(text: widget.product.productName);
+    _nameController = TextEditingController(text: widget.product.productName,);
     _descriptionController =
         TextEditingController(text: widget.product.description);
     _priceController =
         TextEditingController(text: widget.product.price.toString());
-    _discountPriceController =
-        TextEditingController(text: widget.product.discountPrice.toString());
+    _discountPriceController = TextEditingController(
+        text: widget.product.discountPrice > 0
+            ? widget.product.discountPrice.toString()
+            : '');
     _stockController =
         TextEditingController(text: widget.product.stockQuantity.toString());
-    _brandController = TextEditingController(text: widget.product.brandName);
     _skuController = TextEditingController(text: widget.product.sku);
     _selectedCategory = widget.product.categoryName;
+    _selectedBrand = widget.product.brandName;
   }
 
   @override
@@ -66,7 +70,6 @@ class _ProductFormState extends State<ProductForm> {
     _priceController.dispose();
     _discountPriceController.dispose();
     _stockController.dispose();
-    _brandController.dispose();
     _skuController.dispose();
     super.dispose();
   }
@@ -75,7 +78,6 @@ class _ProductFormState extends State<ProductForm> {
     if (!_validateInputs()) return;
 
     try {
-      // Get current user
       final User? user = _auth.currentUser;
 
       if (user == null) {
@@ -87,6 +89,7 @@ class _ProductFormState extends State<ProductForm> {
         );
         return;
       }
+
       final updatedProduct = MerchantProductModel(
         merchantId: user.uid,
         id: widget.product.id,
@@ -95,7 +98,7 @@ class _ProductFormState extends State<ProductForm> {
         price: double.tryParse(_priceController.text) ?? 0.0,
         discountPrice: double.tryParse(_discountPriceController.text) ?? 0.0,
         stockQuantity: int.tryParse(_stockController.text) ?? 0,
-        brandName: _brandController.text.trim(),
+        brandName: _selectedBrand ?? widget.product.brandName,
         categoryName: _selectedCategory ?? widget.product.categoryName,
         sku: _skuController.text.trim(),
         imageUrls: widget.product.imageUrls,
@@ -142,15 +145,33 @@ class _ProductFormState extends State<ProductForm> {
       return false;
     }
 
+    if (_selectedBrand == null || _selectedBrand!.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select a brand')),
+      );
+      return false;
+    }
+
     try {
       final price = double.tryParse(_priceController.text);
       final stock = int.tryParse(_stockController.text);
+      final discountPrice = _discountPriceController.text.isNotEmpty
+          ? double.tryParse(_discountPriceController.text)
+          : 0.0;
 
       if (price == null || price < 0) {
         throw Exception('Invalid price');
       }
       if (stock == null || stock < 0) {
         throw Exception('Invalid stock');
+      }
+      if (discountPrice != null && discountPrice > price) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content:
+                  Text('Discount price cannot be greater than regular price')),
+        );
+        return false;
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -183,7 +204,9 @@ class _ProductFormState extends State<ProductForm> {
               ),
             ),
             const SizedBox(height: 16),
-            _buildPriceAndStockFields(),
+            _buildPriceFields(),
+            const SizedBox(height: 16),
+            _buildStockField(),
             const SizedBox(height: 16),
             _buildCategoryAndBrandFields(),
             const SizedBox(height: 16),
@@ -199,9 +222,15 @@ class _ProductFormState extends State<ProductForm> {
             _buildProductInfo(),
             if (widget.isEditing) ...[
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _updateProduct,
-                child: const Text('Update Product'),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _updateProduct,
+                      child: const Text('Update Product'),
+                    ),
+                  ),
+                ],
               ),
             ],
           ],
@@ -210,7 +239,7 @@ class _ProductFormState extends State<ProductForm> {
     );
   }
 
-  Widget _buildPriceAndStockFields() {
+  Widget _buildPriceFields() {
     return Row(
       children: [
         Expanded(
@@ -224,13 +253,23 @@ class _ProductFormState extends State<ProductForm> {
         const SizedBox(width: 16),
         Expanded(
           child: CustomTextField(
-            label: 'Stock',
-            controller: _stockController,
+            label: 'Discount Price (Optional)',
+            controller: _discountPriceController,
             enabled: widget.isEditing,
-            keyboardType: TextInputType.number,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            // hintText: 'Enter discount price',
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildStockField() {
+    return CustomTextField(
+      label: 'Stock',
+      controller: _stockController,
+      enabled: widget.isEditing,
+      keyboardType: TextInputType.number,
     );
   }
 
@@ -238,10 +277,43 @@ class _ProductFormState extends State<ProductForm> {
     return Row(
       children: [
         Expanded(
-          child: CustomTextField(
-            label: 'Brand',
-            controller: _brandController,
-            enabled: widget.isEditing,
+          child: BlocBuilder<BrandsBloc, BrandsState>(
+            builder: (context, state) {
+              if (state is BrandsLoadingState) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is BrandsLoadedState) {
+                final brands = state.brands;
+                return DropdownButtonFormField<String>(
+                  value: _selectedBrand,
+                  decoration: const InputDecoration(
+                    labelText: 'Brand',
+                    border: OutlineInputBorder(),
+                  ),
+                  items: brands.map((BrandModel brand) {
+                    return DropdownMenuItem<String>(
+                      value: brand.name,
+                      child: Text(brand.name),
+                    );
+                  }).toList(),
+                  onChanged: widget.isEditing
+                      ? (String? value) {
+                          setState(() {
+                            _selectedBrand = value;
+                          });
+                        }
+                      : null,
+                );
+              } else if (state is BrandsErrorState) {
+                return Text('Error: ${state.errorMessage}',
+                    style: const TextStyle(color: Colors.red));
+              }
+              return CustomTextField(
+                label: 'Brand',
+                controller:
+                    TextEditingController(text: widget.product.brandName),
+                enabled: false,
+              );
+            },
           ),
         ),
         const SizedBox(width: 16),

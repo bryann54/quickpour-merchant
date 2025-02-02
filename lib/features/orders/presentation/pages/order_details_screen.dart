@@ -181,6 +181,13 @@ class OrderDetailsScreen extends StatelessWidget {
                       order.userEmail,
                       Icons.email_outlined,
                     ),
+                      const Divider(height: 24),
+                    _buildInfoSection(
+                      context,
+                      'Delivery address',
+                      order.address.toString(),
+                      Icons.location_on_outlined,
+                    ),
                     if (order.phoneNumber != null) ...[
                       const Divider(height: 24),
                       _buildInfoSection(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickpourmerchant/features/brands/presentation/bloc/brands_bloc.dart';
 import 'package:quickpourmerchant/features/brands/presentation/widgets/add_brand_dialog.dart';
@@ -47,7 +48,7 @@ class _BrandsTabState extends State<BrandsTab> {
               onSearch: _onSearch,
               onFilterTap: () {}, // You can implement this later
             ),
-          ),
+          ).animate().fadeIn(duration: 1000.ms).slideX(begin: 0.1),
           Expanded(
             child: BlocBuilder<BrandsBloc, BrandsState>(
               builder: (context, state) {

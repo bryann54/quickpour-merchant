@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quickpourmerchant/features/analytics/presentation/bloc/analytics_bloc.dart';
@@ -211,7 +212,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                         ),
                       ))
                   .toList(),
-            ),
+            ).animate().fadeIn(duration: 1000.ms).slideX(begin: 0.1),
             const SizedBox(height: 20),
             Expanded(
               child: BlocBuilder<AnalyticsBloc, AnalyticsState>(
@@ -328,7 +329,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                   ),
                 ],
               ),
-            ),
+            ).animate().fadeIn(duration: 1000.ms).slideX(begin: 0.1),
             const SizedBox(height: 20),
           ],
         ),

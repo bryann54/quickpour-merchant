@@ -70,7 +70,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                 onSearch: _onSearch,
                 onFilterTap: _onFilterTap,
               ),
-            ),
+            )
           ),
           if (_searchQuery.isNotEmpty)
             SliverToBoxAdapter(
@@ -183,7 +183,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
                       ? 'No products found in ${widget.category.name}'
                       : 'No products match your search',
                   style: Theme.of(context).textTheme.bodyMedium,
-                ),
+                )
               );
             }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_bloc.dart';
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_state.dart';
@@ -46,7 +47,7 @@ class _CategoriesTabState extends State<CategoriesTab> {
             onSearch: _onSearch,
             onFilterTap: () {}, 
           ),
-        ),
+        ).animate().fadeIn(duration: 1000.ms).slideX(begin: 0.1),
         Expanded(
           child: BlocBuilder<CategoriesBloc, CategoriesState>(
             builder: (context, state) {

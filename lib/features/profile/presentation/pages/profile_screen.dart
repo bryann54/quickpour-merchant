@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quickpourmerchant/core/theme/theme_toggle_switch.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
@@ -164,7 +165,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           icon: const Icon(Icons.camera_alt,
                               color: Colors.grey, size: 30),
                         ),
-                      ),
+                      ).animate().fadeIn(duration: 800.ms).slideX(begin: 0.1),
                     ],
                   ),
                   const SizedBox(height: 16),
@@ -175,11 +176,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
-                  ),
+                  ).animate().fadeIn(duration: 800.ms).slideX(begin: 0.1),
                   Text(
                     user.email,
                     style: const TextStyle(color: Colors.white70),
-                  ),
+                  ).animate().fadeIn(duration: 800.ms).slideX(begin: 0.1),
                   const SizedBox(height: 5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -207,7 +208,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                     ],
-                  ),
+                  ).animate().fadeIn(duration: 800.ms).slideX(begin: 0.1),
                 ],
               ),
             ),
@@ -225,17 +226,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 24),
-            _buildStatsSection(user),
+            _buildStatsSection(user).animate().fadeIn(duration: 800.ms).slideX(begin: 0.1),
             const SizedBox(height: 24),
-            _buildSectionTitle(context, 'Account'),
+            _buildSectionTitle(context, 'Account').animate().fadeIn(duration: 800.ms).slideY(begin: 0.1),
             const SizedBox(height: 12),
-            _buildProfileOptions(context, user),
+            _buildProfileOptions(context, user).animate().fadeIn(duration: 800.ms).slideX(begin: 0.1),
             const SizedBox(height: 24),
-            _buildSectionTitle(context, 'App Appearance'),
+            _buildSectionTitle(context, 'App Appearance').animate().fadeIn(duration: 800.ms).slideY(begin: 0.1),
             const SizedBox(height: 12),
-            _buildAppearanceSection(),
+            _buildAppearanceSection().animate().fadeIn(duration: 800.ms).slideX(begin: 0.1),
             const SizedBox(height: 24),
-            const LogOutButton(),
+            const LogOutButton().animate().fadeIn(duration: 800.ms).slideX(begin: 0.1),
             const SizedBox(height: 24),
           ],
         ),

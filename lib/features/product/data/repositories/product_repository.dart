@@ -1,31 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
+import 'package:quickpourmerchant/features/auth/data/repositories/auth_repository.dart';
 
 class ProductRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final AuthRepository _authRepository = AuthRepository();
 
-  // Get current merchant ID
   String get currentMerchantId => _auth.currentUser?.uid ?? '';
-  Stream<List<MerchantProductModel>> streamMerchantProducts() {
-    if (currentMerchantId.isEmpty) {
-      throw Exception('No authenticated merchant found');
+
+  // Add a product with auto-populated merchant details
+  Future<void> addProduct(MerchantProductModel product) async {
+    // Fetch current merchant details
+    final merchantDetails = await _authRepository.getCurrentUserDetails();
+    if (merchantDetails == null) {
+      throw Exception('Could not fetch merchant details');
     }
 
-    return _firestore
-        .collection('products')
-        .where('merchantId', isEqualTo: currentMerchantId)
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => MerchantProductModel.fromMap(doc.data()))
-            .toList());
-  }
-
-  // Add a product
-  Future<void> addProduct(MerchantProductModel product) async {
-    // Ensure the product has the current merchant's ID
-    final productWithMerchantId = MerchantProductModel(
+    // Create product with auto-populated merchant details
+    final productWithMerchantDetails = MerchantProductModel(
       id: product.id,
       merchantId: currentMerchantId,
       productName: product.productName,
@@ -41,12 +35,36 @@ class ProductRepository {
       tags: product.tags,
       createdAt: product.createdAt,
       updatedAt: product.updatedAt,
+      // Auto-populated merchant details
+      merchantName: merchantDetails.name,
+      merchantEmail: merchantDetails.email,
+      merchantLocation: merchantDetails.location,
+      merchantStoreName: merchantDetails.storeName,
+      merchantImageUrl: merchantDetails.imageUrl,
+      merchantRating: merchantDetails.rating,
+      isMerchantVerified: merchantDetails.isVerified,
+      isMerchantOpen: merchantDetails.isOpen,
     );
 
     await _firestore
         .collection('products')
         .doc(product.id)
-        .set(productWithMerchantId.toMap());
+        .set(productWithMerchantDetails.toMap());
+  }
+
+  // Update stream to include merchant details
+  Stream<List<MerchantProductModel>> streamMerchantProducts() {
+    if (currentMerchantId.isEmpty) {
+      throw Exception('No authenticated merchant found');
+    }
+
+    return _firestore
+        .collection('products')
+        .where('merchantId', isEqualTo: currentMerchantId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => MerchantProductModel.fromMap(doc.data()))
+            .toList());
   }
 
   // Fetch products for current merchant

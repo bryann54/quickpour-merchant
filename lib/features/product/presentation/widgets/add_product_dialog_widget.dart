@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quickpourmerchant/features/auth/data/repositories/auth_repository.dart';
 import 'package:quickpourmerchant/features/brands/presentation/bloc/brands_bloc.dart';
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_bloc.dart';
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_state.dart';
@@ -16,8 +17,9 @@ class AddProductDialog extends StatefulWidget {
 }
 
 class _AddProductDialogState extends State<AddProductDialog> {
-  final _formKey = GlobalKey<FormState>();
+   final _formKey = GlobalKey<FormState>();
   final _auth = FirebaseAuth.instance;
+  final _authRepository = AuthRepository();
   bool _isLoading = false;
 
   // Controllers for form fields
@@ -78,6 +80,11 @@ class _AddProductDialogState extends State<AddProductDialog> {
         _showErrorMessage('Please log in to add products');
         return;
       }
+      final merchantDetails = await _authRepository.getCurrentUserDetails();
+      if (merchantDetails == null) {
+        _showErrorMessage('Could not fetch merchant details');
+        return;
+      }
 
       final productId =
           FirebaseFirestore.instance.collection('products').doc().id;
@@ -95,6 +102,14 @@ class _AddProductDialogState extends State<AddProductDialog> {
             ? 0.0
             : double.parse(_discountController.text),
         sku: _skuController.text.trim(),
+          merchantName: merchantDetails.name,
+        merchantEmail: merchantDetails.email,
+        merchantLocation: merchantDetails.location,
+        merchantStoreName: merchantDetails.storeName,
+        merchantImageUrl: merchantDetails.imageUrl,
+        merchantRating: merchantDetails.rating,
+        isMerchantVerified: merchantDetails.isVerified,
+        isMerchantOpen: merchantDetails.isOpen,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       );

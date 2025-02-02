@@ -74,7 +74,7 @@ class _ProductFormState extends State<ProductForm> {
     super.dispose();
   }
 
-  Future<void> _updateProduct() async {
+Future<void> _updateProduct() async {
     if (!_validateInputs()) return;
 
     try {
@@ -95,9 +95,10 @@ class _ProductFormState extends State<ProductForm> {
         id: widget.product.id,
         productName: _nameController.text.trim(),
         description: _descriptionController.text.trim(),
-        price: double.tryParse(_priceController.text) ?? 0.0,
-        discountPrice: double.tryParse(_discountPriceController.text) ?? 0.0,
-        stockQuantity: int.tryParse(_stockController.text) ?? 0,
+        price: double.tryParse(_priceController.text.trim()) ?? 0.0,
+        discountPrice:
+            double.tryParse(_discountPriceController.text.trim()) ?? 0.0,
+        stockQuantity: int.tryParse(_stockController.text.trim()) ?? 0,
         brandName: _selectedBrand ?? widget.product.brandName,
         categoryName: _selectedCategory ?? widget.product.categoryName,
         sku: _skuController.text.trim(),
@@ -105,6 +106,14 @@ class _ProductFormState extends State<ProductForm> {
         tags: widget.product.tags,
         createdAt: widget.product.createdAt,
         updatedAt: DateTime.now(),
+        merchantName: user.displayName ?? '',
+        merchantEmail: user.email ?? '',
+        merchantLocation: widget.product.merchantLocation ?? '',
+        merchantStoreName: widget.product.merchantStoreName ?? '',
+        merchantImageUrl: widget.product.merchantImageUrl ?? '',
+        merchantRating: widget.product.merchantRating ?? 0.0,
+        isMerchantVerified: widget.product.isMerchantVerified ?? false,
+        isMerchantOpen: widget.product.isMerchantOpen ?? false,
       );
 
       if (widget.product.merchantId != user.uid) {
@@ -116,7 +125,7 @@ class _ProductFormState extends State<ProductForm> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text(product_update),
+          content: Text('Product updated successfully!'),
           backgroundColor: Colors.green,
         ),
       );
@@ -129,6 +138,7 @@ class _ProductFormState extends State<ProductForm> {
       );
     }
   }
+
 
   bool _validateInputs() {
     if (_nameController.text.trim().isEmpty) {

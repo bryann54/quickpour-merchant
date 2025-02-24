@@ -25,6 +25,7 @@ class ProductRepository {
       productName: product.productName,
       imageUrls: product.imageUrls,
       price: product.price,
+      measure: product.measure,
       brandName: product.brandName,
       description: product.description,
       categoryName: product.categoryName,

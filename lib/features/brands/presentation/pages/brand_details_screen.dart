@@ -274,5 +274,4 @@ class _BrandDetailsScreenState extends State<BrandDetailsScreen> {
       ],
     );
   }
-
 }

@@ -40,7 +40,7 @@ class ProductAppBar extends StatelessWidget {
       ),
       actions: [
         IconButton.filled(
-          icon: Icon(isEditing ? null: Icons.edit),
+          icon: Icon(isEditing ? null : Icons.edit),
           onPressed: onEditPressed,
           color: AppColors.accentColor,
         ),

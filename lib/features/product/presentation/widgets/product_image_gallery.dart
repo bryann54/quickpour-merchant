@@ -35,7 +35,9 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        SizedBox(height: 20,),
+        const SizedBox(
+          height: 20,
+        ),
         SizedBox(
           height: 350,
           child: PageView.builder(
@@ -171,8 +173,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
             top: 16,
             left: 16,
             child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.7),
                 borderRadius: BorderRadius.circular(16),

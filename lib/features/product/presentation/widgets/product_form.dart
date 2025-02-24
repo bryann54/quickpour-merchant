@@ -37,6 +37,7 @@ class _ProductFormState extends State<ProductForm> {
   late final TextEditingController _discountPriceController;
   late final TextEditingController _stockController;
   late final TextEditingController _skuController;
+  final _measureController = TextEditingController();
   String? _selectedCategory;
   String? _selectedBrand;
 
@@ -47,7 +48,9 @@ class _ProductFormState extends State<ProductForm> {
   }
 
   void _initializeControllers() {
-    _nameController = TextEditingController(text: widget.product.productName,);
+    _nameController = TextEditingController(
+      text: widget.product.productName,
+    );
     _descriptionController =
         TextEditingController(text: widget.product.description);
     _priceController =
@@ -74,7 +77,7 @@ class _ProductFormState extends State<ProductForm> {
     super.dispose();
   }
 
-Future<void> _updateProduct() async {
+  Future<void> _updateProduct() async {
     if (!_validateInputs()) return;
 
     try {
@@ -93,6 +96,7 @@ Future<void> _updateProduct() async {
       final updatedProduct = MerchantProductModel(
         merchantId: user.uid,
         id: widget.product.id,
+        measure: _measureController.text.trim(),
         productName: _nameController.text.trim(),
         description: _descriptionController.text.trim(),
         price: double.tryParse(_priceController.text.trim()) ?? 0.0,
@@ -108,12 +112,12 @@ Future<void> _updateProduct() async {
         updatedAt: DateTime.now(),
         merchantName: user.displayName ?? '',
         merchantEmail: user.email ?? '',
-        merchantLocation: widget.product.merchantLocation ?? '',
-        merchantStoreName: widget.product.merchantStoreName ?? '',
-        merchantImageUrl: widget.product.merchantImageUrl ?? '',
-        merchantRating: widget.product.merchantRating ?? 0.0,
-        isMerchantVerified: widget.product.isMerchantVerified ?? false,
-        isMerchantOpen: widget.product.isMerchantOpen ?? false,
+        merchantLocation: widget.product.merchantLocation,
+        merchantStoreName: widget.product.merchantStoreName,
+        merchantImageUrl: widget.product.merchantImageUrl,
+        merchantRating: widget.product.merchantRating,
+        isMerchantVerified: widget.product.isMerchantVerified,
+        isMerchantOpen: widget.product.isMerchantOpen,
       );
 
       if (widget.product.merchantId != user.uid) {
@@ -138,7 +142,6 @@ Future<void> _updateProduct() async {
       );
     }
   }
-
 
   bool _validateInputs() {
     if (_nameController.text.trim().isEmpty) {

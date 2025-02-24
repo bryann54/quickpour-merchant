@@ -6,6 +6,7 @@ class MerchantProductModel {
   final List<String> imageUrls;
   final double price;
   final String merchantId;
+  final String measure; // Added measure field
   // Merchant details
   final String merchantName;
   final String merchantEmail;
@@ -33,6 +34,7 @@ class MerchantProductModel {
     required this.imageUrls,
     required this.price,
     required this.merchantId,
+    required this.measure, // Added to constructor
     required this.merchantName,
     required this.merchantEmail,
     required this.merchantLocation,
@@ -60,6 +62,7 @@ class MerchantProductModel {
       imageUrls: List<String>.from(map['imageUrls'] ?? []),
       price: (map['price'] ?? 0.0).toDouble(),
       merchantId: map['merchantId'] ?? '',
+      measure: map['measure'] ?? '',
       merchantName: map['merchantName'] ?? '',
       merchantEmail: map['merchantEmail'] ?? '',
       merchantLocation: map['merchantLocation'] ?? '',
@@ -88,6 +91,7 @@ class MerchantProductModel {
       'imageUrls': imageUrls,
       'price': price,
       'merchantId': merchantId,
+      'measure': measure,
       'merchantName': merchantName,
       'merchantEmail': merchantEmail,
       'merchantLocation': merchantLocation,

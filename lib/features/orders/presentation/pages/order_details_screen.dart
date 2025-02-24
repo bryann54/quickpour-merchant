@@ -181,7 +181,7 @@ class OrderDetailsScreen extends StatelessWidget {
                       order.userEmail,
                       Icons.email_outlined,
                     ),
-                      const Divider(height: 24),
+                    const Divider(height: 24),
                     _buildInfoSection(
                       context,
                       'Delivery address',

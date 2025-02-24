@@ -62,16 +62,14 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
             ),
           ),
           SliverToBoxAdapter(
-            child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-              child: CustomSearchBar(
-                controller: _searchController,
-                onSearch: _onSearch,
-                onFilterTap: _onFilterTap,
-              ),
-            )
-          ),
+              child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+            child: CustomSearchBar(
+              controller: _searchController,
+              onSearch: _onSearch,
+              onFilterTap: _onFilterTap,
+            ),
+          )),
           if (_searchQuery.isNotEmpty)
             SliverToBoxAdapter(
               child: Padding(
@@ -178,13 +176,12 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
 
             if (categoryProducts.isEmpty) {
               return Center(
-                child: Text(
-                  _searchQuery.isEmpty
-                      ? 'No products found in ${widget.category.name}'
-                      : 'No products match your search',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                )
-              );
+                  child: Text(
+                _searchQuery.isEmpty
+                    ? 'No products found in ${widget.category.name}'
+                    : 'No products match your search',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ));
             }
 
             return GridView.builder(

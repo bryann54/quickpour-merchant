@@ -45,7 +45,7 @@ class _CategoriesTabState extends State<CategoriesTab> {
           child: CustomSearchBar(
             controller: _searchController,
             onSearch: _onSearch,
-            onFilterTap: () {}, 
+            onFilterTap: () {},
           ),
         ).animate().fadeIn(duration: 1000.ms).slideX(begin: 0.1),
         Expanded(

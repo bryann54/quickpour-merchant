@@ -8,6 +8,7 @@ import 'package:quickpourmerchant/features/categories/presentation/bloc/categori
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_state.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
+import 'package:quickpourmerchant/features/product/presentation/widgets/measure_input.dart';
 
 class AddProductDialog extends StatefulWidget {
   const AddProductDialog({super.key});
@@ -17,7 +18,7 @@ class AddProductDialog extends StatefulWidget {
 }
 
 class _AddProductDialogState extends State<AddProductDialog> {
-   final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final _auth = FirebaseAuth.instance;
   final _authRepository = AuthRepository();
   bool _isLoading = false;
@@ -29,6 +30,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
   final _stockController = TextEditingController();
   final _skuController = TextEditingController();
   final _descriptionController = TextEditingController();
+  final _measureController = TextEditingController();
 
   String? _selectedCategory;
   String? _selectedBrand;
@@ -91,6 +93,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
       final newProduct = MerchantProductModel(
         id: productId,
         merchantId: user.uid,
+        measure: _measureController.text,
         productName: _nameController.text.trim(),
         imageUrls: const [], // Empty as this is version without images
         price: double.parse(_priceController.text),
@@ -102,7 +105,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
             ? 0.0
             : double.parse(_discountController.text),
         sku: _skuController.text.trim(),
-          merchantName: merchantDetails.name,
+        merchantName: merchantDetails.name,
         merchantEmail: merchantDetails.email,
         merchantLocation: merchantDetails.location,
         merchantStoreName: merchantDetails.storeName,
@@ -146,7 +149,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
+    return Dialog.fullscreen(
       child: SingleChildScrollView(
         child: Container(
           constraints: const BoxConstraints(maxWidth: 500),
@@ -157,10 +160,25 @@ class _AddProductDialogState extends State<AddProductDialog> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  'Add New Product',
-                  style: Theme.of(context).textTheme.titleLarge,
-                  textAlign: TextAlign.center,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Add New Product',
+                        style: Theme.of(context).textTheme.titleLarge,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      icon: const Icon(Icons.cancel),
+                      tooltip: 'Cancel',
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 24),
 
@@ -243,7 +261,10 @@ class _AddProductDialogState extends State<AddProductDialog> {
                       : null,
                 ),
                 const SizedBox(height: 16),
-
+                MeasureInputField(
+                  controller: _measureController,
+                ),
+                const SizedBox(height: 16),
                 // Price and Discount Row
                 Row(
                   children: [

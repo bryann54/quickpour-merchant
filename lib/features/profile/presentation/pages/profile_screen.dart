@@ -226,17 +226,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 24),
-            _buildStatsSection(user).animate().fadeIn(duration: 800.ms).slideX(begin: 0.1),
+            _buildStatsSection(user)
+                .animate()
+                .fadeIn(duration: 800.ms)
+                .slideX(begin: 0.1),
             const SizedBox(height: 24),
-            _buildSectionTitle(context, 'Account').animate().fadeIn(duration: 800.ms).slideY(begin: 0.1),
+            _buildSectionTitle(context, 'Account')
+                .animate()
+                .fadeIn(duration: 800.ms)
+                .slideY(begin: 0.1),
             const SizedBox(height: 12),
-            _buildProfileOptions(context, user).animate().fadeIn(duration: 800.ms).slideX(begin: 0.1),
+            _buildProfileOptions(context, user)
+                .animate()
+                .fadeIn(duration: 800.ms)
+                .slideX(begin: 0.1),
             const SizedBox(height: 24),
-            _buildSectionTitle(context, 'App Appearance').animate().fadeIn(duration: 800.ms).slideY(begin: 0.1),
+            _buildSectionTitle(context, 'App Appearance')
+                .animate()
+                .fadeIn(duration: 800.ms)
+                .slideY(begin: 0.1),
             const SizedBox(height: 12),
-            _buildAppearanceSection().animate().fadeIn(duration: 800.ms).slideX(begin: 0.1),
+            _buildAppearanceSection()
+                .animate()
+                .fadeIn(duration: 800.ms)
+                .slideX(begin: 0.1),
             const SizedBox(height: 24),
-            const LogOutButton().animate().fadeIn(duration: 800.ms).slideX(begin: 0.1),
+            const LogOutButton()
+                .animate()
+                .fadeIn(duration: 800.ms)
+                .slideX(begin: 0.1),
             const SizedBox(height: 24),
           ],
         ),

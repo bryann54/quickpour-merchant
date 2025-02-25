@@ -238,7 +238,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                         _buildStatCard(
                           context,
                           'Orders',
-                          state.ordersCount.toString(),
+                          ' state.ordersCount.toString(),',
                           Icons.reviews,
                           theme.colorScheme.secondary,
                           percentage: '13%',
@@ -247,7 +247,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                         _buildStatCard(
                           context,
                           'Feedback',
-                          state.feedbackCount.toString(),
+                          ' state.feedbackCount.toString(),',
                           Icons.thumb_up,
                           theme.colorScheme.tertiary,
                           percentage: '13%',

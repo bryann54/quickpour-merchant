@@ -1,39 +1,41 @@
-class Order {
-  final String id;
-  final DateTime date;
-  final double total;
-  final String address;
-  final String phoneNumber;
-  final String paymentMethod;
-  final List<OrderItem> items;
-
-  Order({
-    required this.id,
-    required this.date,
-    required this.total,
-    required this.address,
-    required this.phoneNumber,
-    required this.paymentMethod,
-    required this.items,
-  });
-}
-
 class OrderItem {
+  final String productId;
   final String productName;
-  final double price;
   final int quantity;
+  final double price;
+  final List<String> images;
+  final String measure;
+  final String sku;
 
   OrderItem({
+    required this.productId,
     required this.productName,
-    required this.price,
     required this.quantity,
+    required this.price,
+    required this.images,
+    required this.measure,
+    required this.sku,
   });
 
-  factory OrderItem.fromJson(Map<String, dynamic> json) {
+  factory OrderItem.fromFirebase(Map<String, dynamic> data) {
+    // Handle the image field which can be either a List<dynamic> or a String
+    List<String> parseImages(dynamic imageData) {
+      if (imageData is List) {
+        return imageData.map((e) => e.toString()).toList();
+      } else if (imageData is String) {
+        return [imageData];
+      }
+      return [];
+    }
+
     return OrderItem(
-      productName: json['productName'] as String,
-      price: (json['price'] as num).toDouble(),
-      quantity: json['quantity'] as int,
+      productId: data['productId'] ?? '',
+      productName: data['productName'] ?? '',
+      quantity: data['quantity'] ?? 0,
+      price: (data['price'] ?? 0).toDouble(),
+      images: parseImages(data['image']),
+      measure: data['measure'] ?? '',
+      sku: data['sku'] ?? '',
     );
   }
 }

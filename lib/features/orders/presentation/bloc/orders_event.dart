@@ -4,12 +4,14 @@ abstract class OrdersEvent extends Equatable {
   const OrdersEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 class StartOrdersStream extends OrdersEvent {}
 
 class StopOrdersStream extends OrdersEvent {}
+
+class RefreshOrders extends OrdersEvent {}
 
 class OrdersUpdated extends OrdersEvent {
   final List<CompletedOrder> orders;
@@ -18,6 +20,15 @@ class OrdersUpdated extends OrdersEvent {
 
   @override
   List<Object> get props => [orders];
+}
+
+class FilterOrdersByStatus extends OrdersEvent {
+  final String? status;
+
+  const FilterOrdersByStatus(this.status);
+
+  @override
+  List<Object?> get props => [status];
 }
 
 class OrdersCountUpdated extends OrdersEvent {

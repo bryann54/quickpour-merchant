@@ -21,11 +21,13 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
     on<StopOrdersStream>(_onStopOrdersStream);
     on<OrdersCountUpdated>(_onOrdersCountUpdated);
     on<FeedbackCountUpdated>(_onFeedbackCountUpdated);
+    on<FilterOrdersByStatus>(_onFilterOrdersByStatus);
+    on<RefreshOrders>(_onRefreshOrders);
   }
 
   void _onStartOrdersStream(
       StartOrdersStream event, Emitter<OrdersState> emit) {
-    emit(OrdersInitial());
+    emit(OrdersLoading());
 
     // Start orders stream
     _ordersSubscription?.cancel();
@@ -65,15 +67,59 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
       emit(OrdersEmpty());
     } else {
       final currentState = state;
+      final List<CompletedOrder> filteredOrders = event.orders;
+
       if (currentState is OrdersLoaded) {
+        // If we have a status filter applied, maintain it
+        final filteredOrders = currentState.statusFilter != null
+            ? event.orders
+                .where((order) => order.status == currentState.statusFilter)
+                .toList()
+            : event.orders;
+
         emit(OrdersLoaded(
-          event.orders,
+          filteredOrders,
+          allOrders: event.orders,
           ordersCount: currentState.ordersCount,
           feedbackCount: currentState.feedbackCount,
+          statusFilter: currentState.statusFilter,
         ));
       } else {
-        emit(OrdersLoaded(event.orders));
+        emit(OrdersLoaded(
+          filteredOrders,
+          allOrders: event.orders,
+        ));
       }
+    }
+  }
+
+  void _onFilterOrdersByStatus(
+      FilterOrdersByStatus event, Emitter<OrdersState> emit) {
+    final currentState = state;
+    if (currentState is OrdersLoaded) {
+      final filteredOrders = event.status != null
+          ? currentState.allOrders
+              .where((order) => order.status == event.status)
+              .toList()
+          : currentState.allOrders;
+
+      emit(OrdersLoaded(
+        filteredOrders,
+        allOrders: currentState.allOrders,
+        ordersCount: currentState.ordersCount,
+        feedbackCount: currentState.feedbackCount,
+        statusFilter: event.status,
+      ));
+    }
+  }
+
+  void _onRefreshOrders(RefreshOrders event, Emitter<OrdersState> emit) async {
+    try {
+      emit(OrdersLoading());
+      final orders = await _ordersRepository.getOrders();
+      add(OrdersUpdated(orders));
+    } catch (e) {
+      emit(OrdersError('Failed to refresh orders: $e'));
     }
   }
 
@@ -83,8 +129,10 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
     if (currentState is OrdersLoaded) {
       emit(OrdersLoaded(
         currentState.orders,
+        allOrders: currentState.allOrders,
         ordersCount: event.count,
         feedbackCount: currentState.feedbackCount,
+        statusFilter: currentState.statusFilter,
       ));
     }
   }
@@ -95,13 +143,19 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
     if (currentState is OrdersLoaded) {
       emit(OrdersLoaded(
         currentState.orders,
+        allOrders: currentState.allOrders,
         ordersCount: currentState.ordersCount,
         feedbackCount: event.count,
+        statusFilter: currentState.statusFilter,
       ));
     }
   }
 
   void _onStopOrdersStream(StopOrdersStream event, Emitter<OrdersState> emit) {
+    _cancelSubscriptions();
+  }
+
+  void _cancelSubscriptions() {
     _ordersSubscription?.cancel();
     _ordersCountSubscription?.cancel();
     _feedbackCountSubscription?.cancel();
@@ -109,9 +163,7 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
 
   @override
   Future<void> close() {
-    _ordersSubscription?.cancel();
-    _ordersCountSubscription?.cancel();
-    _feedbackCountSubscription?.cancel();
+    _cancelSubscriptions();
     return super.close();
   }
 }

@@ -9,21 +9,28 @@ abstract class OrdersState extends Equatable {
 
 class OrdersInitial extends OrdersState {}
 
+class OrdersLoading extends OrdersState {}
+
 class OrdersEmpty extends OrdersState {}
 
 class OrdersLoaded extends OrdersState {
   final List<CompletedOrder> orders;
+  final List<CompletedOrder> allOrders;
   final int? ordersCount;
   final int? feedbackCount;
+  final String? statusFilter;
 
   const OrdersLoaded(
     this.orders, {
+    List<CompletedOrder>? allOrders,
     this.ordersCount,
     this.feedbackCount,
-  });
+    this.statusFilter,
+  }) : allOrders = allOrders ?? orders;
 
   @override
-  List<Object?> get props => [orders, ordersCount, feedbackCount];
+  List<Object?> get props =>
+      [orders, allOrders, ordersCount, feedbackCount, statusFilter];
 }
 
 class OrdersError extends OrdersState {

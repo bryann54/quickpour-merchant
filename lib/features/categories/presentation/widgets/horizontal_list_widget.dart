@@ -84,8 +84,7 @@ class HorizontalCategoriesListWidget extends StatelessWidget {
         crossAxisCount: crossAxisCount,
         crossAxisSpacing: 8,
         mainAxisSpacing: 5,
-        childAspectRatio:
-            aspectRatio.clamp(1.0, 1.5),
+        childAspectRatio: aspectRatio.clamp(1.0, 1.5),
       ),
       itemCount: categories.length > 6 ? 6 : categories.length,
       itemBuilder: (context, index) => CategoryCard(

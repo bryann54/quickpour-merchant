@@ -19,13 +19,13 @@ class AnalyticsBloc extends Bloc<AnalyticsEvent, AnalyticsState> {
 
       try {
         final stockCount = await productRepository.fetchStockCount();
-        final ordersCount = await ordersRepository.fetchOrdersCount();
-        final feedbackCount = await ordersRepository.fetchFeedbackCount();
+        // final ordersCount = await ordersRepository.fetchOrdersCount();
+        // final feedbackCount = await ordersRepository.fetchFeedbackCount();
 
         emit(AnalyticsLoaded(
           stockCount: stockCount,
-          ordersCount: ordersCount,
-          feedbackCount: feedbackCount,
+          // ordersCount: ordersCount,
+          // feedbackCount: feedbackCount,
         ));
       } catch (e) {
         emit(AnalyticsError('Failed to fetch analytics}'));

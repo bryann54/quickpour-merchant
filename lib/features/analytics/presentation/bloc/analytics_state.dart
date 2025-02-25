@@ -11,17 +11,20 @@ class AnalyticsLoading extends AnalyticsState {}
 
 class AnalyticsLoaded extends AnalyticsState {
   final int stockCount;
-  final int ordersCount;
-  final int feedbackCount;
+  // final int ordersCount;
+  // final int feedbackCount;
 
   AnalyticsLoaded({
     required this.stockCount,
-    required this.ordersCount,
-    required this.feedbackCount,
+    // required this.ordersCount,
+    // required this.feedbackCount,
   });
 
   @override
-  List<Object?> get props => [stockCount, ordersCount, feedbackCount];
+  List<Object?> get props => [
+        stockCount,
+        //  ordersCount, feedbackCount
+      ];
 }
 
 class AnalyticsError extends AnalyticsState {

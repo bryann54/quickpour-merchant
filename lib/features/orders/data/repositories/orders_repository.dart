@@ -1,70 +1,156 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:quickpourmerchant/features/orders/data/models/completed_order_model.dart';
-import 'package:quickpourmerchant/features/orders/data/models/order_model.dart';
 
 class OrdersRepository {
   final FirebaseFirestore _firestore;
+  final FirebaseAuth _auth;
 
-  OrdersRepository({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? FirebaseFirestore.instance;
+  OrdersRepository({
+    FirebaseFirestore? firestore,
+    FirebaseAuth? auth,
+  })  : _firestore = firestore ?? FirebaseFirestore.instance,
+        _auth = auth ?? FirebaseAuth.instance;
 
-  // Stream of orders
+  // Get current merchant ID
+  String? get currentMerchantId => _auth.currentUser?.uid;
+
+  // Creates a stream of orders for the current merchant
   Stream<List<CompletedOrder>> streamOrders() {
-    return _firestore.collection('orders').snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) {
-        final data = doc.data();
-        return CompletedOrder(
-          id: data['orderId'] ?? '',
-          date:
-              DateTime.parse(data['date'] ?? DateTime.now().toIso8601String()),
-          total: (data['totalAmount'] as num?)?.toDouble() ?? 0.0,
-          address: data['address'] as String?,
-          phoneNumber: data['phoneNumber'] as String?,
-          paymentMethod: data['paymentMethod'] ?? '',
-          items: (data['cartItems'] as List<dynamic>)
-              .map((item) => OrderItem.fromJson(item as Map<String, dynamic>))
-              .toList(),
-          deliveryTime: data['deliveryTime'] ?? '',
-          specialInstructions: data['specialInstructions'] ?? '',
-          status: data['status'] ?? '',
-          userEmail: data['userEmail'] ?? '',
-          userName: data['userName'] ?? '',
-        );
-      }).toList();
+    final merchantId = currentMerchantId;
+    if (merchantId == null) {
+      return Stream.error('Merchant not authenticated');
+    }
+
+    return _firestore
+        .collection('orders')
+        .orderBy('date', descending: true)
+        .snapshots()
+        .map((snapshot) {
+      List<CompletedOrder> orders = [];
+      for (var doc in snapshot.docs) {
+        try {
+          final order = CompletedOrder.fromFirebase(doc.data(), doc.id);
+
+          // Filter merchantOrders to only include current merchant's orders
+          final relevantMerchantOrders = order.merchantOrders
+              .where((merchantOrder) => merchantOrder.merchantId == merchantId)
+              .toList();
+
+          // Only add orders that have items for this merchant
+          if (relevantMerchantOrders.isNotEmpty) {
+            // Create a new order with only this merchant's items
+            final merchantOrder = CompletedOrder(
+              id: order.id,
+              total: order.total,
+              date: order.date,
+              address: order.address,
+              phoneNumber: order.phoneNumber,
+              paymentMethod: order.paymentMethod,
+              merchantOrders: relevantMerchantOrders,
+              userEmail: order.userEmail,
+              userName: order.userName,
+              userId: order.userId,
+              status: order.status,
+              deliveryType: order.deliveryType,
+              deliveryTime: order.deliveryTime,
+              specialInstructions: order.specialInstructions,
+            );
+            orders.add(merchantOrder);
+          }
+        } catch (e) {
+          print('Error parsing order ${doc.id}: $e');
+          continue;
+        }
+      }
+      return orders;
     });
   }
 
-  // Stream of orders count
+  // One-time fetch of orders (keep for backward compatibility)
+  Future<List<CompletedOrder>> getOrders() async {
+    final merchantId = currentMerchantId;
+    if (merchantId == null) {
+      throw Exception('Merchant not authenticated');
+    }
+
+    try {
+      final querySnapshot = await _firestore
+          .collection('orders')
+          .orderBy('date', descending: true)
+          .get();
+
+      List<CompletedOrder> orders = [];
+
+      for (var doc in querySnapshot.docs) {
+        try {
+          final order = CompletedOrder.fromFirebase(doc.data(), doc.id);
+
+          // Filter merchantOrders to only include current merchant's orders
+          final relevantMerchantOrders = order.merchantOrders
+              .where((merchantOrder) => merchantOrder.merchantId == merchantId)
+              .toList();
+
+          // Only add orders that have items for this merchant
+          if (relevantMerchantOrders.isNotEmpty) {
+            // Create a new order with only this merchant's items
+            final merchantOrder = CompletedOrder(
+              id: order.id,
+              total: order.total,
+              date: order.date,
+              address: order.address,
+              phoneNumber: order.phoneNumber,
+              paymentMethod: order.paymentMethod,
+              merchantOrders: relevantMerchantOrders,
+              userEmail: order.userEmail,
+              userName: order.userName,
+              userId: order.userId,
+              status: order.status,
+              deliveryType: order.deliveryType,
+              deliveryTime: order.deliveryTime,
+              specialInstructions: order.specialInstructions,
+            );
+            orders.add(merchantOrder);
+          }
+        } catch (e) {
+          print('Error parsing order ${doc.id}: $e');
+          continue;
+        }
+      }
+
+      return orders;
+    } catch (e) {
+      print('Error fetching orders: $e');
+      throw Exception('Failed to fetch orders: $e');
+    }
+  }
+
+  // Stream orders count for the current merchant
   Stream<int> streamOrdersCount() {
+    final merchantId = currentMerchantId;
+    if (merchantId == null) {
+      return Stream.error('Merchant not authenticated');
+    }
+
+    // This query counts orders that contain this merchant's ID in the merchantOrders array
     return _firestore
         .collection('orders')
+        .where('merchantIds', arrayContains: merchantId)
         .snapshots()
         .map((snapshot) => snapshot.docs.length);
   }
 
-  // Stream of feedback count (orders with non-null IDs)
+  // Stream feedback count for the current merchant
   Stream<int> streamFeedbackCount() {
-    return _firestore.collection('orders').snapshots().map((snapshot) =>
-        snapshot.docs.where((doc) => doc.data()['orderId'] != null).length);
-  }
+    final merchantId = currentMerchantId;
+    if (merchantId == null) {
+      return Stream.error('Merchant not authenticated');
+    }
 
-  Future<CompletedOrder?> getOrderById(String id) async {
-    final doc = await _firestore.collection('orders').doc(id).get();
-    if (!doc.exists) return null;
-
-    final data = doc.data()!;
-    return CompletedOrder.fromJson(data);
-  }
-
-  // One-time fetch for orders count
-  Future<int> fetchOrdersCount() async {
-    final snapshot = await _firestore.collection('orders').get();
-    return snapshot.docs.length;
-  }
-
-  // One-time fetch for feedback count
-  Future<int> fetchFeedbackCount() async {
-    final snapshot = await _firestore.collection('orders').get();
-    return snapshot.docs.where((doc) => doc.data()['orderId'] != null).length;
+    return _firestore
+        .collection('feedback')
+        .where('merchantId', isEqualTo: merchantId)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.length);
   }
 }

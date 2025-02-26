@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/features/orders/data/models/completed_order_model.dart';
 import 'package:quickpourmerchant/features/orders/presentation/pages/order_details_screen.dart';
+import 'package:intl/intl.dart';
 
 class OrderItemWidget extends StatelessWidget {
   final CompletedOrder order;
@@ -12,6 +13,7 @@ class OrderItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -21,103 +23,150 @@ class OrderItemWidget extends StatelessWidget {
           ),
         );
       },
-      child: Card(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-          side: BorderSide(color: Colors.grey.shade200),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: Theme.of(context).cardColor,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ],
         ),
-        elevation: 2,
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Row(
+          child: Column(
             children: [
-              Hero(
-                tag: 'order-${order.id}',
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      colors: [
-                        AppColors.primaryColor,
-                        AppColors.primaryColor.withOpacity(0.7),
+              Row(
+                children: [
+                  // Status indicator dot
+                  Container(
+                    width: 12,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _getStatusColor(order.status),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+
+                  // Order ID and date
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Order #${order.id}',
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          DateFormat('MMM d, yyyy • h:mm a').format(order.date),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: Colors.grey[600],
+                          ),
+                        ),
                       ],
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primaryColor.withOpacity(0.3),
-                        blurRadius: 8,
-                        offset: const Offset(0, 4),
+                  ),
+
+                  // Amount
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        '${order.total.toStringAsFixed(0)} Ksh',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: isDarkMode
+                              ? AppColors.brandAccent.withOpacity(.7)
+                              : AppColors.primaryColor,
+                        ),
+                      ),
+                      Text(
+                        order.paymentMethod,
+                        style: theme.textTheme.bodySmall,
                       ),
                     ],
                   ),
-                  child: CircleAvatar(
-                    radius: 32,
-                    backgroundColor: Colors.transparent,
+                ],
+              ),
+
+              const SizedBox(height: 12),
+              const Divider(height: 1),
+              const SizedBox(height: 12),
+
+              // Customer info
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 18,
+                    backgroundColor: AppColors.primaryColor.withOpacity(0.1),
                     child: Text(
                       order.userName[0].toUpperCase(),
-                      style:
-                          Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
+                      style: TextStyle(
+                        color: AppColors.primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Hero(
-                      tag: 'order_id-${order.id}',
-                      child: Text(
-                        'Order #${order.id}',
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: isDarkMode
-                                      ? AppColors.background.withOpacity(.6)
-                                      : AppColors.primaryColor,
-                                ),
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Hero(
-                      tag: 'order_price-${order.id}',
-                      child: Text(
-                        'Ksh ${order.total.toStringAsFixed(0)}',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: isDarkMode
-                                  ? AppColors.brandAccent.withOpacity(.5)
-                                  : Colors.black87,
-                            ),
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'by:  ${order.userName}',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: isDarkMode
-                                ? AppColors.shimmerHighlight
-                                : Colors.grey[600],
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          order.userName,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w500,
                           ),
+                        ),
+                        Text(
+                          order.deliveryType,
+                          style: theme.textTheme.bodySmall,
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              ),
-              Icon(
-                Icons.chevron_right,
-                color: isDarkMode
-                    ? AppColors.background.withOpacity(.6)
-                    : AppColors.primaryColor,
+                  ),
+
+                  // View more icon
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.primaryColor.withOpacity(0.1),
+                    ),
+                    child: Icon(
+                      Icons.arrow_forward,
+                      size: 16,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status.toLowerCase()) {
+      case 'completed':
+        return Colors.green;
+      case 'pending':
+        return Colors.orange;
+      case 'processing':
+        return Colors.blue;
+      case 'cancelled':
+        return Colors.red;
+      default:
+        return Colors.grey;
+    }
   }
 }

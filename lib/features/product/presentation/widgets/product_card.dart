@@ -150,31 +150,39 @@ class ProductCard extends StatelessWidget {
                       child: Material(
                         child: Text(
                           product.productName,
-                          style: const TextStyle(
-                            fontSize: 14,
+                          style:  TextStyle(
+                            fontSize: 12,
                             fontWeight: FontWeight.bold,
+                            color:
+                            AppColors.primaryColor.withOpacity(.7)
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
-                    Text(
-                      product.discountPrice > 0
-                          ? 'Ksh ${product.discountPrice.toStringAsFixed(0)}'
-                          : 'Ksh ${product.price.toStringAsFixed(0)}',
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    if (product.discountPrice > 0)
-                      Text(
-                        'Ksh ${product.price.toStringAsFixed(0)}',
-                        style: const TextStyle(
-                          fontSize: 12,
-                          decoration: TextDecoration.lineThrough,
-                          color: Colors.grey,
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          product.discountPrice > 0
+                              ? 'Ksh ${product.discountPrice.toStringAsFixed(0)}'
+                              : 'Ksh ${product.price.toStringAsFixed(0)}',
+                          style: const TextStyle(
+                              fontSize: 13, fontWeight: FontWeight.bold),
                         ),
-                      ),
+                                 if (product.discountPrice > 0)
+                          Text(
+                            'Ksh ${product.price.toStringAsFixed(0)}',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              decoration: TextDecoration.lineThrough,
+                              color: Colors.grey,
+                            ),
+                          ),
+                   
+                      ],
+                    ),
+           
                     Column(
                       children: [
                         if (product.stockQuantity <= 5)

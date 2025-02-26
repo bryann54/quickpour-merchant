@@ -22,11 +22,13 @@ class MerchantPromotionsScreen extends StatelessWidget {
             return Center(child: Text('Error: ${state.message}'));
           } else if (state is PromotionsLoaded) {
             return GridView.builder(
+              padding: const EdgeInsets.all(
+                  10.0), // Added padding for better spacing
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // This will create a grid with 2 columns
-                crossAxisSpacing: 10.0, // Space between columns
-                mainAxisSpacing: 10.0, // Space between rows
-                childAspectRatio: 0.75, // Adjusts the aspect ratio of each card
+                crossAxisCount: 2,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+                childAspectRatio: 0.75,
               ),
               itemCount: state.promotions.length,
               itemBuilder: (context, index) {
@@ -39,16 +41,18 @@ class MerchantPromotionsScreen extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _showCreatePromotionDialog(context),
+        onPressed: () => _navigateToCreatePromotionPage(context),
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  void _showCreatePromotionDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => const CreatePromotionDialog(),
+  void _navigateToCreatePromotionPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) =>
+              const CreatePromotionPage()),
     );
   }
 }

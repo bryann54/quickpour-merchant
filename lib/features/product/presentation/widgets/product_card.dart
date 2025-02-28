@@ -150,18 +150,17 @@ class ProductCard extends StatelessWidget {
                       child: Material(
                         child: Text(
                           product.productName,
-                          style:  TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color:
-                            AppColors.primaryColor.withOpacity(.7)
-                          ),
+                          style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primaryColor.withOpacity(.7)),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
-                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           product.discountPrice > 0
@@ -170,7 +169,7 @@ class ProductCard extends StatelessWidget {
                           style: const TextStyle(
                               fontSize: 13, fontWeight: FontWeight.bold),
                         ),
-                                 if (product.discountPrice > 0)
+                        if (product.discountPrice > 0)
                           Text(
                             'Ksh ${product.price.toStringAsFixed(0)}',
                             style: const TextStyle(
@@ -179,10 +178,8 @@ class ProductCard extends StatelessWidget {
                               color: Colors.grey,
                             ),
                           ),
-                   
                       ],
                     ),
-           
                     Column(
                       children: [
                         if (product.stockQuantity <= 5)

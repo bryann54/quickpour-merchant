@@ -26,13 +26,13 @@ class RouteGenerator {
     switch (settings.name) {
       case home:
         return MaterialPageRoute(builder: (_) => const EntrySplashScreen());
-      
+
       case analytics:
         return MaterialPageRoute(builder: (_) => const AnalyticsScreen());
       case notifications:
         return MaterialPageRoute(builder: (_) => const NotificationsScreen());
-        case promotions:
-        return MaterialPageRoute(builder: (_) => MerchantPromotionsScreen());
+      case promotions:
+        return MaterialPageRoute(builder: (_) => const MerchantPromotionsScreen());
       case profile:
         return MaterialPageRoute(
             builder: (_) => ProfileScreen(

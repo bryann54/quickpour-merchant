@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -24,7 +23,6 @@ import 'package:quickpourmerchant/features/product/data/repositories/product_rep
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
 import 'package:quickpourmerchant/features/promotions/data/repositories/promotions_repository.dart';
 import 'package:quickpourmerchant/features/promotions/presentation/bloc/promotions_bloc.dart';
-import 'package:quickpourmerchant/features/promotions/presentation/bloc/promotions_event.dart';
 import 'package:quickpourmerchant/features/requests/data/repositories/drink_request_repo.dart';
 import 'package:quickpourmerchant/features/requests/presentation/bloc/requests_bloc.dart';
 import 'package:quickpourmerchant/features/requests/presentation/bloc/requests_event.dart';
@@ -34,8 +32,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-      final promotionsRepository =
-        PromotionsRepository();
+    final promotionsRepository = PromotionsRepository();
     return MultiBlocProvider(
       providers: [
         BlocProvider<BrandsBloc>(
@@ -75,10 +72,7 @@ class MyApp extends StatelessWidget {
             productRepository: ProductRepository(),
           ),
         ),
-         BlocProvider(
-          create: (_) => PromotionsBloc(promotionsRepository)
-           
-        ),
+        BlocProvider(create: (_) => PromotionsBloc(promotionsRepository)),
         BlocProvider(
           create: (context) => DrinkRequestBloc(
             repository: DrinkRequestRepository(),

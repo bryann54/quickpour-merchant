@@ -108,7 +108,7 @@ class OrderItemWidget extends StatelessWidget {
                     backgroundColor: AppColors.primaryColor.withOpacity(0.1),
                     child: Text(
                       order.userName[0].toUpperCase(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: AppColors.primaryColor,
                         fontWeight: FontWeight.bold,
                       ),
@@ -140,7 +140,7 @@ class OrderItemWidget extends StatelessWidget {
                       shape: BoxShape.circle,
                       color: AppColors.primaryColor.withOpacity(0.1),
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.arrow_forward,
                       size: 16,
                       color: AppColors.primaryColor,

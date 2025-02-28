@@ -5,7 +5,7 @@ class PromotionBrandSelector extends StatelessWidget {
   final List<String> selectedBrands;
   final List<BrandModel> brands;
   final Function(String, bool) onBrandSelected;
-   final String merchantId; 
+  final String merchantId;
 
   const PromotionBrandSelector({
     super.key,
@@ -43,4 +43,3 @@ class PromotionBrandSelector extends StatelessWidget {
     );
   }
 }
-

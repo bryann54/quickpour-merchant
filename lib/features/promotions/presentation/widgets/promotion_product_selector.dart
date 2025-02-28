@@ -5,7 +5,7 @@ class PromotionProductSelector extends StatefulWidget {
   final List<String> selectedProducts;
   final List<MerchantProductModel> products;
   final Function(String, bool) onProductSelected;
-  final String merchantId; 
+  final String merchantId;
 
   const PromotionProductSelector({
     super.key,

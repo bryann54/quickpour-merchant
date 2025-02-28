@@ -87,26 +87,23 @@ class CustomDrawer extends StatelessWidget {
               ],
             ),
           ),
-
           DrawerTile(
-            icon: FontAwesomeIcons.chartPie, 
+            icon: FontAwesomeIcons.chartPie,
             title: 'Analytics',
             onTap: () => Navigator.pushNamed(context, '/analytics'),
           ),
           DrawerTile(
-            icon:
-                FontAwesomeIcons.solidBell, 
+            icon: FontAwesomeIcons.solidBell,
             title: 'Notifications',
             onTap: () => Navigator.pushNamed(context, '/notifications'),
           ),
-            DrawerTile(
-            icon:
-                FontAwesomeIcons.bullhorn, 
+          DrawerTile(
+            icon: FontAwesomeIcons.bullhorn,
             title: 'Promotions',
             onTap: () => Navigator.pushNamed(context, '/promotions'),
           ),
           DrawerTile(
-            icon: FontAwesomeIcons.circleUser, 
+            icon: FontAwesomeIcons.circleUser,
             title: 'Profile',
             onTap: () => Navigator.pushNamed(context, '/profile'),
           ),

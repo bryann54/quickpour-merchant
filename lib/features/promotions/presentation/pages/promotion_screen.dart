@@ -50,9 +50,7 @@ class MerchantPromotionsScreen extends StatelessWidget {
   void _navigateToCreatePromotionPage(BuildContext context) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (context) =>
-              const CreatePromotionPage()),
+      MaterialPageRoute(builder: (context) => const CreatePromotionPage()),
     );
   }
 }

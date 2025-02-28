@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -13,8 +12,6 @@ String formatDate(DateTime date) {
   return '${date.hour}:${date.minute.toString().padLeft(2, '0')} ${date.hour >= 12 ? 'PM' : 'AM'}';
 }
 
- 
-
 /// Determine Promotion Target Label
 String getTargetLabel(MerchantPromotionModel promotion) {
   if (promotion.productIds.isNotEmpty) {
@@ -27,18 +24,18 @@ String getTargetLabel(MerchantPromotionModel promotion) {
   return 'General Promotion';
 }
 
-  // Helper function to get status color
-  Color getStatusColor(String status, bool isDarkMode) {
-    switch (status.toLowerCase()) {
-      case 'pending':
-        return Colors.orange;
-      case 'processing':
-        return Colors.blue;
-      case 'completed':
-        return Colors.green;
-      case 'cancelled':
-        return Colors.red;
-      default:
-        return isDarkMode ? Colors.grey[800]! : Colors.grey[300]!;
-    }
+// Helper function to get status color
+Color getStatusColor(String status, bool isDarkMode) {
+  switch (status.toLowerCase()) {
+    case 'pending':
+      return Colors.orange;
+    case 'processing':
+      return Colors.blue;
+    case 'completed':
+      return Colors.green;
+    case 'cancelled':
+      return Colors.red;
+    default:
+      return isDarkMode ? Colors.grey[800]! : Colors.grey[300]!;
   }
+}

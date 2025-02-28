@@ -27,9 +27,7 @@ class PromotionsRepository {
               }))
           .toList();
     } catch (e) {
-      print(
-        'Error fetching merchant promotions: ${e.toString()}'
-      );
+      print('Error fetching merchant promotions: ${e.toString()}');
       throw Exception('Failed to fetch merchant promotions: $e');
     }
   }

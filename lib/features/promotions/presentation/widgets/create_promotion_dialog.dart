@@ -38,9 +38,9 @@ class _CreatePromotionPageState extends State<CreatePromotionPage> {
   PromotionTarget _promotionTarget = PromotionTarget.products;
   bool _isLoading = false;
 
-  List<String> _selectedProducts = [];
-  List<String> _selectedCategories = [];
-  List<String> _selectedBrands = [];
+  final List<String> _selectedProducts = [];
+  final List<String> _selectedCategories = [];
+  final List<String> _selectedBrands = [];
 
   // Cached data
   List<MerchantProductModel> _cachedProducts = [];

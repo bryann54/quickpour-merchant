@@ -57,8 +57,8 @@ class _PromoDetailsScreenState extends State<PromoDetailsScreen> {
       return snapshots
           .where((doc) => doc.exists)
           .map((doc) => MerchantProductModel.fromMap(
-            doc.data() as Map<String, dynamic>,
-          ))
+                doc.data() as Map<String, dynamic>,
+              ))
           .toList();
     }
     return [];
@@ -108,13 +108,12 @@ class _PromoDetailsScreenState extends State<PromoDetailsScreen> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: CachedNetworkImage(
-          imageUrl:
-              widget.promotion.imageUrl ?? 'assets/promotion_placeholder.png',
+          imageUrl: widget.promotion.imageUrl ?? '',
           fit: BoxFit.cover,
           width: double.infinity,
           height: 250,
           errorWidget: (context, url, error) =>
-              const Icon(Icons.image_not_supported),
+              const Icon(Icons.error_outline_outlined),
         ),
       ),
     );
@@ -184,16 +183,13 @@ class _PromoDetailsScreenState extends State<PromoDetailsScreen> {
                     : 'assets/product_placeholder.png',
                 fit: BoxFit.cover,
                 width: double.infinity,
-                errorWidget: (context, url, error) =>
-                     Icon(Icons.error,color: 
-                    Theme.of(
+                errorWidget: (context, url, error) => Icon(Icons.error,
+                    color: Theme.of(
                       context,
-                      ).colorScheme.primary.withOpacity(
-                        0.5,
-                      )
-                    )
-                    ,),
-              
+                    ).colorScheme.primary.withOpacity(
+                          0.5,
+                        )),
+              ),
             ),
           ),
           Padding(
@@ -209,12 +205,12 @@ class _PromoDetailsScreenState extends State<PromoDetailsScreen> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 8),
-                Text('Ksh ${formatMoney( discountedPrice)}',
+                Text('Ksh ${formatMoney(discountedPrice)}',
                     style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.green)),
-                Text('Ksh ${formatMoney( product.price)}',
+                Text('Ksh ${formatMoney(product.price)}',
                     style: const TextStyle(
                         fontSize: 14,
                         decoration: TextDecoration.lineThrough,

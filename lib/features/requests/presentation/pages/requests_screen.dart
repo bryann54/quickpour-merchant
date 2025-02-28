@@ -15,7 +15,7 @@ class RequestsScreen extends StatelessWidget {
       // appBar: AppBar(
       //   title: const Text('Drink Requests'),
       // ),
-      body: BlocBuilder<DrinkRequestBloc, DrinkRequestState>(
+      body: BlocBuilder<DrinkRequestsBloc, DrinkRequestState>(
         builder: (context, state) {
           if (state is DrinkRequestLoading) {
             return const Center(
@@ -34,7 +34,9 @@ class RequestsScreen extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      context.read<DrinkRequestBloc>().add(LoadDrinkRequests());
+                      context
+                          .read<DrinkRequestsBloc>()
+                          .add(LoadDrinkRequests());
                     },
                     child: const Text('Retry'),
                   ),

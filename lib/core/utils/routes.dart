@@ -32,7 +32,8 @@ class RouteGenerator {
       case notifications:
         return MaterialPageRoute(builder: (_) => const NotificationsScreen());
       case promotions:
-        return MaterialPageRoute(builder: (_) => const MerchantPromotionsScreen());
+        return MaterialPageRoute(
+            builder: (_) => const MerchantPromotionsScreen());
       case profile:
         return MaterialPageRoute(
             builder: (_) => ProfileScreen(

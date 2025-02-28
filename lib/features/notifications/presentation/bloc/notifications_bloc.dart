@@ -1,6 +1,6 @@
-import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'dart:async';
+import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickpourmerchant/features/notifications/data/models/notifications_model.dart';
 import 'package:quickpourmerchant/features/notifications/data/repositories/notifications_repository.dart';
 
@@ -22,7 +22,6 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     on<StopNotificationsListening>(_onStopNotificationsListening);
   }
 
-  // Add this new handler
   Future<void> _onInitializeNotifications(
     InitializeNotifications event,
     Emitter<NotificationsState> emit,
@@ -38,15 +37,6 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
     // Fetch initial notifications
     add(FetchNotifications());
-  }
-
-  // Add this new handler
-  Future<void> _onStopNotificationsListening(
-    StopNotificationsListening event,
-    Emitter<NotificationsState> emit,
-  ) async {
-    await _notificationsSubscription?.cancel();
-    _repository.dispose();
   }
 
   Future<void> _onFetchNotifications(
@@ -141,6 +131,14 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       notifications: event.notifications,
       unreadCount: unreadCount,
     ));
+  }
+
+  Future<void> _onStopNotificationsListening(
+    StopNotificationsListening event,
+    Emitter<NotificationsState> emit,
+  ) async {
+    await _notificationsSubscription?.cancel();
+    _repository.dispose();
   }
 
   @override

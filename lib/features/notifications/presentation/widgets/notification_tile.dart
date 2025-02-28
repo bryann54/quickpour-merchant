@@ -88,7 +88,9 @@ class NotificationTile extends StatelessWidget {
     final now = DateTime.now();
     final difference = now.difference(timestamp);
 
-    if (difference.inHours < 1) {
+    if (difference.inMinutes < 1) {
+      return 'Just now';
+    } else if (difference.inHours < 1) {
       return '${difference.inMinutes} min ago';
     } else if (difference.inHours < 24) {
       return '${difference.inHours} hr ago';

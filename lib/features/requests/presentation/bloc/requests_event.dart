@@ -1,19 +1,29 @@
+// requests_event.dart
+import 'package:equatable/equatable.dart';
 import 'package:quickpourmerchant/features/requests/data/models/drink_request_model.dart';
 
-abstract class DrinkRequestEvent {}
+abstract class DrinkRequestEvent extends Equatable {
+  const DrinkRequestEvent();
+
+  @override
+  List<Object?> get props => [];
+}
 
 class LoadDrinkRequests extends DrinkRequestEvent {}
-
-class AddDrinkRequest extends DrinkRequestEvent {
-  final DrinkRequest request;
-
-  AddDrinkRequest(this.request);
-}
 
 class UpdateDrinkRequests extends DrinkRequestEvent {
   final List<DrinkRequest> requests;
 
-  UpdateDrinkRequests(this.requests);
+  const UpdateDrinkRequests(this.requests);
+
+  @override
+  List<Object?> get props => [requests];
+}
+
+class AddDrinkRequest extends DrinkRequestEvent {
+  final DrinkRequest request;
+
+  const AddDrinkRequest(this.request);
 }
 
 class SubmitOffer extends DrinkRequestEvent {
@@ -24,7 +34,7 @@ class SubmitOffer extends DrinkRequestEvent {
   final String storeName;
   final String location;
 
-  SubmitOffer({
+  const SubmitOffer({
     required this.requestId,
     required this.price,
     required this.deliveryTime,
@@ -32,16 +42,8 @@ class SubmitOffer extends DrinkRequestEvent {
     required this.storeName,
     required this.location,
   });
-}
 
-class LoadOffers extends DrinkRequestEvent {
-  final String requestId;
-
-  LoadOffers(this.requestId);
-}
-
-class UpdateOffers extends DrinkRequestEvent {
-  final List<Map<String, dynamic>> offers;
-
-  UpdateOffers(this.offers);
+  @override
+  List<Object?> get props =>
+      [requestId, price, deliveryTime, notes, storeName, location];
 }

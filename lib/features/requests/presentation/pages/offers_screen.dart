@@ -91,7 +91,7 @@ class OffersScreen extends StatelessWidget {
             action: SnackBarAction(
               label: 'Undo',
               onPressed: () {
-                context.read<DrinkRequestBloc>().add(AddDrinkRequest(request));
+                context.read<DrinkRequestsBloc>().add(AddDrinkRequest(request));
               },
             ),
           ),

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:quickpourmerchant/features/promotions/data/models/promotion_model.dart';

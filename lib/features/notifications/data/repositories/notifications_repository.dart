@@ -2,18 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import 'package:quickpourmerchant/features/notifications/data/models/notifications_model.dart';
+import 'package:quickpourmerchant/features/notifications/domain/usecases/local_notification_service.dart';
 
 class NotificationsRepository {
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
+  final LocalNotificationService _localNotificationService;
   StreamSubscription? _ordersSubscription;
   StreamSubscription? _drinkRequestsSubscription;
 
   NotificationsRepository({
     FirebaseFirestore? firestore,
     FirebaseAuth? auth,
+    LocalNotificationService? localNotificationService,
   })  : _firestore = firestore ?? FirebaseFirestore.instance,
-        _auth = auth ?? FirebaseAuth.instance;
+        _auth = auth ?? FirebaseAuth.instance,
+        _localNotificationService =
+            localNotificationService ?? LocalNotificationService();
 
   Stream<List<NotificationModel>> get notificationsStream {
     final userId = _auth.currentUser?.uid;
@@ -139,12 +144,23 @@ class NotificationsRepository {
     final userId = _auth.currentUser?.uid;
     if (userId == null) return;
 
+    const title = 'New Order Received';
+    final body =
+        'Order #${orderId.substring(0, 8)} - ${orderData['items']?.length ?? 0} items';
+
+    // Create Firestore notification
     await createNotification(
-      title: 'New Order Received',
-      body:
-          'Order #${orderId.substring(0, 8)} - ${orderData['items']?.length ?? 0} items',
+      title: title,
+      body: body,
       type: NotificationType.order,
       userId: userId,
+    );
+
+    // Show local notification
+    await _localNotificationService.showNotification(
+      id: orderId.hashCode,
+      title: title,
+      body: body,
     );
   }
 
@@ -153,12 +169,23 @@ class NotificationsRepository {
     final userId = _auth.currentUser?.uid;
     if (userId == null) return;
 
+    const title = 'New Drink Request';
+    final body =
+        'Request #${requestId.substring(0, 8)} - ${requestData['drinkName'] ?? 'Unknown Drink'}';
+
+    // Create Firestore notification
     await createNotification(
-      title: 'New Drink Request',
-      body:
-          'Request #${requestId.substring(0, 8)} - ${requestData['drinkName'] ?? 'Unknown Drink'}',
+      title: title,
+      body: body,
       type: NotificationType.order,
       userId: userId,
+    );
+
+    // Show local notification
+    await _localNotificationService.showNotification(
+      id: requestId.hashCode,
+      title: title,
+      body: body,
     );
   }
 

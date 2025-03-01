@@ -15,10 +15,6 @@ class OrderItemWidget extends StatelessWidget {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
 
-  
-
-
-
     return InkWell(
       onTap: () {
         Navigator.push(
@@ -56,7 +52,8 @@ class OrderItemWidget extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
-                      color: getStatusColor(order.status,isDarkMode).withOpacity(0.15),
+                      color: getStatusColor(order.status, isDarkMode)
+                          .withOpacity(0.15),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Row(
@@ -67,14 +64,14 @@ class OrderItemWidget extends StatelessWidget {
                           height: 8,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: getStatusColor(order.status,isDarkMode),
+                            color: getStatusColor(order.status, isDarkMode),
                           ),
                         ),
                         const SizedBox(width: 4),
                         Text(
                           formatStatus(order.status),
                           style: theme.textTheme.bodySmall?.copyWith(
-                            color: getStatusColor(order.status,isDarkMode),
+                            color: getStatusColor(order.status, isDarkMode),
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -83,15 +80,14 @@ class OrderItemWidget extends StatelessWidget {
                   ),
                   const Spacer(),
                   // Payment method icon
-               Icon(
-  getPaymentMethodIcon(order.paymentMethod),
-  size: 16,
-  color: theme.colorScheme.secondary,
-),
-
+                  Icon(
+                    getPaymentMethodIcon(order.paymentMethod),
+                    size: 16,
+                    color: theme.colorScheme.secondary,
+                  ),
 
                   const SizedBox(width: 4),
-             Text(
+                  Text(
                     order.paymentMethod,
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.secondary,
@@ -103,7 +99,7 @@ class OrderItemWidget extends StatelessWidget {
               const SizedBox(height: 12),
 
               // Order ID and price
-                    Row(
+              Row(
                 children: [
                   Expanded(
                     flex: 2,
@@ -119,7 +115,7 @@ class OrderItemWidget extends StatelessWidget {
                   Expanded(
                     flex: 1,
                     child: Text(
-                      'Ksh ${formatMoney( order.total)} ',
+                      'Ksh ${formatMoney(order.total)} ',
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: isDarkMode
@@ -131,8 +127,6 @@ class OrderItemWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              
-
 
               const SizedBox(height: 4),
 
@@ -153,8 +147,7 @@ class OrderItemWidget extends StatelessWidget {
                 children: [
                   // Customer avatar
                   Hero(
-                   tag:
-                   'customer-avatar-${order.id}',
+                    tag: 'customer-avatar-${order.id}',
                     child: CircleAvatar(
                       radius: 20,
                       backgroundColor: isDarkMode
@@ -187,7 +180,7 @@ class OrderItemWidget extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                           ),
                         ),
-       Row(
+                        Row(
                           children: [
                             Icon(
                               order.deliveryType
@@ -228,7 +221,8 @@ class OrderItemWidget extends StatelessWidget {
                               ),
                             ),
                           ],
-                        ),   ],
+                        ),
+                      ],
                     ),
                   ),
 

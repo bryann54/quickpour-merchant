@@ -22,6 +22,7 @@ String getTargetLabel(MerchantPromotionModel promotion) {
   }
   return 'General Promotion';
 }
+
 // Format status text
 String formatStatus(String status) {
   return status
@@ -30,6 +31,7 @@ String formatStatus(String status) {
           word.isNotEmpty ? '${word[0].toUpperCase()}${word.substring(1)}' : '')
       .join(' ');
 }
+
 // Helper method to determine the icon
 IconData getPaymentMethodIcon(String paymentMethod) {
   final method = paymentMethod.toLowerCase();

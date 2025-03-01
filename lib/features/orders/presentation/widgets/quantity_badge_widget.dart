@@ -20,7 +20,7 @@ class QuantityBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
-        '${quantity}x',
+        'x $quantity',
         style: TextStyle(
           fontWeight: FontWeight.bold,
           color: isDark ? AppColors.textPrimaryDark : AppColors.textPrimary,

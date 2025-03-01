@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/core/utils/date_formatter.dart';
-import 'package:quickpourmerchant/features/order_tracking/presentation/bloc/order_tracking_bloc.dart';
 import 'package:quickpourmerchant/features/orders/data/models/completed_order_model.dart';
+import 'package:quickpourmerchant/features/orders/data/models/order_model.dart';
 import 'package:quickpourmerchant/features/orders/presentation/widgets/confirm_order_button.dart';
 import 'package:quickpourmerchant/features/orders/presentation/widgets/merchant_order_section.dart';
 import 'package:quickpourmerchant/features/orders/presentation/widgets/order_total_row.dart';
@@ -24,127 +23,137 @@ class OrderDetailsScreen extends StatelessWidget {
         DateFormat('EEEE, MMM d, yyyy').format(dateTime);
     final String formattedTime = DateFormat('h:mm a').format(dateTime);
 
-    return BlocProvider(
-      // Provide the OrderTrackingBloc with the initialOrder
-      create: (context) => OrderTrackingBloc(initialOrder: order),
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          toolbarHeight: 70,
-          backgroundColor: Colors.transparent,
-          iconTheme:
-              IconThemeData(color: isDarkMode ? Colors.white : Colors.white),
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: isDarkMode
-                    ? [
-                        Colors.black.withOpacity(0.7),
-                        Colors.black.withOpacity(0.4),
-                      ]
-                    : [
-                        AppColors.primaryColor,
-                        AppColors.primaryColor,
-                      ],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        toolbarHeight: 70,
+        backgroundColor: Colors.transparent,
+        iconTheme:
+            IconThemeData(color: isDarkMode ? Colors.white : Colors.white),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: isDarkMode
+                  ? [
+                      Colors.black.withOpacity(0.7),
+                      Colors.black.withOpacity(0.4),
+                    ]
+                  : [
+                      AppColors.primaryColor,
+                      AppColors.primaryColor,
+                    ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
           ),
-          title: Row(
-            children: [
-              Hero(
-                tag: 'customer-avatar-${order.id}',
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundColor: isDarkMode
-                      ? Colors.white.withOpacity(0.2)
-                      : Colors.white.withOpacity(0.4),
-                  child: Text(
-                    order.userName.isNotEmpty
-                        ? order.userName[0].toUpperCase()
-                        : '?',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
+        ),
+        title: Row(
+          children: [
+            Hero(
+              tag: 'customer-avatar-${order.id}',
+              child: CircleAvatar(
+                radius: 20,
+                backgroundColor: isDarkMode
+                    ? Colors.white.withOpacity(0.2)
+                    : Colors.white.withOpacity(0.4),
+                child: Text(
+                  order.userName.isNotEmpty
+                      ? order.userName[0].toUpperCase()
+                      : '?',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
                   ),
                 ),
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      '${order.userName}\'s Order',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                      overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '${order.userName}\'s Order',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
                     ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            Container(
-              margin: const EdgeInsets.only(right: 16),
-              decoration: BoxDecoration(
-                color: isDarkMode
-                    ? Colors.white.withOpacity(0.1)
-                    : Colors.white.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: IconButton(
-                icon: Icon(
-                  Icons.share_outlined,
-                  color: Colors.white,
-                  size: 20,
-                ),
-                onPressed: () {
-                  // Share order details functionality
-                },
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
             ),
           ],
         ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildOrderInfoCard(context, formattedDate, formattedTime),
-              const SizedBox(height: 5),
-              // Order Items
-              Card(
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                  side: BorderSide(color: Colors.grey.shade200),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SectionTitle(title: 'Items'),
-                    if (order.merchantOrders.isNotEmpty) ...[
-                      ...order.merchantOrders.map((merchantOrder) =>
-                          MerchantOrderSection(merchantOrder: merchantOrder)),
-                    ],
-                    OrderTotalRow(order: order),
-                  ],
-                ),
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            decoration: BoxDecoration(
+              color: isDarkMode
+                  ? Colors.white.withOpacity(0.1)
+                  : Colors.white.withOpacity(0.3),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: IconButton(
+              icon: const Icon(
+                Icons.share_outlined,
+                color: Colors.white,
+                size: 20,
               ),
-              const SizedBox(height: 5),
-              _buildCustomerInfoCard(context),
-              const SizedBox(height: 20),
-              ConfirmOrderButton(order: order),
-            ],
+              onPressed: () {
+                // Share order details functionality
+              },
+            ),
           ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildOrderInfoCard(context, formattedDate, formattedTime),
+            const SizedBox(height: 5),
+            // Order Items
+            Card(
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+                side: BorderSide(color: Colors.grey.shade200),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SectionTitle(title: 'Items'),
+                  if (order.merchantOrders.isNotEmpty) ...[
+                    ...order.merchantOrders.map((merchantOrder) =>
+                        MerchantOrderSection(merchantOrder: merchantOrder)),
+                  ],
+                  OrderTotalRow(order: order),
+                ],
+              ),
+            ),
+            const SizedBox(height: 5),
+            _buildCustomerInfoCard(context),
+            const SizedBox(height: 20),
+            ConfirmOrderButton(
+              items: order.merchantOrders
+                  .expand(
+                      (merchantOrder) => merchantOrder.items) // Extract items
+                  .map((item) => OrderItem(
+                        productId: item.productId, // Ensure field names match
+                        productName: item.productName,
+                        quantity: item.quantity,
+                        price: item.price,
+                        images: item.images, // Ensure this is a List<String>
+                        measure: item.measure,
+                        sku: item.sku,
+                      ))
+                  .toList(),
+            ),
+          ],
         ),
       ),
     );

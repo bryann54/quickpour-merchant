@@ -22,6 +22,14 @@ String getTargetLabel(MerchantPromotionModel promotion) {
   }
   return 'General Promotion';
 }
+// Format status text
+String formatStatus(String status) {
+  return status
+      .split('_')
+      .map((word) =>
+          word.isNotEmpty ? '${word[0].toUpperCase()}${word.substring(1)}' : '')
+      .join(' ');
+}
 
 // Helper function to get status color
 Color getStatusColor(String status, bool isDarkMode) {

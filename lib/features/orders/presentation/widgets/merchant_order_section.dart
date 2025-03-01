@@ -52,7 +52,7 @@ class MerchantOrderSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Your Subtotal',
+                  'Subtotal',
                   style: TextStyle(
                     color: isDark
                         ? AppColors.textPrimaryDark

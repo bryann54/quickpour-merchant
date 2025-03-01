@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/core/utils/date_formatter.dart';
 import 'package:quickpourmerchant/features/orders/data/models/completed_order_model.dart';
@@ -23,23 +24,109 @@ class OrderDetailsScreen extends StatelessWidget {
     final String formattedTime = DateFormat('h:mm a').format(dateTime);
 
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Text(
-          '${order.userName}\'s order',
-          style: TextStyle(
-            color: isDarkMode
-                ? AppColors.background.withOpacity(.6)
-                : AppColors.primaryColor,
+  appBar: AppBar(
+  elevation: 0,
+  toolbarHeight: 70,
+  backgroundColor: Colors.transparent,
+  iconTheme: 
+  IconThemeData(color: isDarkMode ? Colors.white : Colors.white),
+  flexibleSpace: Container(
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        colors: isDarkMode
+            ? [
+                Colors.black.withOpacity(0.7),
+                Colors.black.withOpacity(0.4),
+              ]
+            : [
+                AppColors.primaryColor,
+                 AppColors.primaryColor,
+              ],
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+      ),
+    ),
+  ),
+  // leading: IconButton(
+  //   icon: Container(
+  //     padding: const EdgeInsets.all(8),
+  //     decoration: BoxDecoration(
+  //       color: isDarkMode
+  //           ? Colors.white.withOpacity(0.1)
+  //           : Colors.white.withOpacity(0.3),
+  //       shape: BoxShape.circle,
+  //     ),
+  //     child: Icon(
+  //       Icons.arrow_back,
+  //       color: isDarkMode ? Colors.white : Colors.white,
+  //       size: 20,
+  //     ),
+  //   ),
+  //   onPressed: () => Navigator.pop(context),
+  // ),
+  title: Row(
+    children: [
+      Hero(
+       tag:
+                   'customer-avatar-${order.id}',
+        child: CircleAvatar(
+          radius: 20,
+          backgroundColor: isDarkMode
+              ? Colors.white.withOpacity(0.2)
+              : Colors.white.withOpacity(0.4),
+          child: Text(
+            order.userName.isNotEmpty ? order.userName[0].toUpperCase() : '?',
+            style: TextStyle(
+           
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+            ),
           ),
         ),
-        iconTheme: IconThemeData(
-          color: isDarkMode
-              ? AppColors.background.withOpacity(.6)
-              : AppColors.primaryColor,
+      ),
+      const SizedBox(width: 10),
+      Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '${order.userName}\'s Order',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 20,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+         
+          ],
         ),
       ),
+    ],
+  ),
+  actions: [
+    Container(
+      margin: const EdgeInsets.only(right: 16),
+      decoration: BoxDecoration(
+        color: isDarkMode
+            ? Colors.white.withOpacity(0.1)
+            : Colors.white.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: IconButton(
+        icon: Icon(
+          Icons.share_outlined,
+          color: Colors.white,
+          size: 20,
+        ),
+        onPressed: () {
+          // Share order details functionality
+        },
+      ),
+    ),
+  ],
+),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(10),
         child: Column(

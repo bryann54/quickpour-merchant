@@ -22,7 +22,6 @@ class ConfirmOrderButton extends StatelessWidget {
         child: BlocConsumer<OrderTrackingBloc, OrderTrackingState>(
           listener: (context, state) {
             if (state is OrderTrackingError) {
-              print('Error: ${state.message}');
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.message),
@@ -31,7 +30,7 @@ class ConfirmOrderButton extends StatelessWidget {
               );
             } else if (state is OrderTrackingLoaded &&
                 state.order.status == 'processing') {
-              print('Navigating to OrderVerificationPage');
+              // Navigate to verification page when status is updated to processing
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -51,13 +50,34 @@ class ConfirmOrderButton extends StatelessWidget {
               onTap: isUpdating || isConfirmed
                   ? null
                   : () {
-                      print('Confirm Order button tapped');
-                      context.read<OrderTrackingBloc>().add(
-                            UpdateOrderStatus(
-                              orderId: order.id,
-                              newStatus: 'processing',
+                      try {
+                        print('Tapping confirm order for ID: ${order.id}');
+                        if (order.id.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Invalid order ID'),
+                              backgroundColor: Colors.red,
                             ),
                           );
+                          return;
+                        }
+
+                        context.read<OrderTrackingBloc>().add(
+                              UpdateOrderStatus(
+                                orderId: order.id,
+                                newStatus: 'processing',
+                              ),
+                            );
+                        print('Event added to bloc');
+                      } catch (e) {
+                        print('Error in confirm button: $e');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Error: $e'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
                     },
               child: Container(
                 height: 50,

@@ -83,14 +83,13 @@ class OrderItemWidget extends StatelessWidget {
                   ),
                   const Spacer(),
                   // Payment method icon
-                 
-                  Icon(
-                    order.paymentMethod.toLowerCase().contains('card')
-                        ? Icons.credit_card
-                        : Icons.money,
-                    size: 16,
-                    color: theme.colorScheme.secondary,
-                  ),
+               Icon(
+  getPaymentMethodIcon(order.paymentMethod),
+  size: 16,
+  color: theme.colorScheme.secondary,
+),
+
+
                   const SizedBox(width: 4),
              Text(
                     order.paymentMethod,

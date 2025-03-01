@@ -30,6 +30,17 @@ String formatStatus(String status) {
           word.isNotEmpty ? '${word[0].toUpperCase()}${word.substring(1)}' : '')
       .join(' ');
 }
+// Helper method to determine the icon
+IconData getPaymentMethodIcon(String paymentMethod) {
+  final method = paymentMethod.toLowerCase();
+  if (method.contains('card')) {
+    return Icons.credit_card;
+  } else if (method.contains('cash') || method.contains('delivery')) {
+    return Icons.handshake;
+  } else {
+    return Icons.money;
+  }
+}
 
 // Helper function to get status color
 Color getStatusColor(String status, bool isDarkMode) {

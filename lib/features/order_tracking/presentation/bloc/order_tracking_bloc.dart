@@ -74,45 +74,58 @@ Future<void> _onUpdateOrderStatus(
     try {
       final currentState = state;
       if (currentState is OrderTrackingLoaded) {
-        print('Updating order status to: ${event.newStatus}');
         emit(OrderTrackingUpdating(
           order: currentState.order,
           verifiedItems: currentState.verifiedItems,
         ));
 
-        // Ensure currentMerchantId is not null
-        final currentMerchantId = _auth.currentUser?.uid;
+        print('Updating order ${event.orderId} to ${event.newStatus}');
+
+        // Check if orderId exists
+        if (event.orderId.isEmpty) {
+          throw Exception('Order ID is empty');
+        }
+
+        // Check if currentMerchantId exists
         if (currentMerchantId == null) {
-          print('Error: Merchant not authenticated');
-          emit(OrderTrackingError('Merchant not authenticated'));
-          return;
+          throw Exception('Current merchant ID is null');
         }
 
-        // Ensure the order exists in Firestore
-        final orderSnapshot =
-            await _firestore.collection('orders').doc(event.orderId).get();
-        if (!orderSnapshot.exists) {
-          print('Error: Order not found in Firestore');
-          emit(OrderTrackingError('Order not found in Firestore'));
-          return;
+        // Try to get the document first to verify it exists
+        try {
+          final docSnapshot =
+              await _firestore.collection('orders').doc(event.orderId).get();
+          if (!docSnapshot.exists) {
+            throw Exception('Order document does not exist');
+          }
+          print('Document exists, proceeding with update');
+        } catch (e) {
+          print('Error checking document: $e');
+          throw Exception('Failed to verify document: $e');
         }
 
-        // Update the order status in Firestore
-        await _firestore.collection('orders').doc(event.orderId).update({
-          'status': event.newStatus,
-          'lastUpdated': FieldValue.serverTimestamp(),
-          'statusHistory': FieldValue.arrayUnion([
-            {
-              'status': event.newStatus,
-              'timestamp': FieldValue.serverTimestamp(),
-              'updatedBy': currentMerchantId,
-            }
-          ]),
-        });
+        // Try the update with a timeout
+        try {
+          await _firestore.collection('orders').doc(event.orderId).update({
+            'status': event.newStatus,
+            'lastUpdated': FieldValue.serverTimestamp(),
+            'statusHistory': FieldValue.arrayUnion([
+              {
+                'status': event.newStatus,
+                'timestamp': FieldValue.serverTimestamp(),
+                'updatedBy': currentMerchantId,
+              }
+            ]),
+          }).timeout(Duration(seconds: 10), onTimeout: () {
+            throw TimeoutException('Firebase update timed out');
+          });
+          print('Firestore update successful');
+        } catch (firebaseError) {
+          print('Firebase update error: $firebaseError');
+          throw Exception('Firebase update failed: $firebaseError');
+        }
 
-        print('Order status updated successfully in Firestore');
-
-        // Create updated order object with new status
+        // Only proceed if we didn't throw an exception above
         final updatedOrder = currentState.order.copyWith(
           status: event.newStatus,
         );
@@ -121,16 +134,17 @@ Future<void> _onUpdateOrderStatus(
           order: updatedOrder,
           verifiedItems: currentState.verifiedItems,
         ));
+        print('Order status updated successfully');
       } else {
         print('Cannot update status: Order not loaded');
         emit(OrderTrackingError('Cannot update status: Order not loaded'));
       }
-    } catch (e, stackTrace) {
-      print('Failed to update order status: $e');
-      print('Stack trace: $stackTrace');
+    } catch (e) {
+      print('Order update error: $e');
       emit(OrderTrackingError('Failed to update order status: $e'));
     }
   }
+ 
   void _onVerifyOrderItem(
       VerifyOrderItem event, Emitter<OrderTrackingState> emit) {
     final currentState = state;

@@ -4,9 +4,9 @@ import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/core/utils/date_formatter.dart';
 import 'package:quickpourmerchant/features/orders/data/models/completed_order_model.dart';
 import 'package:quickpourmerchant/features/orders/presentation/widgets/confirm_order_button.dart';
-import 'package:quickpourmerchant/features/orders/presentation/widgets/widgets/merchant_order_section.dart';
-import 'package:quickpourmerchant/features/orders/presentation/widgets/widgets/order_total_row.dart';
-import 'package:quickpourmerchant/features/orders/presentation/widgets/widgets/section_widget.dart';
+import 'package:quickpourmerchant/features/orders/presentation/widgets/merchant_order_section.dart';
+import 'package:quickpourmerchant/features/orders/presentation/widgets/order_total_row.dart';
+import 'package:quickpourmerchant/features/orders/presentation/widgets/section_widget.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   final CompletedOrder order;
@@ -98,10 +98,10 @@ class OrderDetailsScreen extends StatelessWidget {
             const Divider(height: 24),
             _buildInfoSection(
                 context, 'Payment Method', order.paymentMethod, Icons.payment),
-            if (order.deliveryFee != 0) const Divider(height: 24),
-            if (order.deliveryFee != 0)
-              _buildInfoSection(context, 'Delivery Fee',
-                  'Ksh ${formatMoney(order.deliveryFee)}', Icons.money),
+           const Divider(height: 24),
+           
+            _buildInfoSection(context, 'Delivery Fee',
+                'Ksh ${formatMoney(order.deliveryFee)}', Icons.money),
             const Divider(height: 24),
             _buildInfoSection(context, 'Total Amount',
                 'Ksh ${formatMoney(order.total)}', Icons.attach_money),
@@ -148,7 +148,7 @@ class OrderDetailsScreen extends StatelessWidget {
             const Divider(height: 24),
             _buildInfoSection(context, 'Delivery Time', order.deliveryTime,
                 Icons.access_time_outlined),
-
+           
             if (order.specialInstructions.isNotEmpty) ...[
               const Divider(height: 24),
               if (order.specialInstructions.isNotEmpty)

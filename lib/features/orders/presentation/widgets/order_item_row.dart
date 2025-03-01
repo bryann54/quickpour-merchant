@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/core/utils/date_formatter.dart';
 import 'package:quickpourmerchant/features/orders/data/models/order_model.dart';
-import 'package:quickpourmerchant/features/orders/presentation/widgets/widgets/quantity_badge_widget.dart';
+import 'package:quickpourmerchant/features/orders/presentation/widgets/quantity_badge_widget.dart';
 
 class OrderItemRow extends StatelessWidget {
   final OrderItem item;
@@ -17,7 +17,7 @@ class OrderItemRow extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -61,6 +61,17 @@ class OrderItemRow extends StatelessWidget {
                   item.productName,
                   style: TextStyle(
                     fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: isDark
+                        ? AppColors.textPrimaryDark
+                        : AppColors.textPrimary,
+                  ),
+                ),
+             
+                  Text(
+                  item.measure,
+                  style: TextStyle(
+                    fontSize: 12,
                     fontWeight: FontWeight.w500,
                     color: isDark
                         ? AppColors.textPrimaryDark

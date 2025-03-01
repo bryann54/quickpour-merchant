@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
+import 'package:quickpourmerchant/features/order_tracking/presentation/bloc/order_tracking_bloc.dart';
+import 'package:quickpourmerchant/features/order_tracking/presentation/pages/order_verification_screen.dart';
+import 'package:quickpourmerchant/features/orders/data/models/completed_order_model.dart';
 
 class ConfirmOrderButton extends StatelessWidget {
-  const ConfirmOrderButton({super.key});
+  final CompletedOrder order;
+
+  const ConfirmOrderButton({
+    super.key,
+    required this.order,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -10,32 +19,68 @@ class ConfirmOrderButton extends StatelessWidget {
       padding: const EdgeInsets.only(top: 30.0, left: 10, right: 10),
       child: Align(
         alignment: Alignment.bottomCenter,
-        child: GestureDetector(
-          onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Center(child: Text('Feature coming soon..😎')),
+        child: BlocConsumer<OrderTrackingBloc, OrderTrackingState>(
+          listener: (context, state) {
+            if (state is OrderTrackingError) {
+              print('Error: ${state.message}');
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.message),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            } else if (state is OrderTrackingLoaded &&
+                state.order.status == 'processing') {
+              print('Navigating to OrderVerificationPage');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => OrderVerificationPage(
+                    orderId: state.order.id,
+                  ),
+                ),
+              );
+            }
+          },
+          builder: (context, state) {
+            final bool isUpdating = state is OrderTrackingUpdating;
+            final bool isConfirmed = (state is OrderTrackingLoaded &&
+                state.order.status == 'processing');
+
+            return GestureDetector(
+              onTap: isUpdating || isConfirmed
+                  ? null
+                  : () {
+                      print('Confirm Order button tapped');
+                      context.read<OrderTrackingBloc>().add(
+                            UpdateOrderStatus(
+                              orderId: order.id,
+                              newStatus: 'processing',
+                            ),
+                          );
+                    },
+              child: Container(
+                height: 50,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: isConfirmed ? Colors.green : AppColors.primaryColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: isUpdating
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : Text(
+                          isConfirmed ? 'Order Confirmed' : 'Confirm Order',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                ),
               ),
             );
           },
-          child: Container(
-            height: 50,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: AppColors.primaryColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Center(
-              child: Text(
-                'Confirm Order',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
         ),
       ),
     );

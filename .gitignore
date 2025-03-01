@@ -15,6 +15,9 @@ migrate_working_dir/
 *.ipr
 *.iws
 .idea/
+android/app/build/outputs/apk/release/
+android/app/build/outputs/apk/debug/
+
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
@@ -35,13 +38,17 @@ lib/firebase_options.dart
 
 # Symbolication related
 app.*.symbols
-
+.env
+.env.example
 # Obfuscation related
 app.*.map.json
-
+echo "android/app/build/outputs/flutter-apk/" >> .gitignore
 # Android Studio will place build artifacts here
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+.codegptandroid/app/build/
+android/app/build/
 
 .codegpt

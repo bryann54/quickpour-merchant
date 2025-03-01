@@ -98,9 +98,10 @@ class OrderDetailsScreen extends StatelessWidget {
             const Divider(height: 24),
             _buildInfoSection(
                 context, 'Payment Method', order.paymentMethod, Icons.payment),
-            const Divider(height: 24),
-            _buildInfoSection(
-                context, 'Order Status', order.status, Icons.info_outline),
+            if (order.deliveryFee != 0) const Divider(height: 24),
+            if (order.deliveryFee != 0)
+              _buildInfoSection(context, 'Delivery Fee',
+                  'Ksh ${formatMoney(order.deliveryFee)}', Icons.money),
             const Divider(height: 24),
             _buildInfoSection(context, 'Total Amount',
                 'Ksh ${formatMoney(order.total)}', Icons.attach_money),
@@ -147,9 +148,7 @@ class OrderDetailsScreen extends StatelessWidget {
             const Divider(height: 24),
             _buildInfoSection(context, 'Delivery Time', order.deliveryTime,
                 Icons.access_time_outlined),
-            const Divider(height: 24),
-            _buildInfoSection(context, 'Delivery Fee',
-                'Ksh ${formatMoney(order.deliveryFee)}', Icons.money),
+
             if (order.specialInstructions.isNotEmpty) ...[
               const Divider(height: 24),
               if (order.specialInstructions.isNotEmpty)

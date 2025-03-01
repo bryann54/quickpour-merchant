@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/core/utils/date_formatter.dart';
 import 'package:quickpourmerchant/features/orders/data/models/merchant_order_item_model.dart';
-import 'package:quickpourmerchant/features/orders/presentation/widgets/widgets/order_item_row.dart';
+import 'package:quickpourmerchant/features/orders/presentation/widgets/order_item_row.dart';
 
 // merchant_order_section.dart
 class MerchantOrderSection extends StatelessWidget {
@@ -34,7 +34,7 @@ class MerchantOrderSection extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.all(12),
             itemCount: merchantOrder.items.length,
-            separatorBuilder: (context, index) => const Divider(height: 16),
+            separatorBuilder: (context, index) => const Divider(height: 6),
             itemBuilder: (context, index) => OrderItemRow(
               item: merchantOrder.items[index],
             ),
@@ -42,7 +42,7 @@ class MerchantOrderSection extends StatelessWidget {
 
           // Merchant subtotal
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               color: isDark ? Colors.grey[900] : Colors.grey[50],
               borderRadius:

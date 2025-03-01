@@ -68,16 +68,16 @@ class OrderItemRow extends StatelessWidget {
                   ),
                 ),
              
-                  Text(
-                  item.measure,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: isDark
-                        ? AppColors.textPrimaryDark
-                        : AppColors.textPrimary,
-                  ),
-                ),
+                //   Text(
+                //   item.measure,
+                //   style: TextStyle(
+                //     fontSize: 12,
+                //     fontWeight: FontWeight.w500,
+                //     color: isDark
+                //         ? AppColors.textPrimaryDark
+                //         : AppColors.textPrimary,
+                //   ),
+                // ),
                 const SizedBox(height: 4),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,7 +85,7 @@ class OrderItemRow extends StatelessWidget {
                     Text(
                       'Ksh ${formatMoney(item.price)}',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12,
                         fontWeight: FontWeight.bold,
                         color: isDark
                             ? AppColors.accentColorDark

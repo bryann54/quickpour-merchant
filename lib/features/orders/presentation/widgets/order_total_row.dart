@@ -14,8 +14,8 @@ class OrderTotalRow extends StatelessWidget {
     final isDark = theme.brightness == Brightness.dark;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      decoration: BoxDecoration(  
         color: isDark
             ? AppColors.cardColorDark.withOpacity(0.8)
             : AppColors.surface.withOpacity(0.8),

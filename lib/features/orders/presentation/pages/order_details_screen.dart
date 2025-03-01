@@ -27,7 +27,7 @@ class OrderDetailsScreen extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.transparent,
         title: Text(
-          'Order Details',
+          '${order.userName}\'s order',
           style: TextStyle(
             color: isDarkMode
                 ? AppColors.background.withOpacity(.6)
@@ -41,13 +41,13 @@ class OrderDetailsScreen extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildOrderInfoCard(context, formattedDate, formattedTime),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 5),
 
             // Order Items
             Card(
@@ -68,13 +68,11 @@ class OrderDetailsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 5),
             _buildCustomerInfoCard(context),
 
-            // Special Instructions
-
             const ConfirmOrderButton(),
-            const SizedBox(height: 20),
+           
           ],
         ),
       ),
@@ -89,22 +87,22 @@ class OrderDetailsScreen extends StatelessWidget {
         side: BorderSide(color: Colors.grey.shade200),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(6),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildInfoSection(
                 context, 'Date & Time', '$date at $time', Icons.access_time),
-            const Divider(height: 24),
+             const Divider(height: 10),
             _buildInfoSection(
                 context, 'Payment Method', order.paymentMethod, Icons.payment),
-           const Divider(height: 24),
-           
+                if(order.deliveryFee!=0)
+            const Divider(height: 10),
+            if (order.deliveryFee != 0)
             _buildInfoSection(context, 'Delivery Fee',
                 'Ksh ${formatMoney(order.deliveryFee)}', Icons.money),
-            const Divider(height: 24),
-            _buildInfoSection(context, 'Total Amount',
-                'Ksh ${formatMoney(order.total)}', Icons.attach_money),
+            
+          
           ],
         ),
       ),
@@ -119,7 +117,7 @@ class OrderDetailsScreen extends StatelessWidget {
         side: BorderSide(color: Colors.grey.shade200),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(6),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -130,27 +128,23 @@ class OrderDetailsScreen extends StatelessWidget {
                     color: AppColors.primaryColor,
                   ),
             ),
-            const SizedBox(height: 16),
-            _buildInfoSection(
-                context, 'Name', order.userName, Icons.person_outline),
-            // const Divider(height: 24),
-            // _buildInfoSection(
-            //     context, 'Email', order.userEmail, Icons.email_outlined),
-            const Divider(height: 24),
+        
+         
+             const Divider(height: 10),
             _buildInfoSection(
                 context, 'Phone', order.phoneNumber, Icons.phone_outlined),
-            const Divider(height: 24),
+             const Divider(height: 10),
             _buildInfoSection(context, 'Delivery Type', order.deliveryType,
                 Icons.local_shipping_outlined),
-            const Divider(height: 24),
+             const Divider(height: 10),
             _buildInfoSection(context, 'Delivery Address', order.address,
                 Icons.location_on_outlined),
-            const Divider(height: 24),
+             const Divider(height: 10),
             _buildInfoSection(context, 'Delivery Time', order.deliveryTime,
                 Icons.access_time_outlined),
            
             if (order.specialInstructions.isNotEmpty) ...[
-              const Divider(height: 24),
+               const Divider(height: 10),
               if (order.specialInstructions.isNotEmpty)
                 _buildInfoSection(context, 'Special Instructions',
                     order.specialInstructions, Icons.notes_outlined),

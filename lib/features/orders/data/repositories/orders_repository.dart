@@ -66,6 +66,17 @@ class OrdersRepository {
       return orders;
     });
   }
+  // In OrdersRepository class
+  Future<void> updateOrderStatus(String orderId, String newStatus) async {
+    try {
+      await _firestore.collection('orders').doc(orderId).update({
+        'status': newStatus,
+      });
+    } catch (e) {
+      print('Error updating order status: $e');
+      throw Exception('Failed to update order status: $e');
+    }
+  }
 
   // One-time fetch of orders (keep for backward compatibility)
   Future<List<CompletedOrder>> getOrders() async {

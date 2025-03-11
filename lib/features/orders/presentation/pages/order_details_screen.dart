@@ -152,6 +152,7 @@ class OrderDetailsScreen extends StatelessWidget {
                         sku: item.sku,
                       ))
                   .toList(),
+                   orderId: order.id
             ),
           ],
         ),

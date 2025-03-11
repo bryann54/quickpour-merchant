@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/core/utils/date_formatter.dart';
@@ -141,12 +142,12 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: item.images.isNotEmpty
-                      ? Image.network(
+                      ? CachedNetworkImage(imageUrl: 
                           item.images.first,
                           width: 80,
                           height: 80,
                           fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) =>
+                          errorWidget: (context, url, error) =>
                               _buildPlaceholder(),
                         )
                       : _buildPlaceholder(),
@@ -163,29 +164,14 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
                               item.productName,
                               style: const TextStyle(
                                 fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w500,
                               ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
                             ),
+                          
                           ),
-                          Expanded(child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 6, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: isDark
-                                    ? Colors.grey.shade800
-                                    : Colors.grey.shade50,
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Text(
-                                item.measure,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey.shade700,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ),
+                     
                         ],
                       ),
                       const SizedBox(height: 4),

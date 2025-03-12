@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/core/utils/date_formatter.dart';
 import 'package:quickpourmerchant/features/orders/data/models/order_model.dart';
+import 'package:quickpourmerchant/features/orders/presentation/widgets/dispatch_button.dart';
 import 'package:quickpourmerchant/features/orders/presentation/widgets/quantity_badge_widget.dart';
 
 class OrderConfirmationScreen extends StatefulWidget {
   final List<OrderItem> items;
+  final String orderId;
 
-  const OrderConfirmationScreen({super.key, required this.items});
+  const OrderConfirmationScreen({super.key, required this.items,
+    required this.orderId,
+  });
 
   @override
   State<OrderConfirmationScreen> createState() =>
@@ -232,6 +236,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
     );
   }
 
+
   Widget _buildBottomBar(bool isDark) {
     final selectedCount = selectedItems.values.where((v) => v).length;
 
@@ -273,53 +278,25 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
                     )
                   : null,
             ),
-            ElevatedButton(
-              onPressed: selectedCount == 0
-                  ? null
-                  : () async {
-                      setState(() => _isLoading = true);
-                      await Future.delayed(const Duration(seconds: 2));
-                      if (mounted) {
-                        setState(() => _isLoading = false);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              '$selectedCount item(s) dispatched successfully!',
-                            ),
-                            backgroundColor: Colors.green,
-                          ),
-                        );
-                        Navigator.pop(context);
-                      }
-                    },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryColor,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                minimumSize: const Size(double.infinity, 54),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.local_shipping_outlined),
-                  const SizedBox(width: 8),
-                  Text(
-                    selectedCount == 0
-                        ? 'Select Items to Dispatch'
-                        : 'Dispatch Selected Items',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
+            DispatchButton(
+              orderId: widget
+                  .orderId, // You'll need to pass orderId to the OrderConfirmationScreen
+              selectedCount: selectedCount,
+              isLoading: _isLoading,
+              onDispatchStarted: () {
+                setState(() => _isLoading = true);
+              },
+              onDispatchCompleted: () {
+                if (mounted) {
+                  setState(() => _isLoading = false);
+                }
+              },
             ),
           ],
         ),
       ),
+   
+   
     );
   }
 }

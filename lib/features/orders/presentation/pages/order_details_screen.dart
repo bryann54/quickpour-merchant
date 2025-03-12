@@ -4,6 +4,7 @@ import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/core/utils/date_formatter.dart';
 import 'package:quickpourmerchant/features/orders/data/models/completed_order_model.dart';
 import 'package:quickpourmerchant/features/orders/data/models/order_model.dart';
+import 'package:quickpourmerchant/features/orders/presentation/widgets/cancel_button.dart';
 import 'package:quickpourmerchant/features/orders/presentation/widgets/confirm_order_button.dart';
 import 'package:quickpourmerchant/features/orders/presentation/widgets/merchant_order_section.dart';
 import 'package:quickpourmerchant/features/orders/presentation/widgets/order_total_row.dart';
@@ -22,6 +23,20 @@ class OrderDetailsScreen extends StatelessWidget {
     final String formattedDate =
         DateFormat('EEEE, MMM d, yyyy').format(dateTime);
     final String formattedTime = DateFormat('h:mm a').format(dateTime);
+
+    // Convert order items to OrderItem list
+    final List<OrderItem> orderItems = order.merchantOrders
+        .expand((merchantOrder) => merchantOrder.items)
+        .map((item) => OrderItem(
+              productId: item.productId,
+              productName: item.productName,
+              quantity: item.quantity,
+              price: item.price,
+              images: item.images,
+              measure: item.measure,
+              sku: item.sku,
+            ))
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -109,53 +124,92 @@ class OrderDetailsScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildOrderInfoCard(context, formattedDate, formattedTime),
-            const SizedBox(height: 5),
-            // Order Items
-            Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-                side: BorderSide(color: Colors.grey.shade200),
-              ),
+      body: Column(
+        children: [
+          // Main scrollable content
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SectionTitle(title: 'Items'),
-                  if (order.merchantOrders.isNotEmpty) ...[
-                    ...order.merchantOrders.map((merchantOrder) =>
-                        MerchantOrderSection(merchantOrder: merchantOrder)),
-                  ],
-                  OrderTotalRow(order: order),
+                  _buildOrderInfoCard(context, formattedDate, formattedTime),
+                  const SizedBox(height: 5),
+                  // Order Items
+                  Card(
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      side: BorderSide(color: Colors.grey.shade200),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SectionTitle(title: 'Items'),
+                        if (order.merchantOrders.isNotEmpty) ...[
+                          ...order.merchantOrders.map((merchantOrder) =>
+                              MerchantOrderSection(
+                                  merchantOrder: merchantOrder)),
+                        ],
+                        OrderTotalRow(order: order),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  _buildCustomerInfoCard(context),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
-            const SizedBox(height: 5),
-            _buildCustomerInfoCard(context),
-            const SizedBox(height: 20),
-            ConfirmOrderButton(
-              items: order.merchantOrders
-                  .expand(
-                      (merchantOrder) => merchantOrder.items) // Extract items
-                  .map((item) => OrderItem(
-                        productId: item.productId, // Ensure field names match
-                        productName: item.productName,
-                        quantity: item.quantity,
-                        price: item.price,
-                        images: item.images, // Ensure this is a List<String>
-                        measure: item.measure,
-                        sku: item.sku,
-                      ))
-                  .toList(),
-                   orderId: order.id
+          ),
+          // Fixed footer with buttons
+          SafeArea(
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 4,
+                    offset: const Offset(0, -2),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  // Cancel Order Button
+                  Expanded(
+                    flex: 1,
+                    child: CancelOrderButton(
+                      orderId: order.id,
+                      onCancelled: () {
+                        // Optional: Navigate back or show a snackbar
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Order cancelled successfully'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  // Confirm Order Button
+                  Expanded(
+                    flex: 2,
+                    child: ConfirmOrderButton(
+                      items: orderItems,
+                      orderId: order.id,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

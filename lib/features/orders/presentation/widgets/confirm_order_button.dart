@@ -8,54 +8,60 @@ import 'package:quickpourmerchant/features/orders/presentation/bloc/orders_bloc.
 class ConfirmOrderButton extends StatelessWidget {
   final List<OrderItem> items;
   final String orderId;
-  final String newStatus; // Usually 'confirmed' or similar
+  final String newStatus;
 
   const ConfirmOrderButton({
     super.key,
     required this.items,
     required this.orderId,
-    this.newStatus = 'processing', // Default status
+    this.newStatus = 'processing',
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 30.0, left: 10, right: 10),
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: GestureDetector(
-          onTap: () {
-            // Update status in Firebase
-            context
-                .read<OrdersBloc>()
-                .add(UpdateOrderStatus(orderId, newStatus));
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+      child: ElevatedButton(
+        onPressed: () {
+          // Update status in Firebase
+          context.read<OrdersBloc>().add(UpdateOrderStatus(orderId, newStatus));
 
-            // Show confirmation screen
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => OrderConfirmationScreen(items: items),
-              ),
-            );
-          },
-          child: Container(
-            height: 50,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: AppColors.primaryColor,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: const Center(
-              child: Text(
-                'Confirm Order',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+          // Show confirmation screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OrderConfirmationScreen(
+                items: items,
+                orderId: orderId,
               ),
             ),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.primaryColor,
+          foregroundColor: Colors.white,
+          elevation: 2,
+          shadowColor: AppColors.primaryColor.withOpacity(0.3),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
           ),
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          minimumSize: const Size(double.infinity, 54),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.check, size: 20),
+            const SizedBox(width: 8),
+            Text(
+              'Confirm Order',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0.5,
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -9,6 +9,7 @@ import 'package:quickpourmerchant/features/orders/presentation/widgets/confirm_o
 import 'package:quickpourmerchant/features/orders/presentation/widgets/merchant_order_section.dart';
 import 'package:quickpourmerchant/features/orders/presentation/widgets/order_total_row.dart';
 import 'package:quickpourmerchant/features/orders/presentation/widgets/section_widget.dart';
+import 'package:quickpourmerchant/features/orders/presentation/pages/order_tracking_screen.dart'; // Import the tracking screen
 
 class OrderDetailsScreen extends StatelessWidget {
   final CompletedOrder order;
@@ -37,6 +38,19 @@ class OrderDetailsScreen extends StatelessWidget {
               sku: item.sku,
             ))
         .toList();
+
+    // Check if order status prevents actions
+    final bool isOrderCancelled = order.status == 'Canceled';
+    final bool isOrderConfirmed = order.status == 'processing' ||
+        order.status == 'Completed' ||
+        order.status == 'In Progress' ||
+        order.status == 'Out for Delivery';
+    final bool canTakeAction = !isOrderCancelled && !isOrderConfirmed;
+
+    // Determine the order status color and icon
+    final OrderStatus orderStatus = _getOrderStatus(order.status);
+    final Color statusColor = OrderStatusUtils.getStatusColor(orderStatus);
+    final IconData statusIcon = OrderStatusUtils.getStatusIcon(orderStatus);
 
     return Scaffold(
       appBar: AppBar(
@@ -96,6 +110,20 @@ class OrderDetailsScreen extends StatelessWidget {
                       fontSize: 20,
                     ),
                     overflow: TextOverflow.ellipsis,
+                  ),
+                  // Display current order status with color and icon
+                  Row(
+                    children: [
+                      Icon(statusIcon, size: 16, color: Colors.white),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Status: ${OrderStatusUtils.getStatusLabel(orderStatus)}',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(0.9),
+                          fontSize: 14,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -157,58 +185,139 @@ class OrderDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 5),
                   _buildCustomerInfoCard(context),
+                  if (!canTakeAction)
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Center(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 16),
+                          decoration: BoxDecoration(
+                            color: isOrderCancelled
+                                ? Colors.red.withOpacity(0.2)
+                                : Colors.green.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            isOrderCancelled
+                                ? 'This order has been cancelled'
+                                : 'This order has been confirmed',
+                            style: TextStyle(
+                              color:
+                                  isOrderCancelled ? Colors.red : Colors.green,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   const SizedBox(height: 20),
                 ],
               ),
             ),
           ),
-          // Fixed footer with buttons
-          SafeArea(
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
-                    spreadRadius: 1,
-                    blurRadius: 4,
-                    offset: const Offset(0, -2),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  // Cancel Order Button
-                  Expanded(
-                    flex: 1,
-                    child: CancelOrderButton(
-                      orderId: order.id,
-                      onCancelled: () {
-                        // Optional: Navigate back or show a snackbar
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Order cancelled successfully'),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                      },
+          // Fixed footer with buttons - conditionally show based on status
+          if (canTakeAction)
+            SafeArea(
+              child: Container(
+                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 4,
+                      offset: const Offset(0, -2),
                     ),
-                  ),
-                  const SizedBox(width: 12),
-                  // Confirm Order Button
-                  Expanded(
-                    flex: 2,
-                    child: ConfirmOrderButton(
-                      items: orderItems,
-                      orderId: order.id,
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    // Cancel Order Button
+                    Expanded(
+                      flex: 1,
+                      child: CancelOrderButton(
+                        orderId: order.id,
+                        onCancelled: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Order cancelled successfully'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                          Navigator.pop(context); // Go back after cancellation
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 12),
+                    // Confirm Order Button
+                    Expanded(
+                      flex: 2,
+                      child: ConfirmOrderButton(
+                        items: orderItems,
+                        orderId: order.id,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
+          // If buttons are disabled, show a note at the bottom
+          if (!canTakeAction)
+            SafeArea(
+              child: Container(
+                width: double.infinity,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 4,
+                      offset: const Offset(0, -2),
+                    ),
+                  ],
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (isOrderConfirmed) {
+                      // Navigate to the tracking screen
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => OrderTrackingScreen(
+                            orderId: order.id,
+                            riderId: 'riderId', // Replace with actual rider ID
+                            onCompleted: () {
+                              // Handle completion if needed
+                            },
+                          ),
+                        ),
+                      );
+                    } else {
+                      // Go back to orders
+                      Navigator.pop(context);
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryColor,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  child: Text(
+                    isOrderConfirmed ? 'Track Order' : 'Back to Orders',
+                  ),
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -231,6 +340,9 @@ class OrderDetailsScreen extends StatelessWidget {
             const Divider(height: 10),
             _buildInfoSection(
                 context, 'Payment Method', order.paymentMethod, Icons.payment),
+            const Divider(height: 10),
+            _buildInfoSection(
+                context, 'Status', order.status, Icons.info_outline),
             if (order.deliveryFee != 0) const Divider(height: 10),
             if (order.deliveryFee != 0)
               _buildInfoSection(context, 'Delivery Fee',
@@ -313,5 +425,25 @@ class OrderDetailsScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  // Helper method to map order status string to OrderStatus enum
+  OrderStatus _getOrderStatus(String status) {
+    switch (status.toLowerCase()) {
+      case 'received':
+        return OrderStatus.received;
+      case 'processing':
+        return OrderStatus.processing;
+      case 'dispatched':
+        return OrderStatus.dispatched;
+      case 'delivering':
+        return OrderStatus.delivering;
+      case 'completed':
+        return OrderStatus.completed;
+      case 'canceled':
+        return OrderStatus.canceled;
+      default:
+        return OrderStatus.received;
+    }
   }
 }

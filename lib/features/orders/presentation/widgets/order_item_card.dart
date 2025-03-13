@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/core/utils/date_formatter.dart';
 import 'package:quickpourmerchant/features/orders/data/models/completed_order_model.dart';
+import 'package:quickpourmerchant/features/orders/data/models/order_model.dart';
 import 'package:quickpourmerchant/features/orders/presentation/pages/order_details_screen.dart';
+import 'package:quickpourmerchant/features/orders/presentation/pages/order_confirmation_screen.dart';
+import 'package:quickpourmerchant/features/orders/presentation/pages/order_tracking_screen.dart';
 import 'package:intl/intl.dart';
 
 class OrderItemWidget extends StatelessWidget {
@@ -15,14 +18,12 @@ class OrderItemWidget extends StatelessWidget {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
 
+    // Helper function to get the order status enum
+    OrderStatus orderStatus = _getOrderStatus(order.status);
+
     return InkWell(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => OrderDetailsScreen(order: order),
-          ),
-        );
+        _navigateBasedOnStatus(context, orderStatus);
       },
       borderRadius: BorderRadius.circular(16),
       child: Container(
@@ -226,7 +227,7 @@ class OrderItemWidget extends StatelessWidget {
                     ),
                   ),
 
-                  // View details button
+                  // View details button with appropriate action hint
                   Container(
                     decoration: BoxDecoration(
                       color: isDarkMode
@@ -235,13 +236,7 @@ class OrderItemWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     padding: const EdgeInsets.all(8),
-                    child: Icon(
-                      Icons.arrow_forward_ios,
-                      size: 14,
-                      color: isDarkMode
-                          ? AppColors.brandAccent
-                          : AppColors.primaryColor,
-                    ),
+                    child: _getActionIcon(orderStatus, isDarkMode),
                   ),
                 ],
               ),
@@ -250,5 +245,152 @@ class OrderItemWidget extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Helper method to get the appropriate action icon based on status
+  Widget _getActionIcon(OrderStatus status, bool isDarkMode) {
+    switch (status) {
+      case OrderStatus.received:
+        return Icon(
+          Icons.edit_document,
+          size: 14,
+          color: isDarkMode ? AppColors.brandAccent : AppColors.primaryColor,
+        );
+      case OrderStatus.processing:
+        return Icon(
+          Icons.inventory_2,
+          size: 14,
+          color: isDarkMode ? AppColors.brandAccent : AppColors.primaryColor,
+        );
+      case OrderStatus.dispatched:
+      case OrderStatus.delivering:
+        return Icon(
+          Icons.local_shipping,
+          size: 14,
+          color: isDarkMode ? AppColors.brandAccent : AppColors.primaryColor,
+        );
+      case OrderStatus.completed:
+        return Icon(
+          Icons.check_circle,
+          size: 14,
+          color: isDarkMode ? Colors.green : Colors.green,
+        );
+      case OrderStatus.canceled:
+        return Icon(
+          Icons.cancel,
+          size: 14,
+          color: isDarkMode ? Colors.red : Colors.red,
+        );
+      default:
+        return Icon(
+          Icons.arrow_forward_ios,
+          size: 14,
+          color: isDarkMode ? AppColors.brandAccent : AppColors.primaryColor,
+        );
+    }
+  }
+
+  // Helper method to navigate based on order status
+  void _navigateBasedOnStatus(BuildContext context, OrderStatus status) {
+    switch (status) {
+      case OrderStatus.received:
+        // New order - Show details with confirm/cancel options
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OrderDetailsScreen(order: order),
+          ),
+        );
+        break;
+
+      case OrderStatus.processing:
+        // Processing order - Show confirmation screen for item selection
+        // Convert order items to OrderItem list for confirmation screen
+        final List<OrderItem> orderItems = order.merchantOrders
+            .expand((merchantOrder) => merchantOrder.items)
+            .map((item) => OrderItem(
+                  productId: item.productId,
+                  productName: item.productName,
+                  quantity: item.quantity,
+                  price: item.price,
+                  images: item.images,
+                  measure: item.measure,
+                  sku: item.sku,
+                ))
+            .toList();
+
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OrderConfirmationScreen(
+              items: orderItems,
+              orderId: order.id,
+            ),
+          ),
+        );
+        break;
+
+      case OrderStatus.dispatched:
+      case OrderStatus.delivering:
+        // Dispatched or delivering order - Show tracking screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OrderTrackingScreen(
+              orderId: order.id,
+              riderId: 'riderId', // Replace with actual rider ID if available
+              onCompleted: () {
+                // Handle completion if needed
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Order completed successfully'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              },
+            ),
+          ),
+        );
+        break;
+
+      case OrderStatus.completed:
+      case OrderStatus.canceled:
+      default:
+        // Completed or canceled order - Show details with disabled buttons
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OrderDetailsScreen(order: order),
+          ),
+        );
+        break;
+    }
+  }
+
+  // Helper method to map order status string to OrderStatus enum
+  OrderStatus _getOrderStatus(String status) {
+    switch (status.toLowerCase()) {
+      case 'received':
+        return OrderStatus.received;
+      case 'processing':
+      case 'pending':
+        return OrderStatus.processing;
+      case 'dispatched':
+      case 'ready to ship':
+        return OrderStatus.dispatched;
+      case 'delivering':
+      case 'shipping':
+      case 'in progress':
+      case 'out for delivery':
+        return OrderStatus.delivering;
+      case 'completed':
+        return OrderStatus.completed;
+      case 'canceled':
+      case 'cancelled':
+        return OrderStatus.canceled;
+      default:
+        return OrderStatus
+            .processing; // Default to processing for unknown statuses
+    }
   }
 }

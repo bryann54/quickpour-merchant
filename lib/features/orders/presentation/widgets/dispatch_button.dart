@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/features/orders/presentation/bloc/orders_bloc.dart';
+import 'package:quickpourmerchant/features/orders/presentation/pages/rider_selection_screen.dart';
 
 class DispatchButton extends StatelessWidget {
   final String orderId;
@@ -21,60 +22,73 @@ class DispatchButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: selectedCount == 0
-          ? null
-          : () async {
-              onDispatchStarted();
+    return BlocBuilder<OrdersBloc, OrdersState>(
+      builder: (context, state) {
+        final bool isProcessing =
+            state is OrderStatusUpdating && state.orderId == orderId;
 
-              // Update status in Firebase
-              context.read<OrdersBloc>().add(
-                    UpdateOrderStatus(orderId, 'dispatched'),
+        return ElevatedButton(
+          onPressed: selectedCount == 0 || isProcessing || isLoading
+              ? null
+              : () {
+                  // Call the dispatch started callback
+                  onDispatchStarted();
+
+                  // Navigate to the rider selection screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RiderSelectionScreen(
+                        orderId: orderId,
+                        selectedItemCount: selectedCount,
+                        onDispatchCompleted: () {
+                          // Call the completion callback
+                          onDispatchCompleted();
+
+                          // Show success message
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                '$selectedCount item(s) completed successfully!',
+                              ),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   );
-
-              // Simulate processing time (you might want to remove this in production)
-              await Future.delayed(const Duration(seconds: 2));
-
-              // Call the completion callback
-              onDispatchCompleted();
-
-              // Show success message
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(
-                    '$selectedCount item(s) dispatched successfully!',
-                  ),
-                  backgroundColor: Colors.green,
-                ),
-              );
-
-              // Navigate back
-              Navigator.pop(context);
-            },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primaryColor,
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
-        minimumSize: const Size(double.infinity, 54),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.local_shipping_outlined),
-          const SizedBox(width: 8),
-          Text(
-            selectedCount == 0
-                ? 'Select Items to Dispatch'
-                : 'Dispatch Selected Items',
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+                },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primaryColor,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
             ),
+            minimumSize: const Size(double.infinity, 54),
           ),
-        ],
-      ),
+          child: isProcessing || isLoading
+              ? const CircularProgressIndicator(color: Colors.white)
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(selectedCount == 0
+                        ? null
+                        : Icons.local_shipping_outlined),
+                    const SizedBox(width: 8),
+                    Text(
+                      selectedCount == 0
+                          ? 'Select Items to Dispatch'
+                          : 'Select Rider & Track Order',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+        );
+      },
     );
   }
 }

@@ -20,11 +20,11 @@ class CancelOrderButton extends StatelessWidget {
       onPressed: () => _showCancellationDialog(context),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
-        foregroundColor: Colors.red.shade700,
+        foregroundColor: Colors.grey.shade700,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
-          side: BorderSide(color: Colors.red.shade700, width: 1.5),
+          side:const BorderSide(color: Colors.black26, width: 1.5),
         ),
         padding: const EdgeInsets.symmetric(vertical: 16),
         minimumSize: const Size(double.infinity, 50),
@@ -82,7 +82,7 @@ class CancelOrderButton extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red.shade700,
-                foregroundColor: Colors.white,
+                // foregroundColor: Colors.white,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),

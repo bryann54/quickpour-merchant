@@ -59,19 +59,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
       backgroundColor: isDark ? Colors.grey[900] : Colors.grey[100],
       appBar: AppBar(
         elevation: 0,
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Order Confirmation'),
-            Text(
-              '${selectedItems.values.where((v) => v).length} of ${widget.items.length} items selected',
-              style: TextStyle(
-                fontSize: 12,
-                color: isDark ? Colors.grey[400] : Colors.grey[600],
-              ),
-            ),
-          ],
-        ),
+        title: const Text('Order Confirmation'),
       ),
       body: Stack(
         children: [
@@ -280,7 +268,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
             ),
             DispatchButton(
               orderId: widget
-                  .orderId, // You'll need to pass orderId to the OrderConfirmationScreen
+                  .orderId, 
               selectedCount: selectedCount,
               isLoading: _isLoading,
               onDispatchStarted: () {

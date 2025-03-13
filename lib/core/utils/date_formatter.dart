@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:quickpourmerchant/features/promotions/data/models/promotion_model.dart';
 
@@ -58,4 +59,70 @@ Color getStatusColor(String status, bool isDarkMode) {
     default:
       return isDarkMode ? Colors.grey[800]! : Colors.grey[300]!;
   }
+
+  
 }
+enum OrderStatus {
+  received,
+  processing,
+  dispatched,
+  delivering,
+  completed,
+  canceled,
+}
+class OrderStatusUtils {
+  static Color getStatusColor(OrderStatus status) {
+    switch (status) {
+      case OrderStatus.canceled:
+        return const Color.fromARGB(255, 15, 5, 68);
+      case OrderStatus.received:
+        return const Color(0xFFF39C12);
+      case OrderStatus.processing:
+        return const Color(0xFF3498DB);
+      case OrderStatus.dispatched:
+        return const Color(0xFF9B59B6);
+      case OrderStatus.delivering:
+        return const Color(0xFF1ABC9C);
+      case OrderStatus.completed:
+        return const Color(0xFF2ECC71);
+      default:
+        return Colors.grey;
+    }
+  }
+
+  static IconData getStatusIcon(OrderStatus status) {
+    switch (status) {
+      case OrderStatus.received:
+        return Icons.assignment;
+      case OrderStatus.processing:
+        return Icons.build;
+      case OrderStatus.dispatched:
+        return FontAwesomeIcons.box;
+      case OrderStatus.delivering:
+        return Icons.local_shipping;
+      case OrderStatus.completed:
+        return Icons.check_circle;
+      case OrderStatus.canceled:
+        return Icons.cancel;
+      default:
+        return Icons.circle;
+    }
+  }
+
+  static String getStatusLabel(OrderStatus status) {
+    switch (status) {
+      case OrderStatus.received:
+        return 'Received';
+      case OrderStatus.processing:
+        return 'Processing';
+      case OrderStatus.dispatched:
+        return 'Ready to Ship';
+      case OrderStatus.delivering:
+        return 'Shipping';
+      case OrderStatus.completed:
+        return 'Completed';
+      case OrderStatus.canceled:
+        return 'Canceled';
+      default:
+        return 'pending';
+    }}}

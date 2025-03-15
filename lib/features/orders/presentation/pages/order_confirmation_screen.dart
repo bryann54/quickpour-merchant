@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
-import 'package:quickpourmerchant/core/utils/date_formatter.dart';
+import 'package:quickpourmerchant/core/utils/function_utils.dart';
 import 'package:quickpourmerchant/features/orders/data/models/order_model.dart';
 import 'package:quickpourmerchant/features/orders/presentation/widgets/dispatch_button.dart';
 import 'package:quickpourmerchant/features/orders/presentation/widgets/quantity_badge_widget.dart';

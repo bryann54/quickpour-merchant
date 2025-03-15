@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
-import 'package:quickpourmerchant/core/utils/date_formatter.dart';
+import 'package:quickpourmerchant/core/utils/function_utils.dart';
 
 class QuantityBadge extends StatelessWidget {
   final int quantity;

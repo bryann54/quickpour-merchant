@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
-import 'package:quickpourmerchant/core/utils/date_formatter.dart';
+import 'package:quickpourmerchant/core/utils/function_utils.dart';
 import 'package:quickpourmerchant/features/orders/data/models/completed_order_model.dart';
 
 class OrderTotalRow extends StatelessWidget {

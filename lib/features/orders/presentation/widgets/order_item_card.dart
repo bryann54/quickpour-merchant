@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
-import 'package:quickpourmerchant/core/utils/date_formatter.dart';
+import 'package:quickpourmerchant/core/utils/function_utils.dart';
 import 'package:quickpourmerchant/features/orders/data/models/completed_order_model.dart';
 import 'package:quickpourmerchant/features/orders/data/models/order_model.dart';
 import 'package:quickpourmerchant/features/orders/presentation/pages/order_details_screen.dart';
@@ -18,13 +18,11 @@ class OrderItemWidget extends StatelessWidget {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
 
-    // Helper function to get the order status enum
-    OrderStatus orderStatus = _getOrderStatus(order.status);
+    // Get order status enum
+    final orderStatus = OrderStatusUtils().getOrderStatus(order.status);
 
     return InkWell(
-      onTap: () {
-        _navigateBasedOnStatus(context, orderStatus);
-      },
+      onTap: () => _navigateBasedOnStatus(context, orderStatus),
       borderRadius: BorderRadius.circular(16),
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -45,201 +43,15 @@ class OrderItemWidget extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Order header row
-              Row(
-                children: [
-                  // Status badge
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: getStatusColor(order.status, isDarkMode)
-                          .withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          width: 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: getStatusColor(order.status, isDarkMode),
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          formatStatus(order.status),
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: getStatusColor(order.status, isDarkMode),
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-                  // Payment method icon
-                  Icon(
-                    getPaymentMethodIcon(order.paymentMethod),
-                    size: 16,
-                    color: theme.colorScheme.secondary,
-                  ),
-
-                  const SizedBox(width: 4),
-                  Text(
-                    order.paymentMethod,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.secondary,
-                    ),
-                  ),
-                ],
-              ),
-
+              _buildOrderHeader(theme, isDarkMode),
               const SizedBox(height: 12),
-
-              // Order ID and price
-              Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: Text(
-                      'Order #${order.id}',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Text(
-                      'Ksh ${formatMoney(order.total)} ',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: isDarkMode
-                            ? AppColors.brandAccent.withOpacity(.8)
-                            : AppColors.primaryColor,
-                      ),
-                      textAlign: TextAlign.end,
-                    ),
-                  ),
-                ],
-              ),
-
+              _buildOrderIdAndPrice(theme, isDarkMode),
               const SizedBox(height: 4),
-
-              // Date
-              Text(
-                DateFormat('MMM d, yyyy • h:mm a').format(order.date),
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.hintColor,
-                ),
-              ),
-
+              _buildOrderDate(theme),
               const SizedBox(height: 12),
               const Divider(height: 1),
               const SizedBox(height: 12),
-
-              // Customer info
-              Row(
-                children: [
-                  // Customer avatar
-                  Hero(
-                    tag: 'customer-avatar-${order.id}',
-                    child: CircleAvatar(
-                      radius: 20,
-                      backgroundColor: isDarkMode
-                          ? AppColors.brandAccent.withOpacity(0.2)
-                          : AppColors.primaryColor.withOpacity(0.1),
-                      child: Text(
-                        order.userName.isNotEmpty
-                            ? order.userName[0].toUpperCase()
-                            : '?',
-                        style: TextStyle(
-                          color: isDarkMode
-                              ? AppColors.brandAccent
-                              : AppColors.primaryColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-
-                  // Customer details
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          order.userName,
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              order.deliveryType
-                                      .toLowerCase()
-                                      .contains('express')
-                                  ? Icons
-                                      .rocket_launch // Rocket icon for express
-                                  : order.deliveryType
-                                          .toLowerCase()
-                                          .contains('standard')
-                                      ? Icons
-                                          .local_shipping // Truck icon for standard
-                                      : Icons.store, // Store icon for pickup
-                              size: 14,
-                              color: order.deliveryType
-                                      .toLowerCase()
-                                      .contains('express')
-                                  ? Colors.orange // Orange for express
-                                  : order.deliveryType
-                                          .toLowerCase()
-                                          .contains('standard')
-                                      ? Colors.blue // Blue for standard
-                                      : Colors.green, // Green for pickup
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              order.deliveryType,
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                color: order.deliveryType
-                                        .toLowerCase()
-                                        .contains('express')
-                                    ? Colors.orange // Orange for express
-                                    : order.deliveryType
-                                            .toLowerCase()
-                                            .contains('standard')
-                                        ? Colors.blue // Blue for standard
-                                        : Colors.green, // Green for pickup
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // View details button with appropriate action hint
-                  Container(
-                    decoration: BoxDecoration(
-                      color: isDarkMode
-                          ? AppColors.brandAccent.withOpacity(0.15)
-                          : AppColors.primaryColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: const EdgeInsets.all(8),
-                    child: _getActionIcon(orderStatus, isDarkMode),
-                  ),
-                ],
-              ),
+              _buildCustomerInfo(theme, isDarkMode, orderStatus),
             ],
           ),
         ),
@@ -247,46 +59,220 @@ class OrderItemWidget extends StatelessWidget {
     );
   }
 
-  // Helper method to get the appropriate action icon based on status
-  Widget _getActionIcon(OrderStatus status, bool isDarkMode) {
-    switch (status) {
-      case OrderStatus.received:
-        return Icon(
-          Icons.edit_document,
-          size: 14,
-          color: isDarkMode ? AppColors.brandAccent : AppColors.primaryColor,
-        );
-      case OrderStatus.processing:
-        return Icon(
-          Icons.inventory_2,
-          size: 14,
-          color: isDarkMode ? AppColors.brandAccent : AppColors.primaryColor,
-        );
-      case OrderStatus.dispatched:
-      case OrderStatus.delivering:
-        return Icon(
-          Icons.local_shipping,
-          size: 14,
-          color: isDarkMode ? AppColors.brandAccent : AppColors.primaryColor,
-        );
-      case OrderStatus.completed:
-        return Icon(
-          Icons.check_circle,
-          size: 14,
-          color: isDarkMode ? Colors.green : Colors.green,
-        );
-      case OrderStatus.canceled:
-        return Icon(
-          Icons.cancel,
-          size: 14,
-          color: isDarkMode ? Colors.red : Colors.red,
-        );
-      default:
-        return Icon(
-          Icons.arrow_forward_ios,
-          size: 14,
-          color: isDarkMode ? AppColors.brandAccent : AppColors.primaryColor,
-        );
+  // Build the order header (status badge and payment method)
+  Widget _buildOrderHeader(ThemeData theme, bool isDarkMode) {
+    return Row(
+      children: [
+        _buildStatusBadge(theme, isDarkMode),
+        const Spacer(),
+        _buildPaymentMethod(theme),
+      ],
+    );
+  }
+
+  // Build the status badge
+  Widget _buildStatusBadge(ThemeData theme, bool isDarkMode) {
+    final statusColor = getStatusColor(order.status, isDarkMode);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: statusColor.withOpacity(0.15),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 8,
+            height: 8,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: statusColor,
+            ),
+          ),
+          const SizedBox(width: 4),
+          Text(
+            formatStatus(order.status),
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: statusColor,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Build the payment method section
+  Widget _buildPaymentMethod(ThemeData theme) {
+    return Row(
+      children: [
+        Icon(
+          getPaymentMethodIcon(order.paymentMethod),
+          size: 16,
+          color: theme.colorScheme.secondary,
+        ),
+        const SizedBox(width: 4),
+        Text(
+          order.paymentMethod,
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: theme.colorScheme.secondary,
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Build the order ID and price section
+  Widget _buildOrderIdAndPrice(ThemeData theme, bool isDarkMode) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            'Order #${order.id}',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+        ),
+        Expanded(
+          flex: 1,
+          child: Text(
+            'Ksh ${formatMoney(order.total)}',
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: isDarkMode
+                  ? AppColors.brandAccent.withOpacity(.8)
+                  : AppColors.primaryColor,
+            ),
+            textAlign: TextAlign.end,
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Build the order date section
+  Widget _buildOrderDate(ThemeData theme) {
+    return Text(
+      DateFormat('MMM d, yyyy • h:mm a').format(order.date),
+      style: theme.textTheme.bodySmall?.copyWith(
+        color: theme.hintColor,
+      ),
+    );
+  }
+
+  // Build the customer info section
+  Widget _buildCustomerInfo(ThemeData theme, bool isDarkMode, OrderStatus status) {
+    return Row(
+      children: [
+        _buildCustomerAvatar(isDarkMode),
+        const SizedBox(width: 12),
+        _buildCustomerDetails(theme),
+        const Spacer(),
+        _buildActionButton(isDarkMode, status),
+      ],
+    );
+  }
+
+  // Build the customer avatar
+  Widget _buildCustomerAvatar(bool isDarkMode) {
+    return Hero(
+      tag: 'customer-avatar-${order.id}',
+      child: CircleAvatar(
+        radius: 20,
+        backgroundColor: isDarkMode
+            ? AppColors.brandAccent.withOpacity(0.2)
+            : AppColors.primaryColor.withOpacity(0.1),
+        child: Text(
+          order.userName.isNotEmpty
+              ? order.userName[0].toUpperCase()
+              : '?',
+          style: TextStyle(
+            color: isDarkMode
+                ? AppColors.brandAccent
+                : AppColors.primaryColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Build the customer details section
+  Widget _buildCustomerDetails(ThemeData theme) {
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            order.userName,
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          Row(
+            children: [
+              Icon(
+                _getDeliveryTypeIcon(order.deliveryType),
+                size: 14,
+                color: _getDeliveryTypeColor(order.deliveryType),
+              ),
+              const SizedBox(width: 4),
+              Text(
+                order.deliveryType,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: _getDeliveryTypeColor(order.deliveryType),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Build the action button based on status
+  Widget _buildActionButton(bool isDarkMode, OrderStatus status) {
+    return Container(
+      decoration: BoxDecoration(
+        color: isDarkMode
+            ? AppColors.brandAccent.withOpacity(0.15)
+            : AppColors.primaryColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      padding: const EdgeInsets.all(8),
+      child: Icon(
+        OrderStatusUtils.getStatusIcon(status),
+        size: 14,
+        color: isDarkMode ? AppColors.brandAccent : AppColors.primaryColor,
+      ),
+    );
+  }
+
+  // Helper method to get delivery type icon
+  IconData _getDeliveryTypeIcon(String deliveryType) {
+    if (deliveryType.toLowerCase().contains('express')) {
+      return Icons.rocket_launch;
+    } else if (deliveryType.toLowerCase().contains('standard')) {
+      return Icons.local_shipping;
+    } else {
+      return Icons.store;
+    }
+  }
+
+  // Helper method to get delivery type color
+  Color _getDeliveryTypeColor(String deliveryType) {
+    if (deliveryType.toLowerCase().contains('express')) {
+      return Colors.orange;
+    } else if (deliveryType.toLowerCase().contains('standard')) {
+      return Colors.blue;
+    } else {
+      return Colors.green;
     }
   }
 
@@ -294,7 +280,6 @@ class OrderItemWidget extends StatelessWidget {
   void _navigateBasedOnStatus(BuildContext context, OrderStatus status) {
     switch (status) {
       case OrderStatus.received:
-        // New order - Show details with confirm/cancel options
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -302,11 +287,8 @@ class OrderItemWidget extends StatelessWidget {
           ),
         );
         break;
-
       case OrderStatus.processing:
-        // Processing order - Show confirmation screen for item selection
-        // Convert order items to OrderItem list for confirmation screen
-        final List<OrderItem> orderItems = order.merchantOrders
+        final orderItems = order.merchantOrders
             .expand((merchantOrder) => merchantOrder.items)
             .map((item) => OrderItem(
                   productId: item.productId,
@@ -318,7 +300,6 @@ class OrderItemWidget extends StatelessWidget {
                   sku: item.sku,
                 ))
             .toList();
-
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -329,18 +310,15 @@ class OrderItemWidget extends StatelessWidget {
           ),
         );
         break;
-
       case OrderStatus.dispatched:
       case OrderStatus.delivering:
-        // Dispatched or delivering order - Show tracking screen
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => OrderTrackingScreen(
               orderId: order.id,
-              riderId: 'riderId', // Replace with actual rider ID if available
+              riderId: 'riderId',
               onCompleted: () {
-                // Handle completion if needed
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Order completed successfully'),
@@ -352,11 +330,9 @@ class OrderItemWidget extends StatelessWidget {
           ),
         );
         break;
-
       case OrderStatus.completed:
       case OrderStatus.canceled:
       default:
-        // Completed or canceled order - Show details with disabled buttons
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -367,30 +343,4 @@ class OrderItemWidget extends StatelessWidget {
     }
   }
 
-  // Helper method to map order status string to OrderStatus enum
-  OrderStatus _getOrderStatus(String status) {
-    switch (status.toLowerCase()) {
-      case 'received':
-        return OrderStatus.received;
-      case 'processing':
-      case 'pending':
-        return OrderStatus.processing;
-      case 'dispatched':
-      case 'ready to ship':
-        return OrderStatus.dispatched;
-      case 'delivering':
-      case 'shipping':
-      case 'in progress':
-      case 'out for delivery':
-        return OrderStatus.delivering;
-      case 'completed':
-        return OrderStatus.completed;
-      case 'canceled':
-      case 'cancelled':
-        return OrderStatus.canceled;
-      default:
-        return OrderStatus
-            .processing; // Default to processing for unknown statuses
-    }
-  }
 }

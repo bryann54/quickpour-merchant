@@ -14,7 +14,7 @@ class ConfirmOrderButton extends StatelessWidget {
     super.key,
     required this.items,
     required this.orderId,
-    this.newStatus = 'processing',
+    this.newStatus = 'processing', required Null Function() onConfirmed,
   });
 
   @override

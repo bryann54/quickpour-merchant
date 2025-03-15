@@ -89,6 +89,22 @@ class OrderStatusUtils {
         return Colors.grey;
     }
   }
+  OrderStatus getOrderStatus(String status) {
+    switch (status.toLowerCase()) {
+      case 'received':
+        return OrderStatus.received;
+      case 'processing':
+        return OrderStatus.processing;
+      case 'dispatched':
+        return OrderStatus.dispatched;
+      case 'delivering':
+        return OrderStatus.delivering;
+      case 'completed':
+        return OrderStatus.completed;
+      default:
+        return OrderStatus.received;
+    }
+  }
 
   static IconData getStatusIcon(OrderStatus status) {
     switch (status) {
@@ -125,4 +141,6 @@ class OrderStatusUtils {
         return 'Canceled';
       default:
         return 'pending';
-    }}}
+    }
+  }
+}

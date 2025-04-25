@@ -24,7 +24,7 @@ class CancelOrderButton extends StatelessWidget {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
-          side:const BorderSide(color: Colors.black26, width: 1.5),
+          side: const BorderSide(color: Colors.black26, width: 1.5),
         ),
         padding: const EdgeInsets.symmetric(vertical: 16),
         minimumSize: const Size(double.infinity, 50),

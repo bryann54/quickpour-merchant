@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:quickpourmerchant/features/promotions/data/models/promotion_model.dart';
 
@@ -45,6 +46,40 @@ IconData getPaymentMethodIcon(String paymentMethod) {
   }
 }
 
+// Helper method to create gradient text
+class GradientText extends StatelessWidget {
+  final String text;
+  final double fontSize;
+  final FontWeight fontWeight;
+
+  const GradientText({
+    required this.text,
+    this.fontSize = 17,
+    this.fontWeight = FontWeight.w600,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ShaderMask(
+      shaderCallback: (bounds) => const LinearGradient(
+        colors: [
+          Color(0xFFE74C3C),
+          Color(0xFFF39C12),
+        ],
+      ).createShader(bounds),
+      child: Text(
+        text,
+        style: GoogleFonts.acme(
+          fontSize: fontSize,
+          fontWeight: fontWeight,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+}
+
 // Helper function to get status color
 Color getStatusColor(String status, bool isDarkMode) {
   switch (status.toLowerCase()) {
@@ -59,9 +94,8 @@ Color getStatusColor(String status, bool isDarkMode) {
     default:
       return isDarkMode ? Colors.grey[800]! : Colors.grey[300]!;
   }
-
-  
 }
+
 enum OrderStatus {
   received,
   processing,
@@ -70,6 +104,7 @@ enum OrderStatus {
   completed,
   canceled,
 }
+
 class OrderStatusUtils {
   static Color getStatusColor(OrderStatus status) {
     switch (status) {
@@ -85,10 +120,9 @@ class OrderStatusUtils {
         return const Color(0xFF1ABC9C);
       case OrderStatus.completed:
         return const Color(0xFF2ECC71);
-      default:
-        return Colors.grey;
     }
   }
+
   OrderStatus getOrderStatus(String status) {
     switch (status.toLowerCase()) {
       case 'received':
@@ -120,8 +154,6 @@ class OrderStatusUtils {
         return Icons.check_circle;
       case OrderStatus.canceled:
         return Icons.cancel;
-      default:
-        return Icons.circle;
     }
   }
 
@@ -139,8 +171,6 @@ class OrderStatusUtils {
         return 'Completed';
       case OrderStatus.canceled:
         return 'Canceled';
-      default:
-        return 'pending';
     }
   }
 }

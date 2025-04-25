@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
-
 import 'package:quickpourmerchant/features/product/presentation/pages/home_screen.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/pages/login_screen.dart';
 import '../../features/auth/presentation/pages/signup_screen.dart';
-import '../../features/auth/presentation/pages/Splash_screen.dart';
+import '../../features/auth/presentation/pages/splash_screen.dart';
 
 class AuthWrapper extends StatefulWidget {
   const AuthWrapper({super.key});
@@ -18,98 +17,63 @@ class AuthWrapper extends StatefulWidget {
 
 class _AuthWrapperState extends State<AuthWrapper> {
   bool isLogin = true;
-  bool _isChecking = true;
 
   @override
   void initState() {
     super.initState();
-    _checkAuthStatus();
+    // Trigger auth check when the wrapper initializes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAuthStatus();
+    });
   }
 
   Future<void> _checkAuthStatus() async {
-    if (!mounted) return; // Add this check
+    if (!mounted) return;
+
     final authBloc = context.read<AuthBloc>();
-
     try {
-      if (authBloc.authUseCases.isUserSignedIn()) {
-        final user = await authBloc.authUseCases.getCurrentUserDetails();
+      final isSignedIn = await authBloc.authUseCases.isUserSignedIn();
+      if (!mounted) return;
 
-        if (!mounted) return; // Add this check before navigation
+      if (isSignedIn) {
+        final user = await authBloc.authUseCases.getCurrentUserDetails();
+        if (!mounted) return;
 
         if (user != null) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (_) => const HomeScreen()),
           );
-          return; // Add return to prevent further execution
         } else {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (_) => const SplashScreen()),
           );
-          return; // Add return to prevent further execution
         }
       }
-
-      if (!mounted) return; // Add this check before setState
-      setState(() {
-        isLogin = false;
-        _isChecking = false;
-      });
     } catch (e) {
-      if (!mounted) return; // Add this check before setState
-      setState(() {
-        isLogin = true;
-        _isChecking = false;
-      });
+      // Silent fail - just stay on auth screen
+      if (!mounted) return;
+      setState(() => isLogin = true);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Show loading screen while checking authentication
-    if (_isChecking) {
-      return Scaffold(
-        backgroundColor: AppColors.primaryColor,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TweenAnimationBuilder(
-                tween: Tween<double>(begin: 0.5, end: 1.0),
-                duration: const Duration(milliseconds: 1000),
-                builder: (context, double value, child) {
-                  return Transform.scale(
-                    scale: value,
-                    child: child,
-                  );
-                },
-                child: const CircularProgressIndicator(
-                  color: AppColors.background,
-                  strokeWidth: 10,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text('Loading next screen...',
-                  style: GoogleFonts.montaga(
-                      color: AppColors.background,
-                      fontSize: 27,
-                      fontWeight: FontWeight.bold)),
-            ],
-          ),
-        ),
-      );
-    }
-
     return Scaffold(
       body: isLogin ? const LoginScreen() : const SignupScreen(),
       bottomNavigationBar: BottomAppBar(
+        elevation: 0,
+        color: Colors.transparent,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(isLogin
-                  ? "Don't have an account?"
-                  : "Already have an account?"),
+              Text(
+                isLogin ? "Don't have an account?" : "Already have an account?",
+                style: GoogleFonts.montserrat(
+                  color: AppColors.textSecondary,
+                ),
+              ),
               TextButton(
                 onPressed: () {
                   setState(() {
@@ -118,8 +82,11 @@ class _AuthWrapperState extends State<AuthWrapper> {
                 },
                 child: Text(
                   isLogin ? "Sign Up" : "Login",
-                  style:
-                      const TextStyle(color: AppColors.errorDark, fontSize: 20),
+                  style: GoogleFonts.montserrat(
+                    color: AppColors.brandAccent,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
               ),
             ],

@@ -36,5 +36,5 @@ class SignupEvent extends AuthEvent {
     this.imageUrl = '',
   });
 }
-
+class CheckAuthStatusEvent extends AuthEvent {}
 class LogoutEvent extends AuthEvent {}

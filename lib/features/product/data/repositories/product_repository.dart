@@ -7,6 +7,9 @@ class ProductRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final AuthRepository _authRepository = AuthRepository();
+  final int _pageSize = 10; // Number of products per page
+  DocumentSnapshot? _lastDocument; // Tracks the last document retrieved
+  bool _hasMoreData = true; // Flag to check if more data is available
 
   String get currentMerchantId => _auth.currentUser?.uid ?? '';
 
@@ -83,6 +86,60 @@ class ProductRepository {
   Future<int> fetchStockCount() async {
     final products = await fetchProducts();
     return products.fold(0, (sum, product) => product.stockQuantity);
+  }
+
+  // Get next page of products
+  Future<List<MerchantProductModel>> getNextProductsPage() async {
+    if (!_hasMoreData || _lastDocument == null) {
+      return [];
+    }
+
+    try {
+      final QuerySnapshot querySnapshot = await _firestore
+          .collection('products')
+          .orderBy('createdAt',
+              descending: true) // Use same ordering as initial query
+          .startAfterDocument(_lastDocument!)
+          .limit(_pageSize)
+          .get();
+
+      // Update pagination state
+      if (querySnapshot.docs.isEmpty) {
+        _hasMoreData = false;
+        return [];
+      }
+
+      _lastDocument = querySnapshot.docs.last;
+
+      return querySnapshot.docs.map((doc) {
+        return MerchantProductModel.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
+    } catch (e) {
+      throw Exception('Error fetching next page of products: $e');
+    }
+  }
+
+  // Check if more data is available
+  bool hasMoreData() {
+    return _hasMoreData;
+  }
+
+  // Add method for recommended products with pagination support
+  Future<List<MerchantProductModel>> getRecommendedProducts(
+      {int limit = 10}) async {
+    try {
+      final QuerySnapshot querySnapshot = await _firestore
+          .collection('products')
+          .orderBy('rating', descending: true)
+          .limit(limit)
+          .get();
+
+      return querySnapshot.docs.map((doc) {
+        return MerchantProductModel.fromMap(doc.data() as Map<String, dynamic>);
+      }).toList();
+    } catch (e) {
+      throw Exception('Error fetching recommended products: $e');
+    }
   }
 
   // Update a product

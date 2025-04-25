@@ -75,8 +75,8 @@ class _LogOutButtonState extends State<LogOutButton> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     gradient: isLightMode
-                        ? AppColors.lightButtonGradient
-                        : AppColors.darkButtonGradient,
+                        ? AppColors.primaryButtonGradient
+                        : AppColors.primaryButtonGradient,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Center(

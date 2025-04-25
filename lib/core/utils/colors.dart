@@ -1,108 +1,106 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Brand Colors - Rich burgundy as primary with warm gold accent
-  static const Color brandPrimary = Color(0xFF722F37); // Deep Burgundy
-  static const Color brandSecondary = Color(0xFF1E1A1B); // Dark Charcoal
-  static const Color brandAccent = Color(0xFFBF9B30); // Warm Gold
+  // Modern Brand Colors
+  static const Color brandPrimary = Color(0xFF4361EE); // Vibrant electric blue
+  static const Color brandSecondary = Color(0xFF3A0CA3); // Deep royal purple
+  static const Color brandAccent = Color(0xFF4CC9F0); // Bright cyan
+  static const Color brandTertiary = Color(0xFFF72585); // Energetic pink
 
   // Light Theme Colors
-  static const Color primaryColor = Color(0xFF722F37); // Deep Burgundy
-  static const Color secondaryColor = Color(0xFF1E1A1B); // Dark Charcoal
-  static const Color accentColor = Color(0xFFBF9B30); // Warm Gold
-  static const Color background = Color(0xFFF8F6F4); // Cream White
+  static const Color primaryColor = Color(0xFF4361EE);
+  static const Color secondaryColor = Color(0xFF3A0CA3);
+  static const Color accentColor = Color(0xFF4CC9F0);
+  static const Color background = Color(0xFFF8F9FA); // Very light gray
   static const Color surface = Colors.white;
-  static const Color error = Color(0xFFB00020); // Deep Red
-  static const Color success = Color(0xFF2D5A27); // Forest Green
-  static const Color warning = Color(0xFFCB8E00); // Amber
+  static const Color error = Color(0xFFEF476F); // Vibrant red
+  static const Color success = Color(0xFF06D6A0); // Teal green
+  static const Color warning = Color(0xFFFFD166); // Vibrant yellow
 
-  // Light Theme Gradient for Buttons
-  static const LinearGradient lightButtonGradient = LinearGradient(
-    colors: [brandPrimary, Color(0xFF8B3844)], // Burgundy gradient
+  // Button Gradients
+  static const LinearGradient primaryButtonGradient = LinearGradient(
+    colors: [Color(0xFF4361EE), Color(0xFF3A0CA3)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
-  // Dark Theme Gradient for Buttons
-  static const LinearGradient darkButtonGradient = LinearGradient(
-    colors: [primaryColorDark, Color(0xFF5A252B)], // Darker burgundy gradient
+  static const LinearGradient accentButtonGradient = LinearGradient(
+    colors: [Color(0xFF4CC9F0), Color(0xFF4895EF)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
   // Text Colors
-  static const Color textPrimary = Color(0xFF1E1A1B); // Almost Black
-  static const Color textSecondary = Color(0xFF4A4546); // Dark Gray
-  static const Color textLight = Color(0xFF767273); // Medium Gray
+  static const Color textPrimary = Color(0xFF212529); // Dark gray
+  static const Color textSecondary = Color(0xFF495057);
+  static const Color textLight = Color(0xFF6C757D);
+  static const Color textOnPrimary = Colors.white;
 
   // UI Element Colors
   static const Color cardColor = Colors.white;
-  static const Color dividerColor = Color(0xFFE8E6E7); // Light Gray
-  static const Color shadowColor = Color(0x1A1E1A1B);
-  static const Color inputBorder = Color(0xFFD2D0D1); // Border Gray
+  static const Color dividerColor = Color(0xFFE9ECEF);
+  static const Color shadowColor = Color(0x1A000000);
+  static const Color inputBorder = Color(0xFFDEE2E6);
+  static const Color inputFill = Color(0xFFF1F3F5);
 
   // Status Colors
-  static const Color statusPending = Color(0xFFBF9B30); // Gold
-  static const Color statusDelivering = Color(0xFF436B95); // Steel Blue
-  static const Color statusCompleted = Color(0xFF2D5A27); // Forest Green
-  static const Color statusCancelled = Color(0xFF8B3844); // Light Burgundy
+  static const Color statusPending = Color(0xFFFFD166); // Yellow
+  static const Color statusProcessing = Color(0xFF4895EF); // Blue
+  static const Color statusCompleted = Color(0xFF06D6A0); // Green
+  static const Color statusCancelled = Color(0xFFEF476F); // Red
+  static const Color statusAttention = Color(0xFFF72585); // Pink
 
-  // Light Theme Gradients
-  static const LinearGradient primaryGradient = LinearGradient(
-    colors: [
-      Color(0xFF722F37), // Burgundy
-      Color(0xFF8B3844), // Lighter Burgundy
-    ],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
-
-  static const LinearGradient accentGradient = LinearGradient(
-    colors: [
-      Color(0xFFBF9B30), // Gold
-      Color(0xFFD4B141), // Lighter Gold
-    ],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
+  // Dashboard Widget Colors
+  static const Color revenueCard = Color(0xFF3A0CA3);
+  static const Color ordersCard = Color(0xFF4361EE);
+  static const Color customersCard = Color(0xFF4CC9F0);
+  static const Color productsCard = Color(0xFF06D6A0);
 
   // Dark Theme Colors
-  static const Color primaryColorDark = Color(0xFF5A252B); // Darker Burgundy
-  static const Color secondaryColorDark = Color(0xFF151213); // Darker Charcoal
-  static const Color accentColorDark = Color(0xFFA68729); // Darker Gold
+  static const Color primaryColorDark = Color(0xFF4895EF);
+  static const Color secondaryColorDark = Color(0xFF560BAD);
+  static const Color accentColorDark = Color(0xFF4CC9F0);
   static const Color backgroundDark = Color(0xFF121212);
-  static const Color surfaceColorDark = Color(0xFF1E1E1E);
-  static const Color errorDark = Color(0xFFCF6679);
+  static const Color surfaceDark = Color(0xFF1E1E1E);
+  static const Color errorDark = Color(0xFFFF7096);
+  static const Color successDark = Color(0xFF73FFC8);
 
   // Dark Theme Text Colors
-  static const Color textPrimaryDark = Color(0xFFF8F6F4); // Off White
-  static const Color textSecondaryDark = Color(0xFFD2D0D1); // Light Gray
-  static const Color textLightDark = Color(0xFFA09EA0); // Medium Gray
+  static const Color textPrimaryDark = Color(0xFFF8F9FA);
+  static const Color textSecondaryDark = Color(0xFFE9ECEF);
+  static const Color textLightDark = Color(0xFFCED4DA);
 
   // Dark Theme UI Elements
-  static const Color cardColorDark = Color(0xFF2C2C2C);
-  static const Color dividerColorDark = Color(0xFF3E3E3E);
-  static const Color shadowColorDark = Color(0x3D000000);
-  static const Color inputBorderDark = Color(0xFF3E3E3E);
+  static const Color cardColorDark = Color(0xFF2D2D2D);
+  static const Color dividerColorDark = Color(0xFF3D3D3D);
+  static const Color inputBorderDark = Color(0xFF3D3D3D);
+  static const Color inputFillDark = Color(0xFF2A2A2A);
 
-  // Dark Theme Gradients
-  static const LinearGradient primaryGradientDark = LinearGradient(
-    colors: [
-      Color(0xFF5A252B), // Dark Burgundy
-      Color(0xFF722F37), // Burgundy
-    ],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
+  // Special Effects
+  static const LinearGradient glassEffect = LinearGradient(
+    colors: [Color(0x1AFFFFFF), Color(0x0DFFFFFF)],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
   );
 
-  // Glass Effect Colors
-  static const Color glassEffect = Color(0x1AFFFFFF);
-  static const Color overlayDark = Color(0xB3000000); // 70% opacity black
-  static const Color overlayLight = Color(0xB3FFFFFF); // 70% opacity white
+  static const Color shimmerBase = Color(0xFFE9ECEF);
+  static const Color shimmerHighlight = Color(0xFFF8F9FA);
 
-  // Shimmer Effect Colors
-  static const Color shimmerBase = Color(0xFFE0E0E0);
-  static const Color shimmerHighlight = Color(0xFFF5F5F5);
+  // Utility Colors
+  static const Color overlayDark = Color(0x73000000);
+  static const Color overlayLight = Color(0x73FFFFFF);
+
+  // Category Colors (for product categories etc.)
+  static const List<Color> categoryColors = [
+    Color(0xFF4361EE),
+    Color(0xFF3A0CA3),
+    Color(0xFF4CC9F0),
+    Color(0xFF06D6A0),
+    Color(0xFFFFD166),
+    Color(0xFFEF476F),
+    Color(0xFFF72585),
+    Color(0xFF7209B7),
+  ];
 
   // Opacity Variants
   static Color getColorWithOpacity(Color color, double opacity) {

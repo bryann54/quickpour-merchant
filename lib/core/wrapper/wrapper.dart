@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickpourmerchant/core/utils/custom_snackbar_widget.dart';
 import 'package:quickpourmerchant/core/wrapper/auth_wrapper.dart';
+import 'package:quickpourmerchant/features/auth/presentation/bloc/auth_event.dart';
 import 'package:quickpourmerchant/features/product/presentation/pages/home_screen.dart';
-
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/bloc/auth_state.dart';
 
@@ -16,11 +16,17 @@ class Wrapper extends StatefulWidget {
 
 class _WrapperState extends State<Wrapper> {
   @override
+  void initState() {
+    super.initState();
+    // Check authentication status when the wrapper initializes
+    context.read<AuthBloc>().add(CheckAuthStatusEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthError) {
-          // Show the custom snackbar if there's an error
           CustomAnimatedSnackbar.show(
             context: context,
             message: "Authentication Error: ${state.message}",
@@ -30,7 +36,6 @@ class _WrapperState extends State<Wrapper> {
         }
 
         if (state is Authenticated) {
-          // Show the welcome back snackbar when authenticated
           CustomAnimatedSnackbar.show(
             context: context,
             message: "Welcome back!!",
@@ -41,18 +46,12 @@ class _WrapperState extends State<Wrapper> {
       },
       child: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
-          if (state is AuthLoading) {
-            // Show loading indicator while authentication is in progress
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
+          if (state is AuthInitial || state is AuthLoading) {
+            // Show a blank screen while checking auth status
+            return const Scaffold(body: SizedBox.shrink());
           } else if (state is Authenticated) {
-            // If the user is authenticated, show the bottomnav
-            return const HomeScreen(); // Your home screen widget
+            return const HomeScreen();
           } else {
-            // If not authenticated, show the login screen
             return const AuthWrapper();
           }
         },

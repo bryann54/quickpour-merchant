@@ -1,12 +1,12 @@
 // import 'package:cached_network_image/cached_network_image.dart';
-// import 'package:chupachap/core/utils/colors.dart';
-// import 'package:chupachap/features/promotions/presentation/bloc/promotions_bloc.dart';
-// import 'package:chupachap/features/promotions/presentation/bloc/promotions_state.dart';
-// import 'package:chupachap/features/promotions/presentation/pages/promotion_screen.dart';
+// import 'package:quickpourmerchant/core/utils/colors.dart';
+// import 'package:quickpourmerchant/features/promotions/presentation/bloc/promotions_bloc.dart';
+// import 'package:quickpourmerchant/features/promotions/presentation/bloc/promotions_state.dart';
+// import 'package:quickpourmerchant/features/promotions/presentation/pages/promotion_screen.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:chupachap/features/product/data/models/product_model.dart';
+// import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 // import 'package:shimmer/shimmer.dart';
 
 // class PromotionsCarousel extends StatelessWidget {

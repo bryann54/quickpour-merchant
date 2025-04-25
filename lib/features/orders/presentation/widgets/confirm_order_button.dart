@@ -14,7 +14,8 @@ class ConfirmOrderButton extends StatelessWidget {
     super.key,
     required this.items,
     required this.orderId,
-    this.newStatus = 'processing', required Null Function() onConfirmed,
+    this.newStatus = 'processing',
+    required Null Function() onConfirmed,
   });
 
   @override
@@ -48,14 +49,14 @@ class ConfirmOrderButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 16),
           minimumSize: const Size(double.infinity, 54),
         ),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.check, size: 20),
-            const SizedBox(width: 8),
+            Icon(Icons.check, size: 20),
+            SizedBox(width: 8),
             Text(
               'Confirm Order',
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 0.5,

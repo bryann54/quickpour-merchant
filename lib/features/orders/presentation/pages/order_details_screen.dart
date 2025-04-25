@@ -20,10 +20,11 @@ class OrderDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDarkMode = theme.brightness == Brightness.dark;
-    
+
     // Format date and time
     final DateTime dateTime = order.date;
-    final String formattedDate = DateFormat('EEEE, MMM d, yyyy').format(dateTime);
+    final String formattedDate =
+        DateFormat('EEEE, MMM d, yyyy').format(dateTime);
     final String formattedTime = DateFormat('h:mm a').format(dateTime);
 
     // Convert order items to OrderItem list
@@ -45,22 +46,23 @@ class OrderDetailsScreen extends StatelessWidget {
     final String statusLabel = _getStatusLabel(orderStatus);
     final Color statusColor = _getStatusColor(orderStatus, isDarkMode);
     final IconData statusIcon = _getStatusIcon(orderStatus);
-    
+
     // Determine action states based on order status
     final bool canCancel = orderStatus == OrderStatus.received;
     final bool canConfirm = orderStatus == OrderStatus.received;
-    final bool canTrack = orderStatus == OrderStatus.dispatched || 
-                         orderStatus == OrderStatus.delivering;
+    final bool canTrack = orderStatus == OrderStatus.dispatched ||
+        orderStatus == OrderStatus.delivering;
     final bool isCompleted = orderStatus == OrderStatus.completed;
     final bool isCanceled = orderStatus == OrderStatus.canceled;
 
     return Scaffold(
-      appBar: _buildAppBar(context, isDarkMode, statusIcon, statusLabel, statusColor),
+      appBar: _buildAppBar(
+          context, isDarkMode, statusIcon, statusLabel, statusColor),
       body: Column(
         children: [
           // Order status indicator
           _buildStatusIndicator(context, orderStatus, statusColor),
-          
+
           // Main scrollable content
           Expanded(
             child: SingleChildScrollView(
@@ -68,54 +70,42 @@ class OrderDetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildOrderInfoCard(context, formattedDate, formattedTime, isDarkMode),
+                  _buildOrderInfoCard(
+                      context, formattedDate, formattedTime, isDarkMode),
                   const SizedBox(height: 16),
-                  
+
                   // Order Items
                   _buildOrderItemsCard(context, isDarkMode),
-                  
+
                   const SizedBox(height: 16),
                   _buildCustomerInfoCard(context, isDarkMode),
-                  
+
                   // Status message for completed/canceled orders
                   if (isCompleted || isCanceled)
                     _buildStatusMessage(context, isCompleted, isCanceled),
-                  
+
                   const SizedBox(height: 100), // Space for bottom buttons
                 ],
               ),
             ),
           ),
-          
+
           // Bottom action buttons
-          _buildBottomActionButtons(
-            context, 
-            orderStatus, 
-            orderItems, 
-            canCancel, 
-            canConfirm, 
-            canTrack, 
-            isCompleted, 
-            isCanceled
-          ),
+          _buildBottomActionButtons(context, orderStatus, orderItems, canCancel,
+              canConfirm, canTrack, isCompleted, isCanceled),
         ],
       ),
     );
   }
 
   // Build the app bar with customer info and status
-  PreferredSizeWidget _buildAppBar(
-    BuildContext context, 
-    bool isDarkMode, 
-    IconData statusIcon, 
-    String statusLabel,
-    Color statusColor
-  ) {
+  PreferredSizeWidget _buildAppBar(BuildContext context, bool isDarkMode,
+      IconData statusIcon, String statusLabel, Color statusColor) {
     return AppBar(
       elevation: 0,
       toolbarHeight: 70,
       backgroundColor: Colors.transparent,
-      iconTheme: IconThemeData(color: Colors.white),
+      iconTheme: const IconThemeData(color: Colors.white),
       flexibleSpace: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -170,7 +160,8 @@ class OrderDetailsScreen extends StatelessWidget {
                 const SizedBox(height: 2),
                 Row(
                   children: [
-                    Icon(Icons.numbers_outlined, size: 14, color: Colors.white.withOpacity(0.9)),
+                    Icon(Icons.numbers_outlined,
+                        size: 14, color: Colors.white.withOpacity(0.9)),
                     const SizedBox(width: 4),
                     Text(
                       'Order #${order.id}',
@@ -209,7 +200,8 @@ class OrderDetailsScreen extends StatelessWidget {
   }
 
   // Build a status indicator strip below the app bar
-  Widget _buildStatusIndicator(BuildContext context, OrderStatus status, Color statusColor) {
+  Widget _buildStatusIndicator(
+      BuildContext context, OrderStatus status, Color statusColor) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -253,7 +245,8 @@ class OrderDetailsScreen extends StatelessWidget {
   }
 
   // Build the order info card with date, time, payment method, etc.
-  Widget _buildOrderInfoCard(BuildContext context, String date, String time, bool isDarkMode) {
+  Widget _buildOrderInfoCard(
+      BuildContext context, String date, String time, bool isDarkMode) {
     return Card(
       elevation: 0,
       shape: RoundedRectangleBorder(
@@ -267,8 +260,11 @@ class OrderDetailsScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.info_outline, 
-                  color: isDarkMode ? AppColors.brandAccent : AppColors.primaryColor,
+                Icon(
+                  Icons.info_outline,
+                  color: isDarkMode
+                      ? AppColors.brandAccent
+                      : AppColors.primaryColor,
                   size: 20,
                 ),
                 const SizedBox(width: 8),
@@ -276,7 +272,9 @@ class OrderDetailsScreen extends StatelessWidget {
                   'Order Information',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: isDarkMode ? AppColors.brandAccent : AppColors.primaryColor,
+                        color: isDarkMode
+                            ? AppColors.brandAccent
+                            : AppColors.primaryColor,
                       ),
                 ),
               ],
@@ -289,11 +287,17 @@ class OrderDetailsScreen extends StatelessWidget {
                 context, 'Payment Method', order.paymentMethod, Icons.payment),
             const Divider(height: 16),
             _buildInfoSection(
-                context, 'Status', _getStatusLabel(_getOrderStatus(order.status)), Icons.info_outline),
+                context,
+                'Status',
+                _getStatusLabel(_getOrderStatus(order.status)),
+                Icons.info_outline),
             if (order.deliveryFee != 0) ...[
               const Divider(height: 16),
-              _buildInfoSection(context, 'Delivery Fee',
-                  'Ksh ${formatMoney(order.deliveryFee)}', Icons.local_shipping),
+              _buildInfoSection(
+                  context,
+                  'Delivery Fee',
+                  'Ksh ${formatMoney(order.deliveryFee)}',
+                  Icons.local_shipping),
             ],
           ],
         ),
@@ -316,8 +320,11 @@ class OrderDetailsScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.shopping_bag_outlined, 
-                  color: isDarkMode ? AppColors.brandAccent : AppColors.primaryColor,
+                Icon(
+                  Icons.shopping_bag_outlined,
+                  color: isDarkMode
+                      ? AppColors.brandAccent
+                      : AppColors.primaryColor,
                   size: 20,
                 ),
                 const SizedBox(width: 8),
@@ -325,7 +332,9 @@ class OrderDetailsScreen extends StatelessWidget {
                   'Order Items',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: isDarkMode ? AppColors.brandAccent : AppColors.primaryColor,
+                        color: isDarkMode
+                            ? AppColors.brandAccent
+                            : AppColors.primaryColor,
                       ),
                 ),
               ],
@@ -358,8 +367,11 @@ class OrderDetailsScreen extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(Icons.person_outline, 
-                  color: isDarkMode ? AppColors.brandAccent : AppColors.primaryColor,
+                Icon(
+                  Icons.person_outline,
+                  color: isDarkMode
+                      ? AppColors.brandAccent
+                      : AppColors.primaryColor,
                   size: 20,
                 ),
                 const SizedBox(width: 8),
@@ -367,7 +379,9 @@ class OrderDetailsScreen extends StatelessWidget {
                   'Customer Information',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: isDarkMode ? AppColors.brandAccent : AppColors.primaryColor,
+                        color: isDarkMode
+                            ? AppColors.brandAccent
+                            : AppColors.primaryColor,
                       ),
                 ),
               ],
@@ -396,7 +410,8 @@ class OrderDetailsScreen extends StatelessWidget {
   }
 
   // Build a status message for completed/canceled orders
-  Widget _buildStatusMessage(BuildContext context, bool isCompleted, bool isCanceled) {
+  Widget _buildStatusMessage(
+      BuildContext context, bool isCompleted, bool isCanceled) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16),
       child: Center(
@@ -420,8 +435,10 @@ class OrderDetailsScreen extends StatelessWidget {
                 color: isCompleted ? Colors.green : Colors.red,
                 size: 20,
               ),
-           SizedBox(width: 12,)
-,             Text(
+              const SizedBox(
+                width: 12,
+              ),
+              Text(
                 isCompleted
                     ? 'Order completed successfully'
                     : 'This order has been canceled',
@@ -470,7 +487,7 @@ class OrderDetailsScreen extends StatelessWidget {
             if (canCancel && canConfirm)
               Row(
                 children: [
-                  // Cancel Order Button  
+                  // Cancel Order Button
                   Expanded(
                     flex: 1,
                     child: CancelOrderButton(
@@ -569,12 +586,12 @@ class OrderDetailsScreen extends StatelessWidget {
                     borderRadius: BorderRadius.circular(16),
                   ),
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.local_shipping, size: 20),
-                    const SizedBox(width: 8),
-                    const Text(
+                    Icon(Icons.local_shipping, size: 20),
+                    SizedBox(width: 8),
+                    Text(
                       'Track Order',
                       style:
                           TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -707,8 +724,6 @@ class OrderDetailsScreen extends StatelessWidget {
         return 'Completed';
       case OrderStatus.canceled:
         return 'Canceled';
-      default:
-        return 'Pending';
     }
   }
 
@@ -727,8 +742,6 @@ class OrderDetailsScreen extends StatelessWidget {
         return Colors.green;
       case OrderStatus.canceled:
         return Colors.red;
-      default:
-        return isDarkMode ? AppColors.brandAccent : AppColors.primaryColor;
     }
   }
 
@@ -747,8 +760,6 @@ class OrderDetailsScreen extends StatelessWidget {
         return Icons.check_circle;
       case OrderStatus.canceled:
         return Icons.cancel;
-      default:
-        return Icons.pending_actions;
     }
   }
 }

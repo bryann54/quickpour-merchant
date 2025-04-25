@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
+import 'package:flutter/material.dart';
 
 class CustomSearchBar extends StatefulWidget {
   final TextEditingController controller;
@@ -36,14 +36,14 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                     : Colors.grey.shade300,
               ),
               color: isDarkMode ? Colors.grey.shade600 : Colors.white,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(20),
             ),
             child: Row(
               children: [
                 Icon(
                   Icons.search,
-                  color: isDarkMode ? Colors.white : Colors.grey.shade300,
-                  size: 30,
+                  color: isDarkMode ? Colors.white : Colors.grey.shade600,
+                  size: 24,
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -51,10 +51,10 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                     controller: widget.controller,
                     onChanged: widget.onSearch,
                     decoration: InputDecoration(
-                      hintText: 'Search...',
+                      hintText: 'Search product',
                       hintStyle: TextStyle(
                         color: isDarkMode ? Colors.white : Colors.grey.shade400,
-                        fontSize: 20,
+                        fontSize: 17,
                       ),
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.zero,
@@ -77,25 +77,25 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
             ),
           ),
         ),
-        // const SizedBox(width: 5),
-        // GestureDetector(
-        //   onTap: widget.onFilterTap,
-        //   child: Container(
-        //     height: 45,
-        //     width: 50,
-        //     decoration: BoxDecoration(
-        //       color: AppColors.accentColorDark.withOpacity(.9),
-        //       borderRadius: BorderRadius.circular(12),
-        //     ),
-        //     child: const Center(
-        //       child: Icon(
-        //         Icons.tune,
-        //         color: Colors.white,
-        //         size: 24,
-        //       ),
-        //     ),
-        //   ),
-        // ),
+        const SizedBox(width: 5),
+        GestureDetector(
+          onTap: widget.onFilterTap,
+          child: Container(
+            height: 45,
+            width: 50,
+            decoration: BoxDecoration(
+              color: AppColors.accentColorDark.withOpacity(.9),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Center(
+              child: Icon(
+                Icons.tune,
+                color: Colors.white,
+                size: 24,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }

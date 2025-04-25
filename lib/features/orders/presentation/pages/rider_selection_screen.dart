@@ -96,7 +96,7 @@ class _RiderSelectionScreenState extends State<RiderSelectionScreen> {
                                   AppColors.primaryColor.withOpacity(0.1),
                               child: Text(
                                 rider['name'].substring(0, 1),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: AppColors.primaryColor,
                                   fontWeight: FontWeight.bold,
                                 ),

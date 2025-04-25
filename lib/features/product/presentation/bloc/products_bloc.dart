@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 import 'package:quickpourmerchant/features/product/data/repositories/product_repository.dart';
+import 'package:quickpourmerchant/features/product_search/presentation/bloc/product_search_event.dart';
 
 part 'products_event.dart';
 part 'products_state.dart';
@@ -54,7 +56,10 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
     });
 
     on<UpdateProductsList>((event, emit) {
-      emit(ProductsLoaded(event.products));
+      emit(ProductsLoaded(
+        products: event.products,
+        lastFetched: DateTime.now(),
+      ));
     });
 
     on<AddProduct>((event, emit) async {

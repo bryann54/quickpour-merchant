@@ -13,8 +13,14 @@ class ProductsLoading extends ProductsState {}
 
 class ProductsLoaded extends ProductsState {
   final List<MerchantProductModel> products;
+  final bool hasMoreData;
+  final DateTime lastFetched;
 
-  const ProductsLoaded(this.products);
+  const ProductsLoaded({
+    required this.products,
+    required this.lastFetched,
+    this.hasMoreData = true,
+  });
 
   @override
   List<Object> get props => [products];

@@ -10,7 +10,9 @@ class OrderConfirmationScreen extends StatefulWidget {
   final List<OrderItem> items;
   final String orderId;
 
-  const OrderConfirmationScreen({super.key, required this.items,
+  const OrderConfirmationScreen({
+    super.key,
+    required this.items,
     required this.orderId,
   });
 
@@ -134,8 +136,8 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
                 ClipRRect(
                   borderRadius: BorderRadius.circular(12),
                   child: item.images.isNotEmpty
-                      ? CachedNetworkImage(imageUrl: 
-                          item.images.first,
+                      ? CachedNetworkImage(
+                          imageUrl: item.images.first,
                           width: 80,
                           height: 80,
                           fit: BoxFit.cover,
@@ -158,12 +160,10 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                          
                           ),
-                     
                         ],
                       ),
                       const SizedBox(height: 4),
@@ -224,7 +224,6 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
     );
   }
 
-
   Widget _buildBottomBar(bool isDark) {
     final selectedCount = selectedItems.values.where((v) => v).length;
 
@@ -267,8 +266,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
                   : null,
             ),
             DispatchButton(
-              orderId: widget
-                  .orderId, 
+              orderId: widget.orderId,
               selectedCount: selectedCount,
               isLoading: _isLoading,
               onDispatchStarted: () {
@@ -283,8 +281,6 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen>
           ],
         ),
       ),
-   
-   
     );
   }
 }

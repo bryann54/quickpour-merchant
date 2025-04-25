@@ -4,11 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/core/utils/custom_appbar.dart';
+import 'package:quickpourmerchant/features/auth/data/repositories/auth_repository.dart';
+import 'package:quickpourmerchant/features/auth/domain/usecases/auth_usecases.dart';
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_bloc.dart';
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_event.dart';
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_state.dart';
 import 'package:quickpourmerchant/features/categories/presentation/pages/categories_screen.dart';
 import 'package:quickpourmerchant/features/categories/presentation/widgets/horizontal_list_widget.dart';
+import 'package:quickpourmerchant/features/categories/presentation/widgets/search_bar.dart';
 import 'package:quickpourmerchant/features/categories/presentation/widgets/shimmer_widget.dart';
 import 'package:quickpourmerchant/features/orders/presentation/pages/orders_screen.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
@@ -16,6 +19,8 @@ import 'package:quickpourmerchant/features/product/presentation/bloc/products_bl
 import 'package:quickpourmerchant/features/product/presentation/widgets/card-shimmer.dart';
 import 'package:quickpourmerchant/features/product/presentation/widgets/custom_fab_widget.dart';
 import 'package:quickpourmerchant/features/product/presentation/widgets/product_card.dart';
+import 'package:quickpourmerchant/features/product/presentation/widgets/search/filter_bottomSheet.dart';
+import 'package:quickpourmerchant/features/product_search/presentation/bloc/product_search_bloc.dart';
 import 'package:quickpourmerchant/features/requests/presentation/pages/requests_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,13 +32,54 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
+  late final TextEditingController _searchController;
+  late ProductSearchBloc _productSearchBloc;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final AuthUseCases _authUseCases =
+      AuthUseCases(authRepository: AuthRepository());
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
   late TabController _tabController;
 
   @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearch(String query) {
+    setState(() {
+    });
+  }
+
+  void _onFilterTap() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => DraggableScrollableSheet(
+        initialChildSize: 0.75,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        builder: (_, controller) => FilterBottomSheet(
+          onApplyFilters: (filters) {
+            _productSearchBloc.add(
+              FilterProductsEvent(
+                category: filters['category'] as String?,
+                store: filters['store'] as String?,
+                priceRange: filters['priceRange'] as RangeValues?,
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  @override
   void initState() {
     super.initState();
+    _searchController = TextEditingController();
     _tabController = TabController(length: 3, vsync: this);
     _initializeData();
   }
@@ -46,6 +92,11 @@ class _HomeScreenState extends State<HomeScreen>
     context.read<CategoriesBloc>().add(LoadCategories());
   }
 
+  void _handleLogout() async {
+    await _authUseCases.logout();
+    Navigator.pushReplacementNamed(context, '/login');
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -53,8 +104,10 @@ class _HomeScreenState extends State<HomeScreen>
 
     return Scaffold(
       key: _scaffoldKey,
-      drawer: CustomDrawer(
-        onLogout: () => Navigator.pushReplacementNamed(context, '/login'),
+     
+      drawer: FirebaseDrawer(
+        authUseCases: _authUseCases,
+        onLogout: _handleLogout,
       ),
       body: RefreshIndicator(
         onRefresh: () async {
@@ -217,6 +270,14 @@ class _HomeScreenState extends State<HomeScreen>
                 ),
               ),
             ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: CustomSearchBar(
+            controller: _searchController,
+            onSearch: _onSearch,
+            onFilterTap: _onFilterTap,
           ),
         ),
         BlocBuilder<ProductsBloc, ProductsState>(

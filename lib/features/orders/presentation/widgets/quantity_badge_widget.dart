@@ -16,7 +16,7 @@ class QuantityBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.surfaceColorDark : Colors.grey[100],
+        color: isDark ? AppColors.surfaceDark : Colors.grey[100],
         borderRadius: BorderRadius.circular(8),
       ),
       child: Text(

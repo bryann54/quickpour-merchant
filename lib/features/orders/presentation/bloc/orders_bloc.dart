@@ -23,7 +23,7 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
     on<FeedbackCountUpdated>(_onFeedbackCountUpdated);
     on<FilterOrdersByStatus>(_onFilterOrdersByStatus);
     on<RefreshOrders>(_onRefreshOrders);
-    on<UpdateOrderStatus>(_onUpdateOrderStatus); 
+    on<UpdateOrderStatus>(_onUpdateOrderStatus);
   }
 
   void _onStartOrdersStream(
@@ -151,7 +151,8 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
       ));
     }
   }
-void _onUpdateOrderStatus(
+
+  void _onUpdateOrderStatus(
       UpdateOrderStatus event, Emitter<OrdersState> emit) async {
     final currentState = state;
     // Preserve the current state's data

@@ -166,7 +166,8 @@ class OrderItemWidget extends StatelessWidget {
   }
 
   // Build the customer info section
-  Widget _buildCustomerInfo(ThemeData theme, bool isDarkMode, OrderStatus status) {
+  Widget _buildCustomerInfo(
+      ThemeData theme, bool isDarkMode, OrderStatus status) {
     return Row(
       children: [
         _buildCustomerAvatar(isDarkMode),
@@ -188,13 +189,9 @@ class OrderItemWidget extends StatelessWidget {
             ? AppColors.brandAccent.withOpacity(0.2)
             : AppColors.primaryColor.withOpacity(0.1),
         child: Text(
-          order.userName.isNotEmpty
-              ? order.userName[0].toUpperCase()
-              : '?',
+          order.userName.isNotEmpty ? order.userName[0].toUpperCase() : '?',
           style: TextStyle(
-            color: isDarkMode
-                ? AppColors.brandAccent
-                : AppColors.primaryColor,
+            color: isDarkMode ? AppColors.brandAccent : AppColors.primaryColor,
             fontWeight: FontWeight.bold,
             fontSize: 16,
           ),
@@ -332,7 +329,6 @@ class OrderItemWidget extends StatelessWidget {
         break;
       case OrderStatus.completed:
       case OrderStatus.canceled:
-      default:
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -342,5 +338,4 @@ class OrderItemWidget extends StatelessWidget {
         break;
     }
   }
-
 }

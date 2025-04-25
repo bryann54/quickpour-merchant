@@ -19,10 +19,6 @@ class ProductAppBar extends StatelessWidget {
     required this.isEditing,
     required this.onEditPressed,
   }) : super(key: key);
-  int _calculateDiscountPercentage(double originalPrice, double discountPrice) {
-    if (originalPrice <= 0 || discountPrice <= 0) return 0;
-    return ((originalPrice - discountPrice) / originalPrice * 100).round();
-  }
 
   @override
   Widget build(BuildContext context) {

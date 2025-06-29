@@ -3,11 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 import 'package:quickpourmerchant/features/product/presentation/pages/product_details_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:quickpourmerchant/core/utils/colors.dart';
-import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
-import 'package:quickpourmerchant/features/product/presentation/pages/product_details_screen.dart';
 
 class ProductCard extends StatelessWidget {
   final MerchantProductModel product;
@@ -168,14 +163,12 @@ class ProductCard extends StatelessWidget {
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Hero(
                         tag: 'product_name_${product.id}',
                         child: Material(
-                          color: Colors
-                              .transparent, 
+                          color: Colors.transparent,
                           child: Text(
                             product.productName,
                             style: TextStyle(
@@ -190,8 +183,7 @@ class ProductCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        product
-                            .categoryName, 
+                        product.categoryName,
                         style: TextStyle(
                           fontSize: 11,
                           color: theme.textTheme.bodySmall?.color,
@@ -202,8 +194,7 @@ class ProductCard extends StatelessWidget {
                       const SizedBox(height: 8),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.baseline,
-                        textBaseline:
-                            TextBaseline.alphabetic, 
+                        textBaseline: TextBaseline.alphabetic,
                         children: [
                           Text(
                             product.discountPrice > 0

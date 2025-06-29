@@ -6,7 +6,7 @@ import 'package:quickpourmerchant/features/product/data/models/product_model.dar
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
 import 'package:quickpourmerchant/features/product/presentation/widgets/card-shimmer.dart';
 import 'package:quickpourmerchant/features/product/presentation/widgets/custom_fab_widget.dart';
-import 'package:quickpourmerchant/features/product/presentation/widgets/product_card.dart';
+import 'package:quickpourmerchant/features/product/presentation/widgets/merchant_p_card.dart';
 import 'package:quickpourmerchant/features/product/presentation/widgets/search/filter_bottomSheet.dart';
 import 'package:quickpourmerchant/features/product/presentation/widgets/search/search_bar.dart';
 import 'package:quickpourmerchant/features/product_search/presentation/bloc/product_search_bloc.dart';
@@ -187,7 +187,7 @@ class _ProductsScreenState extends State<ProductsScreen>
         mainAxisSpacing: 10,
       ),
       itemCount: products.length,
-      itemBuilder: (_, index) => ProductCard(product: products[index]),
+      itemBuilder: (_, index) => MerchantPCard(product: products[index]),
     );
   }
 }

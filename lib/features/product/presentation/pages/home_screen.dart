@@ -17,7 +17,6 @@ import 'package:quickpourmerchant/features/orders/presentation/widgets/order_con
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
 import 'package:quickpourmerchant/features/product/presentation/pages/products_screen.dart';
-import 'package:quickpourmerchant/features/product/presentation/widgets/card-shimmer.dart';
 import 'package:quickpourmerchant/features/product/presentation/widgets/custom_fab_widget.dart';
 import 'package:quickpourmerchant/features/product/presentation/widgets/product_card.dart';
 import 'package:quickpourmerchant/features/requests/presentation/pages/requests_screen.dart';
@@ -310,7 +309,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _buildLoadingGrid() {
-return ListView.builder(
+    return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
@@ -381,14 +380,13 @@ return ListView.builder(
     );
   }
 
-Widget _buildProductsList(List<MerchantProductModel> products) {
+  Widget _buildProductsList(List<MerchantProductModel> products) {
     return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       itemCount: products.length,
-      itemBuilder: (_, index) =>
-          ProductCard(product: products[index]),
+      itemBuilder: (_, index) => ProductCard(product: products[index]),
     );
   }
 }

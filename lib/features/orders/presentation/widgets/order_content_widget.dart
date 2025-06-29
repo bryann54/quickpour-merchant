@@ -85,7 +85,7 @@ class _OrdersContentWidgetState extends State<OrdersContentWidget> {
       case OrderStatus.completed:
         return orders.where((order) => order.status == 'completed').toList();
       case OrderStatus.all:
-      return orders;
+        return orders;
     }
   }
 
@@ -137,7 +137,7 @@ class _OrdersContentWidgetState extends State<OrdersContentWidget> {
         emptyMessage = 'No completed orders';
         break;
       case OrderStatus.all:
-      emptyMessage = 'No orders yet';
+        emptyMessage = 'No orders yet';
         break;
     }
 
@@ -207,7 +207,7 @@ class _OrdersContentWidgetState extends State<OrdersContentWidget> {
       case OrderStatus.completed:
         return 'No completed orders found';
       case OrderStatus.all:
-      return 'No orders found';
+        return 'No orders found';
     }
   }
 }

@@ -10,7 +10,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc({required this.authUseCases}) : super(AuthInitial()) {
     on<CheckAuthStatusEvent>((event, emit) async {
       try {
-        final currentUser = await authUseCases.getCurrentUserId();
+        final currentUser = authUseCases.getCurrentUserId();
         if (currentUser != null) {
           emit(Authenticated(email: currentUser));
         } else {

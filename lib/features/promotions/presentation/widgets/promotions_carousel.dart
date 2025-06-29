@@ -110,7 +110,7 @@
 //                           end: Alignment.bottomCenter,
 //                           colors: [
 //                             Colors.transparent,
-//                             Colors.black.withOpacity(0.7),
+//                             Colors.black.withValues(alpha: 0.7),
 //                           ],
 //                         ),
 //                       ),
@@ -132,7 +132,7 @@
 //                         ),
 //                         boxShadow: [
 //                           BoxShadow(
-//                             color: Colors.black.withOpacity(0.2),
+//                             color: Colors.black.withValues(alpha: 0.2),
 //                             blurRadius: 4,
 //                             offset: const Offset(2, 2),
 //                           ),

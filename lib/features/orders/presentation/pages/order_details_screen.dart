@@ -111,12 +111,12 @@ class OrderDetailsScreen extends StatelessWidget {
           gradient: LinearGradient(
             colors: isDarkMode
                 ? [
-                    Colors.black.withOpacity(0.7),
-                    Colors.black.withOpacity(0.4),
+                    Colors.black.withValues(alpha: 0.7),
+                    Colors.black.withValues(alpha: 0.4),
                   ]
                 : [
                     AppColors.primaryColor,
-                    AppColors.primaryColor.withOpacity(0.85),
+                    AppColors.primaryColor.withValues(alpha: 0.85),
                   ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -129,7 +129,7 @@ class OrderDetailsScreen extends StatelessWidget {
             tag: 'customer-avatar-${order.id}',
             child: CircleAvatar(
               radius: 20,
-              backgroundColor: Colors.white.withOpacity(0.3),
+              backgroundColor: Colors.white.withValues(alpha: 0.3),
               child: Text(
                 order.userName.isNotEmpty
                     ? order.userName[0].toUpperCase()
@@ -161,12 +161,12 @@ class OrderDetailsScreen extends StatelessWidget {
                 Row(
                   children: [
                     Icon(Icons.numbers_outlined,
-                        size: 14, color: Colors.white.withOpacity(0.9)),
+                        size: 14, color: Colors.white.withValues(alpha: 0.9)),
                     const SizedBox(width: 4),
                     Text(
                       'Order #${order.id}',
                       style: TextStyle(
-                        color: Colors.white.withOpacity(0.9),
+                        color: Colors.white.withValues(alpha: 0.9),
                         fontSize: 14,
                       ),
                     ),
@@ -181,7 +181,7 @@ class OrderDetailsScreen extends StatelessWidget {
         Container(
           margin: const EdgeInsets.only(right: 16),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(20),
           ),
           child: IconButton(
@@ -205,7 +205,7 @@ class OrderDetailsScreen extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-      color: statusColor.withOpacity(0.15),
+      color: statusColor.withValues(alpha: 0.15),
       child: Row(
         children: [
           Icon(
@@ -226,7 +226,7 @@ class OrderDetailsScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
-                color: Colors.amber.withOpacity(0.2),
+                color: Colors.amber.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: Colors.amber, width: 1),
               ),
@@ -419,8 +419,8 @@ class OrderDetailsScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
           decoration: BoxDecoration(
             color: isCompleted
-                ? Colors.green.withOpacity(0.15)
-                : Colors.red.withOpacity(0.15),
+                ? Colors.green.withValues(alpha: 0.15)
+                : Colors.red.withValues(alpha: 0.15),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: isCompleted ? Colors.green : Colors.red,
@@ -473,7 +473,7 @@ class OrderDetailsScreen extends StatelessWidget {
           color: Theme.of(context).scaffoldBackgroundColor,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
+              color: Colors.grey.withValues(alpha: 0.2),
               spreadRadius: 1,
               blurRadius: 4,
               offset: const Offset(0, -2),

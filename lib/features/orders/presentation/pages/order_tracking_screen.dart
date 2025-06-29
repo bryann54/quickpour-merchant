@@ -112,7 +112,7 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
                         children: [
                           CircleAvatar(
                             backgroundColor:
-                                AppColors.primaryColor.withOpacity(0.1),
+                                AppColors.primaryColor.withValues(alpha: 0.1),
                             radius: 24,
                             child: const Icon(
                               Icons.directions_bike,

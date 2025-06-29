@@ -48,8 +48,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   void _onSearch(String query) {
-    setState(() {
-    });
+    setState(() {});
   }
 
   void _onFilterTap() {
@@ -104,7 +103,6 @@ class _HomeScreenState extends State<HomeScreen>
 
     return Scaffold(
       key: _scaffoldKey,
-     
       drawer: FirebaseDrawer(
         authUseCases: _authUseCases,
         onLogout: _handleLogout,

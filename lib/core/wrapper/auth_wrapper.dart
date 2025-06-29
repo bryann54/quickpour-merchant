@@ -32,7 +32,7 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
     final authBloc = context.read<AuthBloc>();
     try {
-      final isSignedIn = await authBloc.authUseCases.isUserSignedIn();
+      final isSignedIn = authBloc.authUseCases.isUserSignedIn();
       if (!mounted) return;
 
       if (isSignedIn) {

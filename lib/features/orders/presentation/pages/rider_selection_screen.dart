@@ -93,7 +93,7 @@ class _RiderSelectionScreenState extends State<RiderSelectionScreen> {
                           children: [
                             CircleAvatar(
                               backgroundColor:
-                                  AppColors.primaryColor.withOpacity(0.1),
+                                  AppColors.primaryColor.withValues(alpha: 0.1),
                               child: Text(
                                 rider['name'].substring(0, 1),
                                 style: const TextStyle(

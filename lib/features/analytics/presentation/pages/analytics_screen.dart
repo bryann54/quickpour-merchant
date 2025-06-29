@@ -107,7 +107,8 @@ class StatCardDetailView extends StatelessWidget {
                       Text(
                         extraInfo!,
                         style: theme.textTheme.bodyLarge?.copyWith(
-                          color: theme.colorScheme.onSurface.withOpacity(0.6),
+                          color: theme.colorScheme.onSurface
+                              .withValues(alpha: 0.6),
                         ),
                       ),
                     const Spacer(),
@@ -119,7 +120,8 @@ class StatCardDetailView extends StatelessWidget {
                     Text(
                       'Tap anywhere to close',
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withOpacity(0.6),
+                        color:
+                            theme.colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                     ),
                   ],
@@ -185,7 +187,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             Text(
               'View overall statistics of the last:',
               style: theme.textTheme.titleMedium?.copyWith(
-                color: theme.colorScheme.onSurface.withOpacity(0.7),
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
               ),
             ),
             const SizedBox(height: 16),
@@ -207,7 +209,8 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                           labelStyle: TextStyle(
                             color: label == selectedTimeFilter
                                 ? theme.colorScheme.onPrimary
-                                : theme.colorScheme.onSurface.withOpacity(0.6),
+                                : theme.colorScheme.onSurface
+                                    .withValues(alpha: 0.6),
                           ),
                         ),
                       ))
@@ -304,7 +307,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                   Text(
                     "You don't have any Workflows running. Create a Workflow in order to view its insights here.",
                     style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onSurface.withOpacity(0.7),
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
                     ),
                   ),
                   SizedBox(
@@ -395,7 +398,8 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                     Text(
                       title,
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onSurface.withOpacity(0.7),
+                        color:
+                            theme.colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
                     ),
                   ],
@@ -436,7 +440,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                     extraInfo,
                     style: theme.textTheme.bodyMedium?.copyWith(
                       fontSize: 12,
-                      color: theme.colorScheme.onSurface.withOpacity(0.6),
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                   ),
               ],

@@ -329,7 +329,7 @@
 //                         padding: const EdgeInsets.all(8.0),
 //                         child: ElevatedButton.icon(
 //                           onPressed: _isUploadingImages ? null : _pickImages,
-//                           icon:  Icon(Icons.add_photo_alternate,size: 24,color: isDarkMode?AppColors.background.withOpacity(.5):Colors.white.withOpacity(0.8),),
+//                           icon:  Icon(Icons.add_photo_alternate,size: 24,color: isDarkMode?AppColors.background.withValues(alpha: .5):Colors.white.withValues(alpha: 0.8),),
 //                           label: const Text('Add Images'),
 //                           style: ElevatedButton.styleFrom(
 //                             minimumSize: const Size(double.infinity, 44),
@@ -351,11 +351,11 @@
 //                         value: _selectedCategory,
 //                         decoration: InputDecoration(
 //                           labelText: 'Category',
-//                           labelStyle: TextStyle(color: isDarkMode?AppColors.background.withOpacity(.5):Colors.black.withOpacity(0.5)),
+//                           labelStyle: TextStyle(color: isDarkMode?AppColors.background.withValues(alpha: .5):Colors.black.withValues(alpha: 0.5)),
 //                           border: OutlineInputBorder(
 //                             borderRadius: BorderRadius.circular(8),
 //                           ),
-//                           prefixIcon:  Icon(FontAwesomeIcons.folder,size: 24,color: isDarkMode?AppColors.background.withOpacity(.5):Colors.grey.withOpacity(0.5),),
+//                           prefixIcon:  Icon(FontAwesomeIcons.folder,size: 24,color: isDarkMode?AppColors.background.withValues(alpha: .5):Colors.grey.withValues(alpha: 0.5),),
 //                         ),
 //                         items: state.allCategories.map((category) {
 //                           return DropdownMenuItem<String>(
@@ -384,11 +384,11 @@
 //                         value: _selectedBrand,
 //                         decoration: InputDecoration(
 //                           labelText: 'Brand',
-//                            labelStyle: TextStyle(color: isDarkMode?AppColors.background.withOpacity(.5):Colors.black.withOpacity(0.5)),
+//                            labelStyle: TextStyle(color: isDarkMode?AppColors.background.withValues(alpha: .5):Colors.black.withValues(alpha: 0.5)),
 //                           border: OutlineInputBorder(
 //                             borderRadius: BorderRadius.circular(8),
 //                           ),
-//                           prefixIcon:  Icon(Icons.branding_watermark,size: 24,color: isDarkMode?AppColors.background.withOpacity(.5):Colors.grey.withOpacity(0.5),),
+//                           prefixIcon:  Icon(Icons.branding_watermark,size: 24,color: isDarkMode?AppColors.background.withValues(alpha: .5):Colors.grey.withValues(alpha: 0.5),),
 //                         ),
 //                         items: state.brands.map((brand) {
 //                           return DropdownMenuItem<String>(
@@ -412,11 +412,11 @@
 //                   controller: _nameController,
 //                   decoration: InputDecoration(
 //                     labelText: 'Product Name',
-//                      labelStyle: TextStyle(color: isDarkMode?AppColors.background.withOpacity(.5):Colors.black.withOpacity(0.5)),
+//                      labelStyle: TextStyle(color: isDarkMode?AppColors.background.withValues(alpha: .5):Colors.black.withValues(alpha: 0.5)),
 //                     border: OutlineInputBorder(
 //                       borderRadius: BorderRadius.circular(8),
 //                     ),
-//                     prefixIcon:  Icon(Icons.inventory, size: 24,color: isDarkMode?AppColors.background.withOpacity(.5):Colors.grey.withOpacity(0.5),)
+//                     prefixIcon:  Icon(Icons.inventory, size: 24,color: isDarkMode?AppColors.background.withValues(alpha: .5):Colors.grey.withValues(alpha: 0.5),)
 //                   ),
 //                   validator: (value) => value?.trim().isEmpty == true
 //                       ? 'Enter product name'
@@ -432,13 +432,13 @@
 //                         controller: _priceController,
 //                         decoration: InputDecoration(
 //                           labelText: 'Price',
-//                            labelStyle: TextStyle(color: isDarkMode?AppColors.background.withOpacity(.5):Colors.black.withOpacity(0.5)),
+//                            labelStyle: TextStyle(color: isDarkMode?AppColors.background.withValues(alpha: .5):Colors.black.withValues(alpha: 0.5)),
 //                           prefixText: 'Ksh ',
 //                           border: OutlineInputBorder(
 //                             borderRadius: BorderRadius.circular(8),
 
 //                           ),
-//                           prefixIcon:  Icon(Icons.attach_money,size: 24,color: isDarkMode?AppColors.background.withOpacity(.5):Colors.grey.withOpacity(0.5),),
+//                           prefixIcon:  Icon(Icons.attach_money,size: 24,color: isDarkMode?AppColors.background.withValues(alpha: .5):Colors.grey.withValues(alpha: 0.5),),
 //                         ),
 //                         keyboardType: TextInputType.number,
 //                         validator: _validatePrice,
@@ -450,12 +450,12 @@
 //                         controller: _discountController,
 //                         decoration: InputDecoration(
 //                           labelText: 'Discount Price',
-//                            labelStyle: TextStyle(color: isDarkMode?AppColors.background.withOpacity(.5):Colors.black.withOpacity(0.5,),fontSize: 15),
+//                            labelStyle: TextStyle(color: isDarkMode?AppColors.background.withValues(alpha: .5):Colors.black.withValues(alpha: 0.5,),fontSize: 15),
 //                           prefixText: 'Ksh ',
 //                           border: OutlineInputBorder(
 //                             borderRadius: BorderRadius.circular(8),
 //                           ),
-//                           prefixIcon:  Icon(Icons.discount,size: 24,color: isDarkMode?AppColors.background.withOpacity(.5):Colors.grey.withOpacity(0.5),),
+//                           prefixIcon:  Icon(Icons.discount,size: 24,color: isDarkMode?AppColors.background.withValues(alpha: .5):Colors.grey.withValues(alpha: 0.5),),
 //                         ),
 //                         keyboardType: TextInputType.number,
 //                         validator: _validateDiscount,
@@ -473,12 +473,12 @@
 //                         controller: _stockController,
 //                         decoration: InputDecoration(
 //                           labelText: 'Stock Quantity',
-//                            labelStyle: TextStyle(color: isDarkMode?AppColors.background.withOpacity(.5):Colors.black.withOpacity(0.5),
+//                            labelStyle: TextStyle(color: isDarkMode?AppColors.background.withValues(alpha: .5):Colors.black.withValues(alpha: 0.5),
 //                               fontSize: 15),
 //                           border: OutlineInputBorder(
 //                             borderRadius: BorderRadius.circular(8),
 //                           ),
-//                           prefixIcon:  Icon(Icons.warehouse,size: 24,color: isDarkMode?AppColors.background.withOpacity(.5):Colors.grey.withOpacity(0.5),),
+//                           prefixIcon:  Icon(Icons.warehouse,size: 24,color: isDarkMode?AppColors.background.withValues(alpha: .5):Colors.grey.withValues(alpha: 0.5),),
 //                         ),
 //                         keyboardType: TextInputType.number,
 //                         validator: _validateStock,
@@ -490,11 +490,11 @@
 //                         controller: _skuController,
 //                         decoration: InputDecoration(
 //                           labelText: 'SKU',
-//                            labelStyle: TextStyle(color: isDarkMode?AppColors.background.withOpacity(.5):Colors.black.withOpacity(0.5)),
+//                            labelStyle: TextStyle(color: isDarkMode?AppColors.background.withValues(alpha: .5):Colors.black.withValues(alpha: 0.5)),
 //                           border: OutlineInputBorder(
 //                             borderRadius: BorderRadius.circular(8),
 //                           ),
-//                           prefixIcon:  Icon(Icons.qr_code,size: 24,color: isDarkMode?AppColors.background.withOpacity(.5):Colors.grey.withOpacity(0.5),),
+//                           prefixIcon:  Icon(Icons.qr_code,size: 24,color: isDarkMode?AppColors.background.withValues(alpha: .5):Colors.grey.withValues(alpha: 0.5),),
 //                         ),
 //                         validator: (value) =>
 //                             value?.trim().isEmpty == true ? 'Enter SKU' : null,
@@ -508,13 +508,13 @@
 //                   controller: _descriptionController,
 //                   decoration: InputDecoration(
 //                     labelText: 'Description',
-//                      labelStyle: TextStyle(color: isDarkMode?AppColors.background.withOpacity(.5):Colors.black.withOpacity(0.5)),
+//                      labelStyle: TextStyle(color: isDarkMode?AppColors.background.withValues(alpha: .5):Colors.black.withValues(alpha: 0.5)),
 
 //                     border: OutlineInputBorder(
 //                       borderRadius: BorderRadius.circular(8),
 //                       borderSide: BorderSide(color: Colors.grey.shade300),
 //                     ),
-//                     prefixIcon:  Icon(Icons.description,size: 24,color: isDarkMode?AppColors.background.withOpacity(.5):Colors.grey.withOpacity(0.5),),
+//                     prefixIcon:  Icon(Icons.description,size: 24,color: isDarkMode?AppColors.background.withValues(alpha: .5):Colors.grey.withValues(alpha: 0.5),),
 //                   ),
 //                   maxLines: 3,
 //                   validator: (value) => value?.trim().isEmpty == true

@@ -132,7 +132,8 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                           decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.brandPrimary.withOpacity(0.3),
+                                color: AppColors.brandPrimary
+                                    .withValues(alpha: 0.3),
                                 blurRadius: 30,
                                 spreadRadius: 5,
                               ),
@@ -163,8 +164,8 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                             letterSpacing: 4,
                             shadows: [
                               Shadow(
-                                color:
-                                    AppColors.brandSecondary.withOpacity(0.7),
+                                color: AppColors.brandSecondary
+                                    .withValues(alpha: 0.7),
                                 blurRadius: 15,
                                 offset: const Offset(0, 3),
                               ),
@@ -184,7 +185,7 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                           Text(
                             'Boost Your Biz, Rahisi Sana,',
                             style: GoogleFonts.montaga(
-                              color: Colors.white.withOpacity(0.9),
+                              color: Colors.white.withValues(alpha: 0.9),
                               fontSize: 27,
                               fontWeight: FontWeight.bold,
                             ),
@@ -221,11 +222,11 @@ class _ParticlePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.7)
+      ..color = Colors.white.withValues(alpha: 0.7)
       ..style = PaintingStyle.fill;
 
-    final particleCount = 50;
-    final radius = 2.0;
+    const particleCount = 50;
+    const radius = 2.0;
 
     for (var i = 0; i < particleCount; i++) {
       final x = (size.width * 0.5) +

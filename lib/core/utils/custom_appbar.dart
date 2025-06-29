@@ -238,7 +238,7 @@ class EnhancedCustomDrawer extends StatelessWidget {
               gradient: LinearGradient(
                 colors: [
                   Colors.transparent,
-                  AppColors.primaryColor.withOpacity(0.5),
+                  AppColors.primaryColor.withValues(alpha: .5),
                   Colors.transparent,
                 ],
               ),
@@ -251,8 +251,6 @@ class EnhancedCustomDrawer extends StatelessWidget {
               padding: EdgeInsets.zero,
               children: [
                 const SizedBox(height: 16),
-
-                // Enhanced menu items with hover effect
                 EnhancedDrawerTile(
                   icon: FontAwesomeIcons.gaugeHigh,
                   title: 'Dashboard',
@@ -295,7 +293,6 @@ class EnhancedCustomDrawer extends StatelessWidget {
                   title: 'Settings',
                   onTap: () => Navigator.pushNamed(context, '/settings'),
                 ),
-
                 const SizedBox(height: 32),
               ],
             ),

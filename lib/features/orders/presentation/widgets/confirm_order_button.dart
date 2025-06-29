@@ -42,7 +42,7 @@ class ConfirmOrderButton extends StatelessWidget {
           backgroundColor: AppColors.primaryColor,
           foregroundColor: Colors.white,
           elevation: 2,
-          shadowColor: AppColors.primaryColor.withOpacity(0.3),
+          shadowColor: AppColors.primaryColor.withValues(alpha: 0.3),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

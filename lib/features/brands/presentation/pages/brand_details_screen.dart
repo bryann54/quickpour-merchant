@@ -187,18 +187,19 @@ class _BrandDetailsScreenState extends State<BrandDetailsScreen> {
             width: double.infinity,
             height: 250,
             decoration: BoxDecoration(
-              border: Border.all(color: AppColors.accentColor.withOpacity(0.4)),
+              border: Border.all(
+                  color: AppColors.accentColor.withValues(alpha: 0.4)),
               image: DecorationImage(
                 image: CachedNetworkImageProvider(widget.brand.logoUrl),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.3),
+                  Colors.black.withValues(alpha: 0.3),
                   BlendMode.darken,
                 ),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.2),
                   spreadRadius: 1,
                   blurRadius: 5,
                   offset: const Offset(0, 2),
@@ -215,8 +216,8 @@ class _BrandDetailsScreenState extends State<BrandDetailsScreen> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Colors.black.withOpacity(0.1),
-                Colors.black.withOpacity(0.5),
+                Colors.black.withValues(alpha: 0.1),
+                Colors.black.withValues(alpha: 0.5),
               ],
             ),
           ),
@@ -240,7 +241,7 @@ class _BrandDetailsScreenState extends State<BrandDetailsScreen> {
                           Shadow(
                             offset: const Offset(1, 1),
                             blurRadius: 3.0,
-                            color: Colors.black.withOpacity(0.5),
+                            color: Colors.black.withValues(alpha: 0.5),
                           ),
                         ],
                       ),
@@ -258,7 +259,7 @@ class _BrandDetailsScreenState extends State<BrandDetailsScreen> {
                         Shadow(
                           offset: const Offset(1, 1),
                           blurRadius: 3.0,
-                          color: Colors.black.withOpacity(0.5),
+                          color: Colors.black.withValues(alpha: 0.5),
                         ),
                       ],
                     ),

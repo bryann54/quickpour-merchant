@@ -18,7 +18,9 @@ class MerchantOrderSection extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.cardColorDark.withOpacity(0.5) : Colors.white,
+        color: isDark
+            ? AppColors.cardColorDark.withValues(alpha: 0.5)
+            : Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: isDark ? Colors.grey[800]! : Colors.grey[200]!,

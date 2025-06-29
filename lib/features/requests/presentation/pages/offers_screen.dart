@@ -44,8 +44,8 @@ class OffersScreen extends StatelessWidget {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          Colors.black.withOpacity(0.6),
-                          Colors.black.withOpacity(0.3),
+                          Colors.black.withValues(alpha: 0.6),
+                          Colors.black.withValues(alpha: 0.3),
                         ],
                       ),
                     ),
@@ -157,7 +157,7 @@ class OffersScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 border: Border.all(
                                   color: theme.colorScheme.onSurfaceVariant
-                                      .withOpacity(.2),
+                                      .withValues(alpha: .2),
                                   width: 1,
                                 ),
                                 borderRadius: BorderRadius.circular(10),
@@ -225,12 +225,12 @@ class OffersScreen extends StatelessWidget {
                                 color: theme.colorScheme.surface,
                                 border: Border.all(
                                     color: theme.colorScheme.outline
-                                        .withOpacity(0.2)),
+                                        .withValues(alpha: 0.2)),
                                 borderRadius: BorderRadius.circular(12),
                                 boxShadow: [
                                   BoxShadow(
                                     color: theme.colorScheme.shadow
-                                        .withOpacity(0.05),
+                                        .withValues(alpha: 0.05),
                                     blurRadius: 8,
                                     offset: const Offset(0, 2),
                                   ),
@@ -265,7 +265,7 @@ class OffersScreen extends StatelessWidget {
                                               horizontal: 12, vertical: 6),
                                           decoration: BoxDecoration(
                                             color: theme.colorScheme.primary
-                                                .withOpacity(0.1),
+                                                .withValues(alpha: 0.1),
                                             borderRadius:
                                                 BorderRadius.circular(20),
                                           ),
@@ -288,7 +288,7 @@ class OffersScreen extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             color: theme
                                                 .colorScheme.secondaryContainer
-                                                .withOpacity(0.3),
+                                                .withValues(alpha: 0.3),
                                             borderRadius:
                                                 BorderRadius.circular(8),
                                           ),
@@ -321,7 +321,7 @@ class OffersScreen extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             color: theme
                                                 .colorScheme.tertiaryContainer
-                                                .withOpacity(0.3),
+                                                .withValues(alpha: 0.3),
                                             borderRadius:
                                                 BorderRadius.circular(8),
                                           ),
@@ -356,7 +356,7 @@ class OffersScreen extends StatelessWidget {
                                         decoration: BoxDecoration(
                                           color: theme.colorScheme
                                               .surfaceContainerHighest
-                                              .withOpacity(0.3),
+                                              .withValues(alpha: 0.3),
                                           borderRadius:
                                               BorderRadius.circular(8),
                                         ),

@@ -31,7 +31,7 @@ class OrderItemWidget extends StatelessWidget {
           color: theme.cardColor,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.04),
+              color: Colors.black.withValues(alpha: 0.04),
               blurRadius: 12,
               spreadRadius: 1,
               offset: const Offset(0, 2),
@@ -76,7 +76,7 @@ class OrderItemWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: statusColor.withOpacity(0.15),
+        color: statusColor.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -145,7 +145,7 @@ class OrderItemWidget extends StatelessWidget {
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
               color: isDarkMode
-                  ? AppColors.brandAccent.withOpacity(.8)
+                  ? AppColors.brandAccent.withValues(alpha: .8)
                   : AppColors.primaryColor,
             ),
             textAlign: TextAlign.end,
@@ -186,8 +186,8 @@ class OrderItemWidget extends StatelessWidget {
       child: CircleAvatar(
         radius: 20,
         backgroundColor: isDarkMode
-            ? AppColors.brandAccent.withOpacity(0.2)
-            : AppColors.primaryColor.withOpacity(0.1),
+            ? AppColors.brandAccent.withValues(alpha: 0.2)
+            : AppColors.primaryColor.withValues(alpha: 0.1),
         child: Text(
           order.userName.isNotEmpty ? order.userName[0].toUpperCase() : '?',
           style: TextStyle(
@@ -238,8 +238,8 @@ class OrderItemWidget extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: isDarkMode
-            ? AppColors.brandAccent.withOpacity(0.15)
-            : AppColors.primaryColor.withOpacity(0.1),
+            ? AppColors.brandAccent.withValues(alpha: 0.15)
+            : AppColors.primaryColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
       ),
       padding: const EdgeInsets.all(8),

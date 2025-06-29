@@ -1,8 +1,5 @@
-// lib/features/product/presentation/widgets/product_app_bar.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 import 'package:quickpourmerchant/core/utils/strings.dart';
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
@@ -23,28 +20,53 @@ class ProductAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      expandedHeight: 300.0,
+      expandedHeight: 280.0,
       floating: false,
       pinned: true,
-      iconTheme: const IconThemeData(color: AppColors.accentColor),
+      elevation: 0,
+      backgroundColor: Colors.white,
+      iconTheme: const IconThemeData(color: Colors.black87),
       flexibleSpace: FlexibleSpaceBar(
+        collapseMode: CollapseMode.parallax,
+        titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
         title: Text(
           isEditing ? edit : product_details,
-          style: Theme.of(context).textTheme.displayLarge,
+          style: const TextStyle(
+            color: Colors.black87,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
         ),
-        background: ProductImageGallery(product: product),
+        background: Stack(
+          children: [
+            ProductImageGallery(product: product),
+            Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Colors.black.withValues(alpha: 0.3),
+                    Colors.transparent,
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
       actions: [
-        IconButton.filled(
-          icon: Icon(isEditing ? null : Icons.edit),
+        IconButton(
+          icon: Icon(isEditing ? Icons.close : Icons.edit_outlined),
           onPressed: onEditPressed,
-          color: AppColors.accentColor,
+          tooltip: isEditing ? 'Cancel' : 'Edit',
         ),
         if (!isEditing)
           IconButton(
             icon: const Icon(Icons.delete_outline),
-            color: Colors.red,
+            color: Colors.red[400],
             onPressed: () => _showDeleteDialog(context),
+            tooltip: 'Delete',
           ),
       ],
     );
@@ -53,7 +75,7 @@ class ProductAppBar extends StatelessWidget {
   Future<void> _showDeleteDialog(BuildContext context) async {
     final bool confirm = await showDialog(
           context: context,
-          builder: (context) => AlertDialog.adaptive(
+          builder: (context) => AlertDialog(
             title: const Text(delete_product),
             content: const Text(delete_product_txt),
             actions: [
@@ -62,7 +84,10 @@ class ProductAppBar extends StatelessWidget {
                 child: const Text(cancel),
               ),
               TextButton(
-                style: TextButton.styleFrom(foregroundColor: Colors.red),
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.red,
+                ),
                 onPressed: () => Navigator.pop(context, true),
                 child: const Text(delete),
               ),
@@ -84,6 +109,7 @@ class ProductAppBar extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Error deleting product: ${error.toString()}'),
+          behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.red,
         ),
       );

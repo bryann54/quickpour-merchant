@@ -202,7 +202,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FaIcon(
-                Icons.error,
+                FontAwesomeIcons.solidImage,
                 color: Colors.grey[400],
                 size: 64,
               ),

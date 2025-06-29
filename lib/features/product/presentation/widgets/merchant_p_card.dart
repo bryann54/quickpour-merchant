@@ -61,9 +61,10 @@ class MerchantPCard extends StatelessWidget {
                           decoration: BoxDecoration(
                             border: Border.all(
                                 color: isDarkMode
-                                    ? AppColors.accentColor.withOpacity(.5)
+                                    ? AppColors.accentColor
+                                        .withValues(alpha: .5)
                                     : AppColors.accentColorDark
-                                        .withOpacity(.3)),
+                                        .withValues(alpha: .3)),
                             borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(12),
                                 topRight: Radius.circular(12)),
@@ -105,7 +106,7 @@ class MerchantPCard extends StatelessWidget {
                               // borderRadius: BorderRadius.circular(8),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
+                                  color: Colors.black.withValues(alpha: 0.2),
                                   blurRadius: 4,
                                   offset: const Offset(2, 2),
                                 ),
@@ -153,7 +154,8 @@ class MerchantPCard extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.primaryColor.withOpacity(.7)),
+                              color:
+                                  AppColors.primaryColor.withValues(alpha: .7)),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),

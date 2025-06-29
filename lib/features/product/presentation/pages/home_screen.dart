@@ -11,16 +11,15 @@ import 'package:quickpourmerchant/features/categories/presentation/bloc/categori
 import 'package:quickpourmerchant/features/categories/presentation/bloc/categories_state.dart';
 import 'package:quickpourmerchant/features/categories/presentation/pages/categories_screen.dart';
 import 'package:quickpourmerchant/features/categories/presentation/widgets/horizontal_list_widget.dart';
-import 'package:quickpourmerchant/features/categories/presentation/widgets/search_bar.dart';
 import 'package:quickpourmerchant/features/categories/presentation/widgets/shimmer_widget.dart';
-import 'package:quickpourmerchant/features/orders/presentation/pages/orders_screen.dart';
+import 'package:quickpourmerchant/features/orders/presentation/bloc/orders_bloc.dart';
+import 'package:quickpourmerchant/features/orders/presentation/widgets/order_content_widget.dart';
 import 'package:quickpourmerchant/features/product/data/models/product_model.dart';
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
+import 'package:quickpourmerchant/features/product/presentation/pages/products_screen.dart';
 import 'package:quickpourmerchant/features/product/presentation/widgets/card-shimmer.dart';
 import 'package:quickpourmerchant/features/product/presentation/widgets/custom_fab_widget.dart';
 import 'package:quickpourmerchant/features/product/presentation/widgets/product_card.dart';
-import 'package:quickpourmerchant/features/product/presentation/widgets/search/filter_bottomSheet.dart';
-import 'package:quickpourmerchant/features/product_search/presentation/bloc/product_search_bloc.dart';
 import 'package:quickpourmerchant/features/requests/presentation/pages/requests_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,7 +32,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   late final TextEditingController _searchController;
-  late ProductSearchBloc _productSearchBloc;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final AuthUseCases _authUseCases =
       AuthUseCases(authRepository: AuthRepository());
@@ -45,34 +43,6 @@ class _HomeScreenState extends State<HomeScreen>
   void dispose() {
     _searchController.dispose();
     super.dispose();
-  }
-
-  void _onSearch(String query) {
-    setState(() {});
-  }
-
-  void _onFilterTap() {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.75,
-        minChildSize: 0.5,
-        maxChildSize: 0.95,
-        builder: (_, controller) => FilterBottomSheet(
-          onApplyFilters: (filters) {
-            _productSearchBloc.add(
-              FilterProductsEvent(
-                category: filters['category'] as String?,
-                store: filters['store'] as String?,
-                priceRange: filters['priceRange'] as RangeValues?,
-              ),
-            );
-          },
-        ),
-      ),
-    );
   }
 
   @override
@@ -111,6 +81,10 @@ class _HomeScreenState extends State<HomeScreen>
         onRefresh: () async {
           context.read<ProductsBloc>().add(FetchProducts());
           context.read<CategoriesBloc>().add(LoadCategories());
+          // Also refresh orders when on orders tab
+          if (_tabController.index == 1) {
+            context.read<OrdersBloc>().add(StartOrdersStream());
+          }
         },
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -118,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen>
             SliverAppBar(
               floating: true,
               pinned: true,
-              expandedHeight: 200.0,
+              expandedHeight: 120.0,
               leading: IconButton(
                 color: Colors.white,
                 iconSize: 30,
@@ -132,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen>
                     child: Image.asset('assets/111.png',
                         fit: BoxFit.contain,
                         width: double.infinity,
-                        height: 240),
+                        height: 200),
                   ),
                 ),
               ),
@@ -161,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen>
                 controller: _tabController,
                 children: [
                   _buildHomeContent(context, theme, isDarkMode),
-                  const OrdersScreen(),
+                  _buildOrdersContent(),
                   const RequestsScreen(),
                 ],
               ),
@@ -178,9 +152,19 @@ class _HomeScreenState extends State<HomeScreen>
     return ListView(
       children: [
         _buildCategoriesSection(context, theme, isDarkMode),
-        const SizedBox(height: 16),
         _buildProductsSection(theme),
       ],
+    );
+  }
+
+  Widget _buildOrdersContent() {
+    return BlocProvider(
+      create: (_) => OrdersBloc()..add(StartOrdersStream()),
+      child: const OrdersContentWidget(
+        statusFilter:
+            OrderStatus.pending, // Show only pending orders in home screen
+        showSearchBar: false, // Hide search bar for cleaner look in home screen
+      ),
     );
   }
 
@@ -190,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 3, right: 3, bottom: 8),
+          padding: const EdgeInsets.only(left: 3, right: 3, bottom: 1),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -260,22 +244,33 @@ class _HomeScreenState extends State<HomeScreen>
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                'Your Products',
+                'Popular Products',
                 style: GoogleFonts.montaga(
                   textStyle: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
+              const Spacer(),
+              TextButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const ProductsScreen()),
+                ),
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  minimumSize: Size.zero,
+                ),
+                child: Text(
+                  'See All',
+                  style: GoogleFonts.montaga(
+                    textStyle: theme.textTheme.bodyLarge?.copyWith(
+                      color: AppColors.accentColor,
+                    ),
+                  ),
+                ),
+              ),
             ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: CustomSearchBar(
-            controller: _searchController,
-            onSearch: _onSearch,
-            onFilterTap: _onFilterTap,
           ),
         ),
         BlocBuilder<ProductsBloc, ProductsState>(
@@ -305,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen>
                         ],
                       ),
                     )
-                  : _buildProductsGrid(state.products);
+                  : _buildProductsList(state.products);
             }
             return const SizedBox.shrink();
           },
@@ -315,34 +310,85 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _buildLoadingGrid() {
-    return GridView.builder(
+return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.7,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       itemCount: 6,
-      padding: const EdgeInsets.all(10),
-      itemBuilder: (_, __) => const ProductCardShimmer(),
+      itemBuilder: (_, __) => Card(
+        elevation: 2,
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Container(
+          height: 120,
+          padding: const EdgeInsets.all(8),
+          child: Row(
+            children: [
+              // Image placeholder
+              Container(
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Center(
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+              ),
+
+              const SizedBox(width: 12),
+
+              // Content placeholder
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: 16,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                    Container(
+                      height: 14,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                    Container(
+                      height: 12,
+                      width: 80,
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade300,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
-  Widget _buildProductsGrid(List<MerchantProductModel> products) {
-    return GridView.builder(
+Widget _buildProductsList(List<MerchantProductModel> products) {
+    return ListView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.all(10),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.7,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       itemCount: products.length,
-      itemBuilder: (_, index) => ProductCard(product: products[index]),
+      itemBuilder: (_, index) =>
+          ProductCard(product: products[index]),
     );
   }
 }

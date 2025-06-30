@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
@@ -16,6 +18,7 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
   late Animation<double> _scaleAnimation;
   late Animation<double> _fadeAnimation;
   late Animation<double> _backgroundFadeAnimation;
+  late Animation<Color?> _gradientAnimation;
 
   @override
   void initState() {
@@ -50,6 +53,17 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
       ),
     );
 
+    // Gradient color animation
+    _gradientAnimation = ColorTween(
+      begin: AppColors.primaryColor,
+      end: AppColors.brandPrimary,
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ),
+    );
+
     // Start the animation
     _animationController.forward();
 
@@ -75,37 +89,39 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
         builder: (context, child) {
           return Stack(
             children: [
-              // Background gradient with fade animation
-              Opacity(
-                opacity: _backgroundFadeAnimation.value,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color.fromARGB(255, 57, 23, 27),
-                        Color.fromARGB(255, 57, 23, 27),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
+              // Animated background gradient
+              AnimatedContainer(
+                duration: const Duration(seconds: 2),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      _gradientAnimation.value ?? AppColors.brandPrimary,
+                      AppColors.brandSecondary,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+              ),
+
+              // Subtle animated particles
+              Positioned.fill(
+                child: Opacity(
+                  opacity: 0.15 * _backgroundFadeAnimation.value,
+                  child: CustomPaint(
+                    painter: _ParticlePainter(
+                      animationValue: _animationController.value,
                     ),
                   ),
                 ),
               ),
-              // Animated pattern overlay
-              Opacity(
-                opacity: _backgroundFadeAnimation.value * 0.1,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    backgroundBlendMode: BlendMode.softLight,
-                  ),
-                ),
-              ),
-              // Center logo with scale and fade animations
+
+              // Center content
               Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    // Logo with scale and fade animations
                     Transform.scale(
                       scale: _scaleAnimation.value,
                       child: Opacity(
@@ -113,11 +129,12 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                         child: Container(
                           width: 300,
                           height: 250,
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.shadowColor,
-                                blurRadius: 20,
+                                color: AppColors.brandPrimary
+                                    .withValues(alpha: 0.3),
+                                blurRadius: 30,
                                 spreadRadius: 5,
                               ),
                             ],
@@ -125,10 +142,14 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                           child: Image.asset(
                             'assets/111.png',
                             fit: BoxFit.contain,
+                            color: Colors.white, // Make logo white
+                            colorBlendMode: BlendMode.srcIn,
                           ),
                         ),
                       ),
                     ),
+
+                    const SizedBox(height: 30),
 
                     // App name with fade animation
                     Opacity(
@@ -136,41 +157,50 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
                       child: Text(
                         'Merchants',
                         style: GoogleFonts.chewy(
-                          textStyle: const TextStyle(
+                          textStyle: TextStyle(
                             color: Colors.white,
-                            fontSize: 35,
+                            fontSize: 42,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 4,
                             shadows: [
                               Shadow(
-                                color: AppColors.shadowColor,
-                                blurRadius: 10,
-                                offset: Offset(0, 2),
+                                color: AppColors.brandSecondary
+                                    .withValues(alpha: 0.7),
+                                blurRadius: 15,
+                                offset: const Offset(0, 3),
                               ),
                             ],
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 70),
-                    // Tagline with fade animation
+
+                    const SizedBox(height: 50),
+
+                    // Taglines with staggered fade animation
                     Opacity(
                       opacity: _fadeAnimation.value,
-                      child: Text('Boost Your Biz, Rahisi Sana,',
-                          style: GoogleFonts.montaga(
-                              color: AppColors.background,
+                      child: Column(
+                        children: [
+                          Text(
+                            'Boost Your Biz, Rahisi Sana,',
+                            style: GoogleFonts.montaga(
+                              color: Colors.white.withValues(alpha: 0.9),
                               fontSize: 27,
-                              fontWeight: FontWeight.bold)),
-                    ),
-                    const SizedBox(height: 10),
-                    // Tagline with fade animation
-                    Opacity(
-                      opacity: _fadeAnimation.value,
-                      child: Text(' Piga Hustle, Rahisi Sana.',
-                          style: GoogleFonts.montaga(
-                              color: AppColors.background,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold)),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Piga Hustle, Rahisi Sana.',
+                            style: GoogleFonts.montaga(
+                              color: AppColors.brandAccent, // Use accent color
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -181,4 +211,33 @@ class _EntrySplashScreenState extends State<EntrySplashScreen>
       ),
     );
   }
+}
+
+// Particle effect painter for background
+class _ParticlePainter extends CustomPainter {
+  final double animationValue;
+
+  _ParticlePainter({required this.animationValue});
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.7)
+      ..style = PaintingStyle.fill;
+
+    const particleCount = 50;
+    const radius = 2.0;
+
+    for (var i = 0; i < particleCount; i++) {
+      final x = (size.width * 0.5) +
+          (size.width * 0.5 * math.sin(animationValue * 2 + i * 0.5));
+      final y = (size.height * 0.5) +
+          (size.height * 0.5 * math.cos(animationValue * 3 + i * 0.7));
+
+      canvas.drawCircle(Offset(x, y), radius, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
 }

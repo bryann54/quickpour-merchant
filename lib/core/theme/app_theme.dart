@@ -62,7 +62,7 @@ class AppTheme {
       secondary: AppColors.secondaryColorDark,
       tertiary: AppColors.accentColorDark,
       error: AppColors.errorDark,
-      surface: AppColors.surfaceColorDark,
+      surface: AppColors.surfaceDark,
       onPrimary: Colors.white,
       onSecondary: Colors.white,
       onSurface: AppColors.textPrimaryDark,
@@ -85,7 +85,7 @@ class AppTheme {
     cardTheme: CardTheme(
       color: AppColors.cardColorDark,
       elevation: 4,
-      shadowColor: AppColors.shadowColorDark,
+      shadowColor: AppColors.shadowColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
@@ -95,7 +95,7 @@ class AppTheme {
       thickness: 1,
     ),
     appBarTheme: const AppBarTheme(
-      backgroundColor: AppColors.surfaceColorDark,
+      backgroundColor: AppColors.surfaceDark,
       elevation: 0,
       centerTitle: true,
       iconTheme: IconThemeData(
@@ -103,7 +103,7 @@ class AppTheme {
       ),
     ),
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-      backgroundColor: AppColors.surfaceColorDark,
+      backgroundColor: AppColors.surfaceDark,
       selectedItemColor: AppColors.primaryColorDark,
       unselectedItemColor: AppColors.textSecondaryDark,
     ),

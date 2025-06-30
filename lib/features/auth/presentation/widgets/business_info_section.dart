@@ -1,8 +1,6 @@
 // lib/features/auth/presentation/widgets/business_information_section.dart
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:quickpourmerchant/features/auth/presentation/widgets/app_text_field.dart';
 import 'package:quickpourmerchant/features/auth/presentation/widgets/location_picker_field.dart';
 
@@ -17,51 +15,6 @@ class BusinessInformationSection extends StatelessWidget {
     required this.locationController,
     required this.isDarkMode,
   }) : super(key: key);
-
-  Future<void> _getCurrentLocation(BuildContext context) async {
-    try {
-      // Request location permission
-      LocationPermission permission = await Geolocator.checkPermission();
-      if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Location permissions are denied')),
-          );
-          return;
-        }
-      }
-
-      if (permission == LocationPermission.deniedForever) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-                'Location permissions are permanently denied, enable in settings'),
-          ),
-        );
-        return;
-      }
-
-      // Get position
-      final Position position = await Geolocator.getCurrentPosition();
-
-      // Get address from position
-      List<Placemark> placemarks =
-          await placemarkFromCoordinates(position.latitude, position.longitude);
-
-      if (placemarks.isNotEmpty) {
-        Placemark place = placemarks[0];
-        String address =
-            '${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.country}';
-        locationController.text = address;
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error getting location: $e')),
-      );
-      print('Error getting location: $e');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

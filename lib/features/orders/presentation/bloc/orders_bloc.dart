@@ -23,6 +23,7 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
     on<FeedbackCountUpdated>(_onFeedbackCountUpdated);
     on<FilterOrdersByStatus>(_onFilterOrdersByStatus);
     on<RefreshOrders>(_onRefreshOrders);
+    on<UpdateOrderStatus>(_onUpdateOrderStatus);
   }
 
   void _onStartOrdersStream(
@@ -148,6 +149,27 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
         feedbackCount: event.count,
         statusFilter: currentState.statusFilter,
       ));
+    }
+  }
+
+  void _onUpdateOrderStatus(
+      UpdateOrderStatus event, Emitter<OrdersState> emit) async {
+    final currentState = state;
+    // Preserve the current state's data
+    if (currentState is OrdersLoaded) {
+      emit(OrderStatusUpdating(event.orderId));
+      try {
+        await _ordersRepository.updateOrderStatus(
+            event.orderId, event.newStatus);
+        emit(OrderStatusUpdated(event.orderId, event.newStatus));
+        // Restore previous state after update confirmation
+        emit(currentState);
+        // The stream will automatically update the UI with the new data
+      } catch (e) {
+        emit(OrdersError('Failed to update order status: $e'));
+        // Restore previous state after error
+        emit(currentState);
+      }
     }
   }
 

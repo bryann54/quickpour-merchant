@@ -40,14 +40,14 @@ class _LoginScreenState extends State<LoginScreen> {
               context: context,
               message: state.message,
               icon: Icons.error_outline,
-              backgroundColor: Colors.red.withOpacity(0.9),
+              backgroundColor: Colors.red.withValues(alpha: 0.9),
             );
           } else if (state is Authenticated) {
             CustomAnimatedSnackbar.show(
               context: context,
               message: 'Login successful!',
               icon: Icons.check_circle_outline,
-              backgroundColor: Colors.green.withOpacity(0.9),
+              backgroundColor: Colors.green.withValues(alpha: 0.9),
             );
 
             Future.delayed(const Duration(milliseconds: 1500), () {

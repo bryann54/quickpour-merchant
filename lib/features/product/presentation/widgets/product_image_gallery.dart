@@ -69,7 +69,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.black.withOpacity(0.7),
+                  Colors.black.withValues(alpha: 0.7),
                   Colors.transparent,
                 ],
               ),
@@ -89,7 +89,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
                 colors: [
-                  Colors.black.withOpacity(0.7),
+                  Colors.black.withValues(alpha: 0.7),
                   Colors.transparent,
                 ],
               ),
@@ -115,7 +115,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
                     shape: BoxShape.circle,
                     color: _currentPage == index
                         ? Theme.of(context).primaryColor
-                        : Colors.white.withOpacity(0.5),
+                        : Colors.white.withValues(alpha: 0.5),
                   ),
                 ),
               ),
@@ -175,7 +175,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.7),
+                color: Colors.black.withValues(alpha: 0.7),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Text(
@@ -202,7 +202,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               FaIcon(
-                Icons.error,
+                FontAwesomeIcons.solidImage,
                 color: Colors.grey[400],
                 size: 64,
               ),
@@ -276,7 +276,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
         color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.withValues(alpha: 0.2),
             spreadRadius: 1,
             blurRadius: 5,
             offset: const Offset(0, 2),
@@ -318,7 +318,7 @@ class _ProductImageGalleryState extends State<ProductImageGallery> {
             // borderRadius: BorderRadius.circular(8),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.2),
+                color: Colors.black.withValues(alpha: 0.2),
                 blurRadius: 4,
                 offset: const Offset(2, 2),
               ),

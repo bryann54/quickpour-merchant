@@ -48,17 +48,16 @@ class _ProductFormState extends State<ProductForm> {
   }
 
   void _initializeControllers() {
-    _nameController = TextEditingController(
-      text: widget.product.productName,
-    );
+    _nameController = TextEditingController(text: widget.product.productName);
     _descriptionController =
         TextEditingController(text: widget.product.description);
     _priceController =
         TextEditingController(text: widget.product.price.toString());
     _discountPriceController = TextEditingController(
-        text: widget.product.discountPrice > 0
-            ? widget.product.discountPrice.toString()
-            : '');
+      text: widget.product.discountPrice > 0
+          ? widget.product.discountPrice.toString()
+          : '',
+    );
     _stockController =
         TextEditingController(text: widget.product.stockQuantity.toString());
     _skuController = TextEditingController(text: widget.product.sku);
@@ -87,6 +86,7 @@ class _ProductFormState extends State<ProductForm> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Please log in to update products'),
+            behavior: SnackBarBehavior.floating,
             backgroundColor: Colors.red,
           ),
         );
@@ -130,13 +130,15 @@ class _ProductFormState extends State<ProductForm> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Product updated successfully!'),
+          behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.green,
         ),
       );
     } catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Error updating product'),
+        SnackBar(
+          content: Text('Error updating product: ${error.toString()}'),
+          behavior: SnackBarBehavior.floating,
           backgroundColor: Colors.red,
         ),
       );
@@ -146,21 +148,30 @@ class _ProductFormState extends State<ProductForm> {
   bool _validateInputs() {
     if (_nameController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Product name cannot be empty')),
+        const SnackBar(
+          content: Text('Product name cannot be empty'),
+          behavior: SnackBarBehavior.floating,
+        ),
       );
       return false;
     }
 
     if (_selectedCategory == null || _selectedCategory!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a category')),
+        const SnackBar(
+          content: Text('Please select a category'),
+          behavior: SnackBarBehavior.floating,
+        ),
       );
       return false;
     }
 
     if (_selectedBrand == null || _selectedBrand!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a brand')),
+        const SnackBar(
+          content: Text('Please select a brand'),
+          behavior: SnackBarBehavior.floating,
+        ),
       );
       return false;
     }
@@ -181,14 +192,19 @@ class _ProductFormState extends State<ProductForm> {
       if (discountPrice != null && discountPrice > price) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-              content:
-                  Text('Discount price cannot be greater than regular price')),
+            content:
+                Text('Discount price cannot be greater than regular price'),
+            behavior: SnackBarBehavior.floating,
+          ),
         );
         return false;
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text(valid_stock_txt)),
+        const SnackBar(
+          content: Text(valid_stock_txt),
+          behavior: SnackBarBehavior.floating,
+        ),
       );
       return false;
     }
@@ -198,195 +214,313 @@ class _ProductFormState extends State<ProductForm> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Hero(
-              tag: 'product_name_${widget.product.id}',
-              child: Material(
-                child: CustomTextField(
-                  label: 'Product Name',
-                  controller: _nameController,
-                  enabled: widget.isEditing,
-                  style: const TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.bold),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Product Name
+        Hero(
+          tag: 'product_name_${widget.product.id}',
+          child: Material(
+            type: MaterialType.transparency,
+            child: CustomTextField(
+              label: 'Product Name',
+              controller: _nameController,
+              enabled: widget.isEditing,
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
+
+        // Pricing Section
+        _buildPriceFields(),
+        const SizedBox(height: 20),
+
+        // Inventory Section
+        _buildStockField(),
+        const SizedBox(height: 20),
+
+        // Classification Section
+        _buildCategoryAndBrandFields(),
+        const SizedBox(height: 20),
+
+        // Description
+        CustomTextField(
+          label: 'Description',
+          controller: _descriptionController,
+          enabled: widget.isEditing,
+          maxLines: 3,
+        ),
+        const SizedBox(height: 20),
+
+        // Tags
+        ProductTags(tags: widget.product.tags),
+        const SizedBox(height: 20),
+
+        // Product Information Card
+        _buildProductInfoCard(),
+
+        // Update Button
+        if (widget.isEditing) ...[
+          const SizedBox(height: 24),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: _updateProduct,
+              child: const Text(
+                'UPDATE PRODUCT',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
-            const SizedBox(height: 16),
-            _buildPriceFields(),
-            const SizedBox(height: 16),
-            _buildStockField(),
-            const SizedBox(height: 16),
-            _buildCategoryAndBrandFields(),
-            const SizedBox(height: 16),
-            CustomTextField(
-              label: 'Description',
-              controller: _descriptionController,
-              enabled: widget.isEditing,
-              maxLines: 4,
-            ),
-            const SizedBox(height: 16),
-            ProductTags(tags: widget.product.tags),
-            const SizedBox(height: 16),
-            _buildProductInfo(),
-            if (widget.isEditing) ...[
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: _updateProduct,
-                      child: const Text('Update Product'),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ],
-        ),
-      ),
+          ),
+          const SizedBox(height: 16),
+        ],
+      ],
     );
   }
 
   Widget _buildPriceFields() {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: CustomTextField(
-            label: 'Price (Ksh)',
-            controller: _priceController,
-            enabled: widget.isEditing,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+        const Text(
+          'Pricing',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
           ),
         ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: CustomTextField(
-            label: 'Discount Price (Optional)',
-            controller: _discountPriceController,
-            enabled: widget.isEditing,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-            // hintText: 'Enter discount price',
-          ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: CustomTextField(
+                label: 'Price (Ksh)',
+                controller: _priceController,
+                enabled: widget.isEditing,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: CustomTextField(
+                label: 'Discount Price (Optional)',
+                controller: _discountPriceController,
+                enabled: widget.isEditing,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+              ),
+            ),
+          ],
         ),
       ],
     );
   }
 
   Widget _buildStockField() {
-    return CustomTextField(
-      label: 'Stock',
-      controller: _stockController,
-      enabled: widget.isEditing,
-      keyboardType: TextInputType.number,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Inventory',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+        ),
+        const SizedBox(height: 12),
+        CustomTextField(
+          label: 'Stock Quantity',
+          controller: _stockController,
+          enabled: widget.isEditing,
+          keyboardType: TextInputType.number,
+        ),
+      ],
     );
   }
 
   Widget _buildCategoryAndBrandFields() {
-    return Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: BlocBuilder<BrandsBloc, BrandsState>(
-            builder: (context, state) {
-              if (state is BrandsLoadingState) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is BrandsLoadedState) {
-                final brands = state.brands;
-                return DropdownButtonFormField<String>(
-                  value: _selectedBrand,
-                  decoration: const InputDecoration(
-                    labelText: 'Brand',
-                    border: OutlineInputBorder(),
-                  ),
-                  items: brands.map((BrandModel brand) {
-                    return DropdownMenuItem<String>(
-                      value: brand.name,
-                      child: Text(brand.name),
-                    );
-                  }).toList(),
-                  onChanged: widget.isEditing
-                      ? (String? value) {
-                          setState(() {
-                            _selectedBrand = value;
-                          });
-                        }
-                      : null,
-                );
-              } else if (state is BrandsErrorState) {
-                return Text('Error: ${state.errorMessage}',
-                    style: const TextStyle(color: Colors.red));
-              }
-              return CustomTextField(
-                label: 'Brand',
-                controller:
-                    TextEditingController(text: widget.product.brandName),
-                enabled: false,
-              );
-            },
+        const Text(
+          'Classification',
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
           ),
         ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: BlocBuilder<CategoriesBloc, CategoriesState>(
-            builder: (context, state) {
-              if (state is CategoriesLoading) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (state is CategoriesLoaded) {
-                final categories = state.allCategories;
-                return DropdownButtonFormField<String>(
-                  value: _selectedCategory,
-                  decoration: const InputDecoration(
-                    labelText: 'Category',
-                    border: OutlineInputBorder(),
-                  ),
-                  items: categories.map((Category category) {
-                    return DropdownMenuItem<String>(
-                      value: category.name,
-                      child: Text(category.name),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(
+              child: BlocBuilder<BrandsBloc, BrandsState>(
+                builder: (context, state) {
+                  if (state is BrandsLoadingState) {
+                    return _buildDropdownLoading('Brand');
+                  } else if (state is BrandsLoadedState) {
+                    final brands = state.brands;
+                    return DropdownButtonFormField<String>(
+                      value: _selectedBrand,
+                      decoration: InputDecoration(
+                        labelText: 'Brand',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                      ),
+                      items: brands.map((BrandModel brand) {
+                        return DropdownMenuItem<String>(
+                          value: brand.name,
+                          child: Text(
+                            brand.name,
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: widget.isEditing
+                          ? (String? value) {
+                              setState(() {
+                                _selectedBrand = value;
+                              });
+                            }
+                          : null,
                     );
-                  }).toList(),
-                  onChanged: widget.isEditing
-                      ? (String? value) {
-                          setState(() {
-                            _selectedCategory = value;
-                          });
-                        }
-                      : null,
-                );
-              } else if (state is CategoriesError) {
-                return Text('Error: ${state.message}',
-                    style: const TextStyle(color: Colors.red));
-              }
-              return CustomTextField(
-                label: 'Category',
-                controller:
-                    TextEditingController(text: widget.product.categoryName),
-                enabled: false,
-              );
-            },
-          ),
+                  }
+                  return _buildDropdownError('Brand');
+                },
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: BlocBuilder<CategoriesBloc, CategoriesState>(
+                builder: (context, state) {
+                  if (state is CategoriesLoading) {
+                    return _buildDropdownLoading('Category');
+                  } else if (state is CategoriesLoaded) {
+                    final categories = state.allCategories;
+                    return DropdownButtonFormField<String>(
+                      value: _selectedCategory,
+                      decoration: InputDecoration(
+                        labelText: 'Category',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                      ),
+                      items: categories.map((Category category) {
+                        return DropdownMenuItem<String>(
+                          value: category.name,
+                          child: Text(
+                            category.name,
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: widget.isEditing
+                          ? (String? value) {
+                              setState(() {
+                                _selectedCategory = value;
+                              });
+                            }
+                          : null,
+                    );
+                  }
+                  return _buildDropdownError('Category');
+                },
+              ),
+            ),
+          ],
         ),
       ],
     );
   }
 
-  Widget _buildProductInfo() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'SKU: ${widget.product.sku}',
-          style: Theme.of(context).textTheme.bodyMedium,
+  Widget _buildDropdownLoading(String label) {
+    return TextField(
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
         ),
-        const SizedBox(height: 8),
-        ProductInfo(
-          product: widget.product,
-        )
-      ],
+        suffixIcon: const Padding(
+          padding: EdgeInsets.all(12),
+          child: SizedBox(
+            width: 16,
+            height: 16,
+            child: CircularProgressIndicator(strokeWidth: 2),
+          ),
+        ),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      ),
+      enabled: false,
+    );
+  }
+
+  Widget _buildDropdownError(String label) {
+    return TextField(
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      ),
+      enabled: false,
+    );
+  }
+
+  Widget _buildProductInfoCard() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Product Information',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            'SKU: ${widget.product.sku}',
+            style: const TextStyle(
+              fontSize: 14,
+              color: Colors.black54,
+            ),
+          ),
+          const SizedBox(height: 8),
+          ProductInfo(product: widget.product),
+        ],
+      ),
     );
   }
 }

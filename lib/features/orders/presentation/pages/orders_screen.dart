@@ -1,68 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:quickpourmerchant/core/utils/colors.dart';
-import 'package:quickpourmerchant/features/orders/data/models/completed_order_model.dart';
 import 'package:quickpourmerchant/features/orders/presentation/bloc/orders_bloc.dart';
-import 'package:quickpourmerchant/features/orders/presentation/widgets/order_item_card.dart';
-import 'package:quickpourmerchant/features/orders/presentation/widgets/order_shimmer.dart';
+import 'package:quickpourmerchant/features/orders/presentation/widgets/order_content_widget.dart';
 
-class OrdersScreen extends StatelessWidget {
+class OrdersScreen extends StatefulWidget {
   const OrdersScreen({super.key});
+
+  @override
+  State<OrdersScreen> createState() => _OrdersScreenState();
+}
+
+class _OrdersScreenState extends State<OrdersScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider(
-        create: (_) => OrdersBloc()..add(StartOrdersStream()),
-        child: BlocBuilder<OrdersBloc, OrdersState>(
-          builder: (context, state) {
-            if (state is OrdersInitial) {
-              return ListView.builder(
-                itemCount: 7,
-                itemBuilder: (context, index) {
-                  return const OrderItemShimmer();
-                },
-              );
-            } else if (state is OrdersEmpty) {
-              return _buildEmptyOrdersView(context);
-            } else if (state is OrdersLoaded) {
-              return _buildOrdersList(context, state.orders);
-            }
-            return const SizedBox();
-          },
+      appBar: AppBar(
+        title: const Text('Orders'),
+        centerTitle: true,
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: const [
+            Tab(text: 'All'),
+            Tab(text: 'Pending'),
+            Tab(text: 'Completed'),
+          ],
         ),
       ),
-    );
-  }
-
-  Widget _buildEmptyOrdersView(BuildContext context) {
-    return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          FaIcon(
-            FontAwesomeIcons.boxOpen,
-            size: 50,
-            color: AppColors.brandAccent,
-          ),
-          SizedBox(height: 20),
-          Text(
-            'No orders yet',
-            style: TextStyle(fontSize: 18, color: Colors.grey),
-          ),
-        ],
+      body: BlocProvider(
+        create: (_) => OrdersBloc()..add(StartOrdersStream()),
+        child: TabBarView(
+          controller: _tabController,
+          children: const [
+            OrdersContentWidget(
+              statusFilter: OrderStatus.all,
+              showSearchBar: true,
+            ),
+            OrdersContentWidget(
+              statusFilter: OrderStatus.pending,
+              showSearchBar: true,
+            ),
+            OrdersContentWidget(
+              statusFilter: OrderStatus.completed,
+              showSearchBar: true,
+            ),
+          ],
+        ),
       ),
-    );
-  }
-
-  Widget _buildOrdersList(BuildContext context, List<CompletedOrder> orders) {
-    return ListView.builder(
-      itemCount: orders.length,
-      itemBuilder: (context, index) {
-        final order = orders[index];
-        return OrderItemWidget(order: order);
-      },
     );
   }
 }

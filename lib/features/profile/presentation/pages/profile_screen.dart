@@ -116,8 +116,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    Colors.black.withOpacity(0.4),
-                    Colors.transparent.withOpacity(.9),
+                    Colors.black.withValues(alpha: 0.4),
+                    Colors.transparent.withValues(alpha: .9),
                   ],
                 ).createShader(bounds);
               },
@@ -144,7 +144,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: CircleAvatar(
                             radius: 77,
                             backgroundColor:
-                                AppColors.accentColor.withOpacity(0.2),
+                                AppColors.accentColor.withValues(alpha: 0.2),
                             backgroundImage: _pickedImage != null
                                 ? FileImage(File(_pickedImage!.path))
                                 : (user.imageUrl.isNotEmpty
@@ -269,10 +269,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: isDarkMode
-            ? AppColors.background.withOpacity(.1)
-            : AppColors.backgroundDark.withOpacity(0.1),
+            ? AppColors.background.withValues(alpha: .1)
+            : AppColors.backgroundDark.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.accentColor.withOpacity(0.2)),
+        border: Border.all(color: AppColors.accentColor.withValues(alpha: 0.2)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -313,11 +313,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       decoration: BoxDecoration(
         color: isDarkMode
-            ? AppColors.background.withOpacity(.1)
-            : AppColors.backgroundDark.withOpacity(0.1),
+            ? AppColors.background.withValues(alpha: .1)
+            : AppColors.backgroundDark.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.accentColor.withOpacity(0.2),
+          color: AppColors.accentColor.withValues(alpha: 0.2),
         ),
       ),
       child: _buildSettingsItem(
@@ -372,11 +372,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       decoration: BoxDecoration(
         color: isDarkMode
-            ? AppColors.background.withOpacity(.1)
-            : AppColors.backgroundDark.withOpacity(0.1),
+            ? AppColors.background.withValues(alpha: .1)
+            : AppColors.backgroundDark.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.accentColor.withOpacity(0.2),
+          color: AppColors.accentColor.withValues(alpha: 0.2),
         ),
       ),
       child: Column(
@@ -460,7 +460,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Divider(
         height: 1,
-        color: AppColors.dividerColorDark.withOpacity(0.1),
+        color: AppColors.dividerColorDark.withValues(alpha: 0.1),
       ),
     );
   }

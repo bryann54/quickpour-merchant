@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
-import 'package:quickpourmerchant/core/utils/date_formatter.dart';
+import 'package:quickpourmerchant/core/utils/function_utils.dart';
 import 'package:quickpourmerchant/features/orders/data/models/completed_order_model.dart';
 
 class OrderTotalRow extends StatelessWidget {
@@ -15,10 +15,10 @@ class OrderTotalRow extends StatelessWidget {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      decoration: BoxDecoration(  
+      decoration: BoxDecoration(
         color: isDark
-            ? AppColors.cardColorDark.withOpacity(0.8)
-            : AppColors.surface.withOpacity(0.8),
+            ? AppColors.cardColorDark.withValues(alpha: 0.8)
+            : AppColors.surface.withValues(alpha: 0.8),
         borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(12),
           bottomRight: Radius.circular(12),

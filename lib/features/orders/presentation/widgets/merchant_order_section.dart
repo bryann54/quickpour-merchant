@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quickpourmerchant/core/utils/colors.dart';
-import 'package:quickpourmerchant/core/utils/date_formatter.dart';
+import 'package:quickpourmerchant/core/utils/function_utils.dart';
 import 'package:quickpourmerchant/features/orders/data/models/merchant_order_item_model.dart';
 import 'package:quickpourmerchant/features/orders/presentation/widgets/order_item_row.dart';
 
@@ -18,7 +18,9 @@ class MerchantOrderSection extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: isDark ? AppColors.cardColorDark.withOpacity(0.5) : Colors.white,
+        color: isDark
+            ? AppColors.cardColorDark.withValues(alpha: 0.5)
+            : Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: isDark ? Colors.grey[800]! : Colors.grey[200]!,
@@ -52,7 +54,7 @@ class MerchantOrderSection extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Your Subtotal',
+                  'Subtotal',
                   style: TextStyle(
                     color: isDark
                         ? AppColors.textPrimaryDark

@@ -40,6 +40,17 @@ class OrdersCountUpdated extends OrdersEvent {
   List<Object> get props => [count];
 }
 
+// update orderstatus
+class UpdateOrderStatus extends OrdersEvent {
+  final String orderId;
+  final String newStatus;
+
+  const UpdateOrderStatus(this.orderId, this.newStatus);
+
+  @override
+  List<Object> get props => [orderId, newStatus];
+}
+
 class FeedbackCountUpdated extends OrdersEvent {
   final int count;
 

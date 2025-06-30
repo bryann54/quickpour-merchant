@@ -1,5 +1,3 @@
-// lib/features/product/presentation/screens/product_details_screen.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
@@ -30,11 +28,19 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       listener: (context, state) {
         if (state is ProductsError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+            SnackBar(
+              content: Text(state.message),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              backgroundColor: Colors.red,
+            ),
           );
         }
       },
       child: Scaffold(
+        backgroundColor: Colors.grey[50], // Light background for contrast
         body: CustomScrollView(
           slivers: [
             ProductAppBar(
@@ -42,11 +48,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               isEditing: _isEditing,
               onEditPressed: _toggleEditing,
             ),
-            SliverToBoxAdapter(
-              child: ProductForm(
-                product: widget.product,
-                isEditing: _isEditing,
-                onUpdateComplete: _toggleEditing,
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              sliver: SliverToBoxAdapter(
+                child: ProductForm(
+                  product: widget.product,
+                  isEditing: _isEditing,
+                  onUpdateComplete: _toggleEditing,
+                ),
               ),
             ),
           ],

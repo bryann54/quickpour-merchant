@@ -33,6 +33,26 @@ class OrdersLoaded extends OrdersState {
       [orders, allOrders, ordersCount, feedbackCount, statusFilter];
 }
 
+// Add these to orders_state.dart
+class OrderStatusUpdating extends OrdersState {
+  final String orderId;
+
+  const OrderStatusUpdating(this.orderId);
+
+  @override
+  List<Object> get props => [orderId];
+}
+
+class OrderStatusUpdated extends OrdersState {
+  final String orderId;
+  final String newStatus;
+
+  const OrderStatusUpdated(this.orderId, this.newStatus);
+
+  @override
+  List<Object> get props => [orderId, newStatus];
+}
+
 class OrdersError extends OrdersState {
   final String message;
 

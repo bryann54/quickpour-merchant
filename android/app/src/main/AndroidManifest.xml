@@ -4,9 +4,7 @@
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <!-- Add this meta-data tag for Google Maps -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/MAPS_API_KEY"/>
+      
             
         <activity
             android:name=".MainActivity"

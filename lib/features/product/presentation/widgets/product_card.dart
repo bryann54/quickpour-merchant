@@ -35,10 +35,8 @@ class ProductCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         child: IntrinsicHeight(
-       
           child: Row(
-            crossAxisAlignment:
-                CrossAxisAlignment.stretch, 
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               // Product Image
               Container(
@@ -105,7 +103,7 @@ class ProductCard extends StatelessWidget {
                           product.discountPrice < product.price)
                         Positioned(
                           top: 8,
-                          left: 8, 
+                          left: 8,
                           child: Hero(
                             tag: 'discount_${product.id}',
                             child: Container(

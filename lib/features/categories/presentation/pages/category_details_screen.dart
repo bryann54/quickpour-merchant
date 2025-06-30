@@ -5,7 +5,7 @@ import 'package:quickpourmerchant/core/utils/colors.dart';
 import 'package:quickpourmerchant/features/categories/domain/entities/category.dart';
 import 'package:quickpourmerchant/features/categories/presentation/widgets/search_bar.dart';
 import 'package:quickpourmerchant/features/product/presentation/bloc/products_bloc.dart';
-import 'package:quickpourmerchant/features/product/presentation/widgets/product_card.dart';
+import 'package:quickpourmerchant/features/product/presentation/widgets/merchant_p_card.dart';
 
 class CategoryDetailsScreen extends StatefulWidget {
   final Category category;
@@ -196,7 +196,7 @@ class _CategoryDetailsScreenState extends State<CategoryDetailsScreen> {
               itemCount: categoryProducts.length,
               itemBuilder: (context, index) {
                 final product = categoryProducts[index];
-                return ProductCard(product: product);
+                return MerchantPCard(product: product);
               },
             );
           }
